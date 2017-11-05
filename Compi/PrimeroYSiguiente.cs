@@ -23,7 +23,7 @@ namespace Compi
         /// </summary>
         private List<string> lNoTerminales = null;
         /// <summary>
-        /// Lista que contiene el conjunto primero
+        /// Lista que contiene el conjunto primero dependiendo de la produccion
         /// </summary>
         private List<List<String>> conjuntoPrimero = null;
         /// <summary>
@@ -36,6 +36,7 @@ namespace Compi
             this.tokensXProd = tokensXProducc;
             this.lTerminales = LTerm;
             this.lNoTerminales = LNTerm;
+            this.conjuntoPrimero = null;
             this.creaConjuntoPrimero();
             this.evaluaConjuntoPrimero();
             this.creaConjuntoSiguiente();
@@ -56,20 +57,20 @@ namespace Compi
         /// </summary>
         public void evaluaConjuntoPrimero()
         {
-            int ind = 0;
-            int indNoTerminal = 0;
             List<int> cambios = new List<int>();
             int inicio = 1;
             int indNoTermDelConjunto = 0;
             List<string> conjuntoPrimeroDNT = new List<string>();
+            Boolean nulleable = false;
 
             while (cambios.Contains(1) || inicio == 1)
             {
                 inicio = this.inicializaCambios(cambios);
+                nulleable = false;
                 foreach (Produccion p in tokensXProd)
                 {
                     indNoTermDelConjunto = lNoTerminales.IndexOf(p.getNTerminal());
-                    //Si A -> ep dpmde ep es la cadena vacia Añadir ep a priero de A
+                    //Si A -> ep domde ep es la cadena vacia Añadir ep a priero de A
                     if ("~" == (p.getTokens()[p.getId()]))     //Si primero de A es un epsilon agregar el epsilon
                     {
                         if (!this.conjuntoPrimero[indNoTermDelConjunto].Contains("~"))
@@ -79,8 +80,7 @@ namespace Compi
                         }
                         else { cambios.Add(0); }
                     }
-                    else
-                    if (this.lTerminales.Contains(p.getTokens()[p.getId()]))     //Si primero de A es un terminal
+                    else if (this.lTerminales.Contains(p.getTokens()[p.getId()]))     //Si primero de A es un terminal
                     {
                         if (!this.conjuntoPrimero[indNoTermDelConjunto].Contains(p.getTokens()[p.getId()]))
                         {
@@ -92,25 +92,52 @@ namespace Compi
                             cambios.Add(0);
                         }
                     }
-                    else
-                    if (this.lNoTerminales.Contains(p.getTokens()[p.getId()]))     //Si primero de A es un no terminal
+                    else if (this.lNoTerminales.Contains(p.getTokens()[p.getId()]))     //Si primero de A es un no terminal
                     {
-                        //se obtiene el conjunto primero del primer no terminal q hace la derivacion
-                        conjuntoPrimeroDNT = this.conjuntoPrimero[this.lNoTerminales.IndexOf(p.getTokens()[p.getId()])];
-                        foreach (string terminal in conjuntoPrimeroDNT)
+                        foreach (string token in p.getTokens())
                         {
-                            if (!this.conjuntoPrimero[indNoTermDelConjunto].Contains(terminal))
+                            if (this.lNoTerminales.Contains(token))
                             {
-                                if (terminal != "~")
+                                nulleable = false;
+                                //se obtiene el conjunto primero del primer no terminal q hace la derivacion
+                                conjuntoPrimeroDNT = this.conjuntoPrimero[this.lNoTerminales.IndexOf(token)];
+                                foreach (string terminal in conjuntoPrimeroDNT)
                                 {
-                                    this.conjuntoPrimero[indNoTermDelConjunto].Add(terminal);
-                                    cambios.Add(1);
+                                    if (!this.conjuntoPrimero[indNoTermDelConjunto].Contains(terminal) || terminal == "~")
+                                    {
+                                        if (terminal != "~")
+                                        {
+                                            this.conjuntoPrimero[indNoTermDelConjunto].Add(terminal);
+                                            cambios.Add(1);
+                                        }
+                                        else
+                                        {
+                                            nulleable = true;
+                                            cambios.Add(0);
+                                        }
+                                    }
+                                    else
+                                        cambios.Add(0);
                                 }
-                                else
-                                    cambios.Add(0);
                             }
                             else
-                                cambios.Add(0);
+                            {
+                                this.conjuntoPrimero[indNoTermDelConjunto].Add(token);
+                                cambios.Add(1);
+                            }
+                            if (!nulleable) 
+                            {
+                                //Metodo que me diga si el token es nulleable o
+                                //no con respecto a la lista que tenemos
+                                break;
+                            }else if (p.getTokens().IndexOf(token) == p.getTokens().Count -1) // si el indice del token es igual al tamaño de los tokens -1 la produccion es nulleable
+                            {
+                                if (!this.conjuntoPrimero[indNoTermDelConjunto].Contains("~"))
+                                {
+                                    this.conjuntoPrimero[indNoTermDelConjunto].Add("~");
+                                    cambios.Add(1);
+                                }
+                            }
                         }
                     }
                 }
@@ -175,15 +202,20 @@ namespace Compi
         private int inicializaCambios(List<int> cambios)
         {
             int tam = cambios.Count;
-            cambios.RemoveRange(0, tam); 
+            cambios.RemoveRange(0, tam);  
             return 0;
+        }
+
+        public List<List<string>> dameConjuntoPrimero()
+        {
+            return this.conjuntoPrimero;
         }
 
         public List<string> getConjuntoPrimero()
         {
             List<string> nuevoConjunto = new List<string>();
             int ind = 0;
-            string conjuntoConcat = "", cadena ="";
+            string conjuntoConcat = "";
             foreach(List<string> conjunto in this.conjuntoPrimero)
             {
                 conjuntoConcat = "";
@@ -203,7 +235,7 @@ namespace Compi
         {
             List<string> nuevoConjunto = new List<string>();
             int ind = 0;
-            string conjuntoConcat = "", cadena = "";
+            string conjuntoConcat = "";
             foreach (List<string> conjunto in this.conjuntoSiguiente)
             {
                 conjuntoConcat = "";

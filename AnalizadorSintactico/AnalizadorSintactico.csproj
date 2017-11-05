@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5E4D68DC-36BD-4250-9918-C218577F5E1D}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <ProjectGuid>{1E1B604E-1A6B-4F97-AC0E-2AC49F4C08FA}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Compi</RootNamespace>
-    <AssemblyName>Compi</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>AnalizadorSintactico</RootNamespace>
+    <AssemblyName>AnalizadorSintactico</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,56 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnalizadorLexico.cs" />
-    <Compile Include="AristaLR1.cs" />
-    <Compile Include="EdoLR1.cs" />
-    <Compile Include="ini.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ini.Designer.cs">
-      <DependentUpon>ini.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gramatica.cs" />
-    <Compile Include="EditorYAnalisisGramaticas.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditorYAnalisisGramaticas.Designer.cs">
-      <DependentUpon>EditorYAnalisisGramaticas.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LR1.cs" />
-    <Compile Include="NuevaGramatica.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NuevaGramatica.Designer.cs">
-      <DependentUpon>NuevaGramatica.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PrimeroYSiguiente.cs" />
-    <Compile Include="PrimeroYSiguienteModal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PrimeroYSiguienteModal.Designer.cs">
-      <DependentUpon>PrimeroYSiguienteModal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Produccion.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="AS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="tabla_de_simbolos.cs" />
-    <Compile Include="Tabla_Errores.cs" />
-    <Compile Include="TE.cs" />
-    <Compile Include="Token.cs" />
-    <Compile Include="TS.cs" />
-    <EmbeddedResource Include="EditorYAnalisisGramaticas.resx">
-      <DependentUpon>EditorYAnalisisGramaticas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ini.resx">
-      <DependentUpon>ini.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NuevaGramatica.resx">
-      <DependentUpon>NuevaGramatica.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PrimeroYSiguienteModal.resx">
-      <DependentUpon>PrimeroYSiguienteModal.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -102,6 +58,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -115,6 +72,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ManejoDeErrores\ManejoDeErrores.csproj">
+      <Project>{2281c15e-097d-4472-b0c7-ec8556432f32}</Project>
+      <Name>ManejoDeErrores</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tsimbolos\Tsimbolos.csproj">
+      <Project>{ee38529b-b8bd-4502-a00f-1fe6fa6acf57}</Project>
+      <Name>Tsimbolos</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

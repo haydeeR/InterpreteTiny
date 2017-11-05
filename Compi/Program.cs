@@ -16,7 +16,7 @@ namespace Compi
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new editorGramatica());
+            Application.Run(new ini());
         }
     }
 }

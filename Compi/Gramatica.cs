@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Compi
 {
@@ -36,6 +37,10 @@ namespace Compi
         /// Indica en que numero de produccion va
         /// </summary>
         private int idProd = 0;
+        /// <summary>
+        /// La lista de estados que regresa el metodo lr1 a la gramatica
+        /// </summary>
+        private List<EdoLR1> listaEdos = null;
 
         public Gramatica(string nombre)
         {
@@ -112,31 +117,65 @@ namespace Compi
             this.tokensXProd.Insert(0, nueva);
             
         }
-        
+        /// <summary>
+        /// Metodo que regresa el nombre de la gramatica
+        /// </summary>
+        /// <returns></returns>
         public string getNombre()
         {
             return this.nombre;
         }
-
+        /// <summary>
+        /// Metodo que regresa las producciones de la gramatica
+        /// </summary>
+        /// <returns></returns>
         public List<string> getProducciones()
         {
             return this.producciones;
         }
-
+        /// <summary>
+        /// Metodo que regresa una lista de producciones donde cada item
+        /// es una produccion con un conjunto de tokenes.
+        /// </summary>
+        /// <returns></returns>
         public List<Produccion> getTokensXProd()
         {
             return this.tokensXProd;
         }
-
+        /// <summary>
+        /// Metodo que regresa una lista dxe no terminales
+        /// </summary>
+        /// <returns>List <String> </returns>
         public List<string> getNTerminal()
         {
             return this.lNoTerminales;
         }
-
+        /// <summary>
+        /// Metodo que regresa una lista cadenas que son los tokens termnales
+        /// </summary>
+        /// <returns></returns>
         public List<string> getTerminales()
         {
             return this.lTerminales;
         }
+        /// <summary>
+        /// Metodo que asigna la lista de estados del LR1
+        /// </summary>
+        /// <param name="listEdos"></param>
+        public void setListaEdos(List<EdoLR1> listEdos)
+        {
+            this.listaEdos = listEdos;
+        }
+        /// <summary>
+        /// Metodo que regresa la lista de estados del LR1
+        /// </summary>
+        /// <returns></returns>
+        public List<EdoLR1> getListaEdos()
+        {
+            return this.listaEdos;
+        }
+
+
         /// <summary>
         /// Verifica si un token es terminal o no 
         /// </summary>
@@ -162,10 +201,10 @@ namespace Compi
             return res;
         }
 
+        
+
         /// <summary>
-        /// Cada produccion se evalua para identificar los tokens Noterminales
-        /// y los Terminales y si es una produccion factorizada se crea una produccion 
-        /// por cada token nuevo
+        /// Evalua linea de texto para convertirla en producción
         /// </summary>
         /// <param name="produccion">Cadena de produccion</param>
         /// <returns></returns>
@@ -173,10 +212,10 @@ namespace Compi
         {
             bool res = true;
             string[] prod = null;
-            string cadIzq = "", cadDer= "";
+            string cadIzq = "", cadDer = "";
             int ind = 0;
 
-            //Partir produccion a partir de la ->
+            //Se busca el indice de los caracteres que parten la producción
             ind = produccion.IndexOf("->");
             if (ind == -1)
                 res = false;
@@ -184,69 +223,61 @@ namespace Compi
             {
                 cadIzq = produccion.Remove(ind);
                 cadDer = produccion.Remove(0, ind + 2);
+                cadIzq = cadIzq.Trim();
+      //          MatchCollection cad = patron.Matches(cadIzq);
+      //          if (cad.Count <= 0)
+                    res = false;
             }
             prod = cadDer.Split('|');
-            this.agregaProducciones(cadIzq,prod);
-            this.addNoTerminal(cadIzq,true,0);
+            this.agregaProducciones(cadIzq, prod);
+            this.addNoTerminal(cadIzq, true, 0);
             this.difTermYNTerm(prod);
             return res;
         }
 
+        /// <summary>
+        /// Método que analiza las partes de una producción y 
+        /// define cual es terminal y cual es no termianl
+        /// </summary>
+        /// <param name="prods"></param>
         public void difTermYNTerm(string[] prods)
         {
             int ind = 0;
             bool res = true;
             string aux;
 
-            foreach(string p in prods)
+            foreach (string p in prods)
             {
                 aux = p;
+                aux = aux.Trim();
                 ind = 0;
-                while(ind < aux.Length && res)
+                while (ind < aux.Length && res)
                 {
-                    switch(aux[ind])
+                    switch (aux[ind])
                     {
-                        case ' ':
-                            if (ind != 0)
-                                ind = this.addTerminal(aux);
-                            aux = aux.Remove(0, ind + 1);
-                            ind = 0;
-                        break;
                         case '<':
                             if (this.evaluaMenorYMayorQue(aux))
                             {
                                 ind = this.addNoTerminal(aux);
-                                aux = aux.Remove(0, ind+1);
+                                aux = aux.Remove(0, ind + 1);
                                 ind = 0;
                             }
-                            else
-                                res = false;
                         break;
+                        case '\\':
+                            ind = this.addTerminal(aux, 1);
+                            aux = aux.Remove(0, ind);
+                            ind = 0;
+                            break;
                         default:
-                            if (ind + 1 == aux.Length || aux[ind + 1] == '<')
-                            {
-                                if (ind + 1 == aux.Length)
-                                {
-                                    ind = this.addTerminal(aux);
-                                }
-                                else //(aux[ind + 1] == '<')
-                                {
-                                    ind = this.addTerminal(aux);
-                                    aux = aux.Remove(0, ind);
-                                    ind = 0;
-                                }
-                            }
-                            else
-                            {
-                                ind++;
-                            }
-                        break;
+                            ind = this.addTerminal(aux);
+                            aux = aux.Remove(0, ind);
+                            ind = 0;
+                            break;
                     }
                 }
                 this.idProd++;
             }
         }
-
 
         public void agregaProducciones(string cadIzq, string[] prods)
         { 
@@ -277,26 +308,15 @@ namespace Compi
             
         }
 
-        public int addTerminal(string prod)
+        public int addTerminal(string prod, int indiceUntil = 0)
         {
             int indTemp = 0;
-            bool flag = true;
             string term = "";
-    
-            while (indTemp < prod.Length && flag)
+
+            while (indTemp <= indiceUntil)
             {
-                switch (prod[indTemp])
-                {
-                    case '<':
-                    case ' ':
-                        flag = false;
-                        break;
-                }
-                if (flag)
-                {
-                    term += prod[indTemp];
-                    indTemp++;
-                }
+                term += prod[indTemp];
+                indTemp++;
             }
             this.setTerminal(term);
             this.setToken(term, this.idProd);
@@ -385,7 +405,6 @@ namespace Compi
             }
             return res;
         }
-
     }
 
 }

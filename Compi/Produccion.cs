@@ -88,6 +88,17 @@ namespace Compi
             return this.tokens;
         }
 
+        public string getTokensAsString()
+        {
+            string aux = "";
+            foreach(string s in this.tokens)
+            {
+                if(s != ".")
+                    aux += s;
+            }
+            return aux;
+        }
+        
         public string getTokenBusqueda()
         {
             return this.tokenBusqueda;
@@ -104,27 +115,39 @@ namespace Compi
         /// unTerminal, un contador de avance(.), un conjunto de terminales no terminales o epsilon
         /// y metodo de busqueda hacia adelante
         /// </summary>
-        public void produccionLR()
+        public string produccionLR()
         {
-            int punto = -1;
-            string betta = "";
+            List<string> listaAux = this.tokens; 
+            bool punto = false;
+            int indicePunto = -1, indiceT = 0;
+            int indiceBetta = -1;
             this.gamma.Clear();
+            string x = "";
+            
             foreach (string t in this.tokens)    //Si es de la forma A->alpha . X gamma ,tokenBusqueda
             {
                 if (t.CompareTo(".") == 0)
-                    punto = this.tokens.IndexOf(t);
-                //Si no es el primero y no es el ultimo 
-                if (punto > 0 && (punto+1) < this.tokens.Count() )
                 {
-                    // Se guarda betta
-                    if(betta != "")
-                        this.gamma.Add(t);
-                    //Si no existe betta
-                    else
-                        if(t != ".")
-                        betta = t;
-                }    
+                    indicePunto = indiceT;
+                    punto = true;
+                    if (indicePunto + 1 < this.tokens.Count())
+                    {
+                        indiceBetta = indicePunto + 1;
+                        x = listaAux[indiceBetta];
+                    }
+                }
+                else {
+                    if (punto) {
+                        if (indicePunto + 2 < this.tokens.Count()  && indiceBetta < indiceT && indiceBetta != -1)
+                        {
+                            if (indiceBetta < indicePunto + 2)
+                                this.gamma.Add(t);
+                        }
+                    }
+                } 
+                indiceT++;
             }
+            return x;
         }
 
 
@@ -158,6 +181,7 @@ namespace Compi
                 this.setNuevoToken(t);
             this.setTokenBusqueda(vieja.getTokenBusqueda());
         }
+        /// Volver a penasar este metodo buen metodo mala implementacion
         /// <summary>
         /// Dice si la produccion indica una accion de desplazamiento 
         /// o de reduccion segun sea el caso 
@@ -189,7 +213,6 @@ namespace Compi
                 else   //Accion Reducir
                     res = 2;
             }
-
             return res;
         }
 
