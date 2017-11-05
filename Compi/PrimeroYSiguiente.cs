@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Compi
 {
+    //Clase a borrar
     class PrimeroYSiguiente
     {
         /// <summary>
