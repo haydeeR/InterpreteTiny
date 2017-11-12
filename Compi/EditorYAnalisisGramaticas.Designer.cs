@@ -37,8 +37,7 @@
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.analizaCodigo = new System.Windows.Forms.ToolStripButton();
             this.btnSiguienteYPrim = new System.Windows.Forms.ToolStripDropDownButton();
-            this.primeroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.siguienteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.conjuntoPrimeroYSiguienteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripDropDownButton3 = new System.Windows.Forms.ToolStripDropDownButton();
             this.lR1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnSalir = new System.Windows.Forms.ToolStripButton();
@@ -62,7 +61,6 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.btn_getEnterString = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.conjuntoPrimeroYSiguienteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -147,9 +145,7 @@
             // 
             this.btnSiguienteYPrim.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btnSiguienteYPrim.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.conjuntoPrimeroYSiguienteToolStripMenuItem,
-            this.primeroToolStripMenuItem,
-            this.siguienteToolStripMenuItem});
+            this.conjuntoPrimeroYSiguienteToolStripMenuItem});
             this.btnSiguienteYPrim.Enabled = false;
             this.btnSiguienteYPrim.Image = ((System.Drawing.Image)(resources.GetObject("btnSiguienteYPrim.Image")));
             this.btnSiguienteYPrim.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
@@ -158,19 +154,12 @@
             this.btnSiguienteYPrim.Size = new System.Drawing.Size(61, 52);
             this.btnSiguienteYPrim.Text = "Conjunto Primero Y Siguiente";
             // 
-            // primeroToolStripMenuItem
+            // conjuntoPrimeroYSiguienteToolStripMenuItem
             // 
-            this.primeroToolStripMenuItem.Name = "primeroToolStripMenuItem";
-            this.primeroToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
-            this.primeroToolStripMenuItem.Text = "Conjunto &primero";
-            this.primeroToolStripMenuItem.Click += new System.EventHandler(this.btnFirstAndNext_Click);
-            // 
-            // siguienteToolStripMenuItem
-            // 
-            this.siguienteToolStripMenuItem.Name = "siguienteToolStripMenuItem";
-            this.siguienteToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
-            this.siguienteToolStripMenuItem.Text = "Conjunto &Siguiente";
-            this.siguienteToolStripMenuItem.Click += new System.EventHandler(this.btnSiguiente_Click);
+            this.conjuntoPrimeroYSiguienteToolStripMenuItem.Name = "conjuntoPrimeroYSiguienteToolStripMenuItem";
+            this.conjuntoPrimeroYSiguienteToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.conjuntoPrimeroYSiguienteToolStripMenuItem.Text = "Conjunto primero y siguiente";
+            this.conjuntoPrimeroYSiguienteToolStripMenuItem.Click += new System.EventHandler(this.conjuntoPrimeroYSiguienteToolStripMenuItem_Click);
             // 
             // toolStripDropDownButton3
             // 
@@ -189,7 +178,7 @@
             // lR1ToolStripMenuItem
             // 
             this.lR1ToolStripMenuItem.Name = "lR1ToolStripMenuItem";
-            this.lR1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.lR1ToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
             this.lR1ToolStripMenuItem.Text = "LR1";
             this.lR1ToolStripMenuItem.Click += new System.EventHandler(this.lR1ToolStripMenuItem_Click);
             // 
@@ -400,13 +389,6 @@
             this.textBox2.Size = new System.Drawing.Size(1111, 13);
             this.textBox2.TabIndex = 19;
             // 
-            // conjuntoPrimeroYSiguienteToolStripMenuItem
-            // 
-            this.conjuntoPrimeroYSiguienteToolStripMenuItem.Name = "conjuntoPrimeroYSiguienteToolStripMenuItem";
-            this.conjuntoPrimeroYSiguienteToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
-            this.conjuntoPrimeroYSiguienteToolStripMenuItem.Text = "Conjunto primero y siguiente";
-            this.conjuntoPrimeroYSiguienteToolStripMenuItem.Click += new System.EventHandler(this.conjuntoPrimeroYSiguienteToolStripMenuItem_Click);
-            // 
             // editorGramatica
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -456,8 +438,6 @@
         private System.Windows.Forms.ToolStripMenuItem guardarGramaticaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem salirToolStripMenuItem;
         private System.Windows.Forms.ToolStripDropDownButton btnSiguienteYPrim;
-        private System.Windows.Forms.ToolStripMenuItem primeroToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem siguienteToolStripMenuItem;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton3;
         private System.Windows.Forms.ToolStripMenuItem lR1ToolStripMenuItem;
         private System.Windows.Forms.Label label1;

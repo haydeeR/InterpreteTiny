@@ -268,42 +268,7 @@ namespace Compi
             for (int i = pila.Count() - 1; i >= ind; i--)
                 pila.Remove(pila[i]);
         }
-
-        private void btnFirstAndNext_Click(object sender, EventArgs e)
-        {
-            PrimeroYSiguiente firstAndNext;
-            List<string> conjuntoPrimero;
-            if (this.g != null)
-            {
-                firstAndNext = new PrimeroYSiguiente(this.g.getTokensXProd(), this.g.getNTerminal(), this.g.getTerminales());
-                conjuntoPrimero = firstAndNext.getConjuntoPrimero();
-                PrimeroYSiguienteModal FirstAndNextModal = new PrimeroYSiguienteModal();
-                FirstAndNextModal.muestraConjunto(conjuntoPrimero,null);
-                FirstAndNextModal.Show();
-            }
-            else
-                MessageBox.Show("Antes de solicitar el conjunto primero debe crear o abrir una gramatica");
-        }
-
-
-
-        private void btnSiguiente_Click(object sender, EventArgs e)
-        {
-            PrimeroYSiguiente firstAndNext;
-            List<string> conjuntoSiguiente;
-            if (this.g != null)
-            {
-                firstAndNext = new PrimeroYSiguiente(this.g.getTokensXProd(), this.g.getNTerminal(), this.g.getTerminales());
-                conjuntoSiguiente = firstAndNext.getConjuntoSiguiente();
-                PrimeroYSiguienteModal FirstAndNextModal = new PrimeroYSiguienteModal();
-                FirstAndNextModal.muestraConjunto(null,conjuntoSiguiente);
-                FirstAndNextModal.Show();
-            }
-            else
-                MessageBox.Show("Antes de solicitar el conjunto siguinte debe crear o abrir una gramatica");
-        }
-
-
+        
         private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
@@ -313,8 +278,8 @@ namespace Compi
         {
             if (g != null && g.getNTerminal() != null)
             {
-                LR1 lr = new LR1(g, this);
-                lr.llenarTablaLR1();
+                g.constructorLR1(this);
+                g.llenarTablaLR1();
                 this.dibujaAFD();
             }
             else
@@ -625,14 +590,12 @@ namespace Compi
 
         private void conjuntoPrimeroYSiguienteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PrimeroYSiguiente firstAndNext;
             List<string> conjuntoPrimero;
             List<string> conjuntoSiguiente;
             if (this.g != null)
             {
-                firstAndNext = new PrimeroYSiguiente(this.g.getTokensXProd(), this.g.getNTerminal(), this.g.getTerminales());
-                conjuntoPrimero = firstAndNext.getConjuntoPrimero();
-                conjuntoSiguiente = firstAndNext.getConjuntoSiguiente();
+                conjuntoPrimero = g.getConjuntoPrimero();
+                conjuntoSiguiente = g.getConjuntoSiguiente();
                 PrimeroYSiguienteModal FirstAndNextModal = new PrimeroYSiguienteModal();
                 FirstAndNextModal.muestraConjunto(conjuntoPrimero, conjuntoSiguiente);
                 FirstAndNextModal.Show();

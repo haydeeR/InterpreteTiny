@@ -60,14 +60,12 @@
     <Compile Include="EditorYAnalisisGramaticas.Designer.cs">
       <DependentUpon>EditorYAnalisisGramaticas.cs</DependentUpon>
     </Compile>
-    <Compile Include="LR1.cs" />
     <Compile Include="NuevaGramatica.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NuevaGramatica.Designer.cs">
       <DependentUpon>NuevaGramatica.cs</DependentUpon>
     </Compile>
-    <Compile Include="PrimeroYSiguiente.cs" />
     <Compile Include="PrimeroYSiguienteModal.cs">
       <SubType>Form</SubType>
     </Compile>

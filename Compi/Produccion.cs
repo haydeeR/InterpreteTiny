@@ -150,7 +150,11 @@ namespace Compi
             return x;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="indiceIndicador"></param>
+        /// <returns></returns>
         public Produccion avanzaIndicadorDeProceso(int indiceIndicador)
         {
             if (this.getTokens()[0] != "." && indiceIndicador > 0)
@@ -165,6 +169,7 @@ namespace Compi
             }
             return this;
         }
+        
         /// <summary>
         /// Copia los datos de la produccion vieja a la nueva
         /// </summary>
@@ -181,6 +186,7 @@ namespace Compi
                 this.setNuevoToken(t);
             this.setTokenBusqueda(vieja.getTokenBusqueda());
         }
+
         /// Volver a penasar este metodo buen metodo mala implementacion
         /// <summary>
         /// Dice si la produccion indica una accion de desplazamiento 
