@@ -75,6 +75,7 @@
     <Compile Include="Produccion.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SentenceDefinition.cs" />
     <Compile Include="tabla_de_simbolos.cs" />
     <Compile Include="Tabla_Errores.cs" />
     <Compile Include="TE.cs" />
