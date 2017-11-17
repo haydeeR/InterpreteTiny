@@ -27,12 +27,12 @@ namespace Compi
         private void AgregarPatrones() {
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.Id, @"^_[a-zA-Z0-9]+"));
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.Cadena, "^\"[a-zA-Z0-9]+\""));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Num, @""));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.KeyWord, @""));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorComp, @""));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorSuma, @""));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorMult, @""));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorPote, @""));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Num, @"^\d+"));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.KeyWord, @"^if|then|else|end|read|write|print|repeat|until|:=|Var|var"));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorComp, @"^==|<|>|"));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorSuma, @"^\+|-"));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorMult, @"^\*|/"));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorPote, @"^\^"));
         }
     }
 
