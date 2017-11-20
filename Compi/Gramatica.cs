@@ -59,12 +59,6 @@ namespace Compi
         /// </summary>
         List<string> prod = null;
         /// <summary>
-        /// Lista de estados del metodo LR1 donde el Estado contiene 
-        /// el indice del estado y la lista de producciones del estado
-        /// y tambien un atributo tokenDeLlegada 
-        /// </summary>
-        List<EdoLR1> listEdos = null;
-        /// <summary>
         /// Contador de estados que se estan realizando en el metodo LR1
         /// </summary>
         private int indEdo = 0;
@@ -193,10 +187,10 @@ namespace Compi
         /// <summary>
         /// Metodo que asigna la lista de estados del LR1
         /// </summary>
-        /// <param name="listEdos"></param>
-        public void setListaEdos(List<EdoLR1> listEdos)
+        /// <param name="listaEdos"></param>
+        public void setListaEdos(List<EdoLR1> listaEdos)
         {
-            this.listaEdos = listEdos;
+            this.listaEdos = listaEdos;
         }
         /// <summary>
         /// Metodo que regresa la lista de estados del LR1
@@ -311,21 +305,30 @@ namespace Compi
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cadIzq"></param>
+        /// <param name="prods"></param>
         public void agregaProducciones(string cadIzq, string[] prods)
         {
-            int i = 0;
-            for (i = 0; i < prods.Count(); i++)
+            for (int i = 0; i < prods.Count(); i++)
             {
                 addProduccion(cadIzq, prods[i]);
                 this.tokensXProd.Add(new Produccion(cadIzq));
             }
         }
 
+        /// <summary>
+        /// Se agrega una nueva produccion a la gramatica 
+        /// se incrementa la prouduccion con flecha
+        /// </summary>
+        /// <param name="cadIzq"></param>
+        /// <param name="cadDer"></param>
         public void addProduccion(string cadIzq, string cadDer)
         {
             this.setProduccion(cadIzq + "->" + cadDer);
         }
-
 
         /// <summary>
         /// Metodo que es mandado llamar desde el LR1 cuando se detecta que la gramatica no 
@@ -337,9 +340,14 @@ namespace Compi
         public void addProduccionAumentada(string cadIzq, string cadDer)
         {
             this.setProduccionAumentada(cadIzq, cadDer);
-
         }
 
+        /// <summary>
+        /// Se agreta un simbolo terminal a la produccion
+        /// </summary>
+        /// <param name="prod"></param>
+        /// <param name="indiceUntil"></param>
+        /// <returns></returns>
         public int addTerminal(string prod, int indiceUntil = 0)
         {
             int indTemp = 0;
@@ -355,6 +363,13 @@ namespace Compi
             return indTemp;
         }
 
+        /// <summary>
+        /// Se agrega un simbolo no terminal a la produccion
+        /// </summary>
+        /// <param name="prod"></param>
+        /// <param name="prim"></param>
+        /// <param name="indiceAux"></param>
+        /// <returns></returns>
         public int addNoTerminal(string prod, bool prim = false, int indiceAux = -1)
         {
             int indTemp = 1;
@@ -383,6 +398,12 @@ namespace Compi
             return indTemp;
         }
 
+        /// <summary>
+        /// Metodo que verifica si el numero de signos mayor y menor
+        /// sean correctos
+        /// </summary>
+        /// <param name="cad"></param>
+        /// <returns></returns>
         public bool evaluaMenorYMayorQue(string cad)
         {
             bool res = false;
@@ -391,24 +412,28 @@ namespace Compi
             return res;
         }
 
+        /// <summary>
+        /// Metodo que verifica si el numero de signos menor sean correctos
+        /// </summary>
+        /// <param name="prod"></param>
+        /// <returns></returns>
         public bool menorMayorQueCorrectos(string prod)
         {
             bool res = false;
-            int i = 0;
             int valAscci;
             int cont = 0;
 
-            for (i = 0; i < prod.Length && cont >= 0; i++)
+            for (int i = 0; i < prod.Length && cont >= 0; i++)
             {
                 valAscci = (int)prod[i];
                 switch (valAscci)
                 {
                     case '<':
                         cont++;
-                        break;
+                    break;
                     case '>':
                         cont--;
-                        break;
+                    break;
                 }
             }
             if (cont == 0) //Todo salio bien
@@ -422,9 +447,8 @@ namespace Compi
         {
             bool res = false;
             int valAscci = 0;
-            int i = 0;
-
-            for (i = 0; i < prod.Length && !res; i++)
+            
+            for (int i = 0; i < prod.Length && !res; i++)
             {
                 valAscci = (int)prod[i];
                 switch (valAscci)
@@ -432,12 +456,16 @@ namespace Compi
                     case '<':
                         if (i + 1 >= prod.Length || prod[i + 1] == '>')
                             res = true; //Parentesis vacios
-                        break;
+                    break;
                 }
             }
             return res;
         }
 
+        /// <summary>
+        /// Metodo que se encarga de reservar la  memoria para la 
+        /// estructura de listas del conjunto primero
+        /// </summary>
         public void creaConjuntoPrimero()
         {
             this.conjuntoPrimero = new List<List<String>>();
@@ -657,7 +685,6 @@ namespace Compi
         }
         
         
-
         /// <summary>
         /// Constructor del entorno del LR1
         /// </summary>
@@ -672,7 +699,6 @@ namespace Compi
             // Metodo LR1 analisis sintactico ascendente
             this.analisisLR1();
             this.tablaLR1 = new List<List<string>>();
-            this.regresaEdos();
         }
 
         /// <summary>
@@ -692,6 +718,33 @@ namespace Compi
             this.tokensXProd[indProd].setTokenBusqueda("$");
             this.inicializa();
         }
+        
+        /// <summary>
+        /// Este metodo inserta el contador de secuencia de la produccion
+        /// como un punto . Antes de empezar cualquier recorrido esto convierte 
+        /// a todas estas producciones en elementos iniciales del metodo LR1
+        /// </summary>
+        public void inicializa()
+        {
+            int inicial = 0;
+            foreach (Produccion p in this.tokensXProd)
+            {
+                p.setNuevoToken(".", inicial);
+            }
+        }
+
+        /// <summary>
+        /// Metodo que le asigna un id a cada una de las producciones 
+        /// </summary>
+        public void enumeraProducciones()
+        {
+            int i = 0;
+            foreach (Produccion p in this.tokensXProd)
+            {
+                p.setId(i);
+                i++;
+            }
+        }
 
         /// <summary>
         /// Metodo para agregar el token de busqueda de una produccion a otra
@@ -705,6 +758,7 @@ namespace Compi
             string primera = this.getPrimera(p, gamma, a);
             p.setTokenBusqueda(primera);
         }
+        
         /// <summary>
         /// Metodo para obtener el conjunto primero de un token 
         /// El conjunto primero del token de busqueda hacia adelante es el 
@@ -746,19 +800,19 @@ namespace Compi
         }
 
         /// <summary>
-        /// Analisis LR1 Rutina principal para construir el conjunto de elementos del LR1
+        /// Analisis LR1 Rutina principal para construir 
+        /// el conjunto de elementos del analisis LR1
         /// </summary>
         public void analisisLR1()
         {
             Produccion prodAumentada = this.tokensXProd[0];
             EdoLR1 nEdo = new EdoLR1();
-            List<EdoLR1> edosRecorridos = new List<EdoLR1>();
 
-            this.listEdos = new List<EdoLR1>();
+            this.listaEdos = new List<EdoLR1>();
             nEdo.setId(this.indEdo);
             nEdo.setProduccion(prodAumentada);
             nEdo.setTokenDeLlegada("Inicio");
-            this.listEdos.Add(this.cerradura(nEdo));
+            this.listaEdos.Add(this.cerradura(nEdo));
             genLR1();
         }
 
@@ -769,14 +823,14 @@ namespace Compi
         {
             EdoLR1 edo = null, nuevo = null, edoSiguiente = null;
             EdoLR1 aux = null;
-            int maxEdos = this.listEdos.Count();
+            int maxEdos = this.listaEdos.Count();
             int indToken = 0;
             string t = "";
             Boolean punto = false;
 
             for (int i = 0; i < maxEdos; i++)
             {
-                edo = this.listEdos[i];
+                edo = this.listaEdos[i];
                 foreach (Produccion p in edo.getProducciones())
                 {
                     punto = false;
@@ -806,7 +860,7 @@ namespace Compi
                                 {
                                     nuevo.setId(++this.indEdo);
                                     edo.setArista(nuevo, p);
-                                    this.listEdos.Add(nuevo);
+                                    this.listaEdos.Add(nuevo);
                                 }
                                 punto = false;
                             }
@@ -815,10 +869,10 @@ namespace Compi
                     }
                     indToken = 0;
                 }
-                maxEdos = this.listEdos.Count();
+                maxEdos = this.listaEdos.Count();
                 if (i + 1 < maxEdos)
                 {
-                    edoSiguiente = this.listEdos[i + 1];
+                    edoSiguiente = this.listaEdos[i + 1];
                     cerradura(edoSiguiente);
                 }
             }
@@ -879,7 +933,7 @@ namespace Compi
         public EdoLR1 existe(EdoLR1 nuevo)
         {
             EdoLR1 res = null;
-            foreach (EdoLR1 e in listEdos)
+            foreach (EdoLR1 e in listaEdos)
             {
                 if (nuevo.getTokenDeLlegada() == e.getTokenDeLlegada())
                     if (this.produccionesIguales(nuevo.getProducciones()[0], e.getProducciones()[0]))
@@ -910,7 +964,7 @@ namespace Compi
             return res;
         }
         /// <summary>
-        /// Diferncia entre dos listas de estados 
+        /// Diferencia entre dos listas de estados 
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -977,6 +1031,13 @@ namespace Compi
             }
             return res;
         }
+
+        /// <summary>
+        /// Metodo que hace una copia  de la listas de una produccion 
+        /// anterior a una nueva
+        /// </summary>
+        /// <param name="anterior"></param>
+        /// <param name="nueva"></param>
         public void igualaListas(List<Produccion> anterior, List<Produccion> nueva)
         {
             anterior.Clear();
@@ -1017,44 +1078,7 @@ namespace Compi
                 }
             }
         }
-
-        /// <summary>
-        /// Este metodo inserta el contador de secuencia de la produccion
-        /// como un punto . Antes de empezar cualquier recorrido esto convierte 
-        /// a todas estas producciones en elementos iniciales del metodo LR1
-        /// </summary>
-        public void inicializa()
-        {
-            int inicial = 0;
-            foreach (Produccion p in this.tokensXProd)
-            {
-                p.setNuevoToken(".", inicial);
-            }
-            this.switchProd();
-            //this.padre.muestraProducciones(prod);
-        }
-
-        /// <summary>
-        /// Metodo para pasar de la lista de producciones por tokens
-        /// a una lista de cadenas para mostrarla en pantalla
-        /// </summary>
-        public void switchProd()
-        {
-            string nuevaP = "";
-            string tokens = "";
-            foreach (Produccion p in this.tokensXProd)
-            {
-                nuevaP = tokens = "";
-                foreach (string s in p.getTokens())
-                {
-                    tokens += s;
-                }
-                nuevaP = p.getNTerminal() + "->" + tokens + "," + p.getTokenBusqueda();
-                this.prod.Add(nuevaP);
-            }
-        }
-
-
+        
         public int clasificaAccion(EdoLR1 edo)
         {
             int res = -1;
@@ -1064,14 +1088,13 @@ namespace Compi
             
             return res;
         }
-
-
+        
         public void llenarTablaLR1()
         {
             EdoLR1 edoAux;
             string tokenAux = "";
 
-            foreach (EdoLR1 e in this.listEdos)
+            foreach (EdoLR1 e in this.listaEdos)
             {
                 foreach (AristaLR1 a in e.getListArista())
                 {
@@ -1097,21 +1120,6 @@ namespace Compi
                 }
             }
             padre.muestraTermYNTerm();
-        }
-
-        public void enumeraProducciones()
-        {
-            int i = 0;
-            foreach (Produccion p in this.tokensXProd)
-            {
-                p.setId(i);
-                i++;
-            }
-        }
-
-        public void regresaEdos()
-        {
-            this.setListaEdos(this.listEdos);
         }
     }
 }

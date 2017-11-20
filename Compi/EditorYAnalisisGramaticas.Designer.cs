@@ -413,7 +413,6 @@
             this.Name = "editorGramatica";
             this.Text = "Editor y Analizador de gramaticas";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.editorGramatica_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabControl2.ResumeLayout(false);
