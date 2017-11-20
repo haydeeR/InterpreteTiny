@@ -122,6 +122,7 @@ namespace Compi
                 this.g = new Gramatica(fileName);
             }
         }
+
         /// <summary>
         /// Método que analiza lexicamente la gramatica
         /// </summary>
@@ -582,12 +583,12 @@ namespace Compi
                 this.g = new Gramatica(fileName);
             }
         }
-
-        private void editorGramatica_Load(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// Opcion del menú para visualizar la ventana modal de los 
+        /// conjuntos primero y siguiente
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void conjuntoPrimeroYSiguienteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<string> conjuntoPrimero;
