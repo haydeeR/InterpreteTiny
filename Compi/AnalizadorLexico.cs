@@ -15,6 +15,9 @@ namespace Compi
         Regex patron = null;
         List<TokenDefinition> tokenDefinitions;
         List<SentenceDefinition> sentenceDefinitions;
+        string id, cadena, numero, keywords, opComp, opSuma, opMult, opPote, abreParent, cierraParent;
+        string identificadores;
+
 
 
         public AnalizadorLexico()
@@ -23,43 +26,91 @@ namespace Compi
             this.tokenDefinitions = new List<TokenDefinition>();
             this.sentenceDefinitions = new List<SentenceDefinition>();
 
+            this.id = @"_[a-zA-Z0-9]+";
+            this.cadena = "\\\"[a-zA-Z0-9:;,\\.\\[\\]\\*\\+\\?¿¡!#%&/~]+\\\"";
+            this.numero = @"\d+";
+            this.keywords = @"(if|then|else|end|read|write|print|repeat|until|:=|Var|var)";
+            this.opComp = @"(==|<|>)";
+            this.opSuma = @"(\+|-)";
+            this.opMult = @"(\*|/)";
+            this.opPote = @"\^";
+            this.abreParent = @"\(";
+            this.cierraParent = @"\)";
+            this.identificadores = @"(\s)*" + this.id + @"(\s)*(,(\s)*" + this.id + @"(\s)*)*";
+
             this.agregaTokenDefinitions();
             this.agregaSentenceDefinitions();
         }
 
 
-        private void agregaTokenDefinitions()
+        private void agregaSentenceDefinitions()
         {
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Id, @"^_[a-zA-Z0-9]+"));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Cadena, "^\"[a-zA-Z0-9]+\""));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Numero, @"^\d+"));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.KeyWord, @"^if|then|else|end|read|write|print|repeat|until|:=|Var|var"));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorComp, @"^==|<|>|"));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorSuma, @"^\+|-"));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorMult, @"^\*|/"));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorPote, @"^\^"));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.AbreParent, @"^\("));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.CierraParent, @"^\)"));
+            string declarePattern = @"^(Var|var)\{(int|float)(\s)+" + this.id + @"(\s)*(,(\s)*(" + this.id + @"))*\}";
+            string readPattern = @"^read\(" + this.id + @"\)";
+            string printPattern = "^" + this.cadena + @"," + this.identificadores + "|" + this.cadena + "|" + this.identificadores;
+            string writePattern = @"^write\((\s)*" + printPattern + @"(\s)*\)";
+            string assignPattern = "^" + this.id + @"(\s)*:=(\s)*" + "";
 
+
+            string factor = @"(" + this.numero + "|" + this.id + ")";
+            string potenciaAux = @"(" + factor + @"(\s)*\^(\s)*" + factor + ")";
+            string potencia = potenciaAux + @"|" + factor;
+            string termAux = @"(" + potencia + @"(\s)*" + this.opMult + @"(\s)*" + potencia + @")";
+            string term = @"" + termAux + @"|" + potencia;
+
+            string expSimpleAux = @"(" + term + @"(\s)*" + this.opSuma + @"(\s)*" + term + @")";
+            string expSimple = @"(" + expSimpleAux + "|" + term + ")";
+            string exp = @"(" + expSimple + @"(\s)*" + this.opComp + @"(\s)*" + expSimple + @")|" + expSimple;
+
+
+            string ifPattern = @"^if\(" + exp + @"\){";
+            string elseIfPattern = @"else{";
+            string endIfPattern = "}endif;";
+            string repeatStart = "repeat{";
+            string repeatEnd = @"}until\(" + exp + @"\)";
+
+            string simpleIfSentence = "";
+            string complexIfSentence = "";
+            string repeatSentence = "";
+            string assignSentence = "";
+            string readSentence = "";
+            string writeSentence = "";
+            string declareSentence = "";
+
+            string sentencia = (@"^" + simpleIfSentence + @"|" + complexIfSentence + @"|" + repeatSentence + @"|" + 
+                assignSentence + @"|" + readSentence + @"|" + writeSentence + @"|" + declareSentence);
+
+            string secuenciaSentenciaAux = @"" + sentencia + @";" + sentencia + @"";
+            string secuenciaSentencia = @"" + secuenciaSentenciaAux + @"|" + sentencia;
+             
+
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaAssign, assignPattern));
+
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaSimpleIf, ifPattern));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaElse, elseIfPattern));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaEndIf, endIfPattern));
+
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaRepeatStart, repeatStart));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaRepeatEnd, repeatEnd));
+
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaRead, readPattern));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaWrite, writePattern));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaDeclara, declarePattern));
         }
 
 
-        private void agregaSentenceDefinitions()
+        private void agregaTokenDefinitions()
         {
-            string assignPattern = @"(Var|var)\{(int|float) _[A-Za-z0-9]+(\s)*(,(\s)*_[A-Za-z0-9]+)+\}";
-            string exp = "";
-            string exp_simple = "";
-            string term = "";
-            string potencia = "";
-            string factor = @"^((<exp>)|\d+|_[A-Za-z0-9]+)";
-
-
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaAssign, assignPattern));
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaSimpleIf, @"if()"));
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaAssign, @""));
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaAssign, @""));
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaAssign, @""));
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaAssign, @""));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Id, @"^" + this.id));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Cadena, @"^" + this.cadena));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Numero, @"^" + this.numero));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.KeyWord, @"^" + this.keywords));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorComp, @"^" + this.opComp));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorSuma, @"^" + this.opSuma));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorMult, @"^" + this.opMult));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorPote, @"^" + this.opPote));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.AbreParent, @"^" + this.abreParent));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.CierraParent, @"^" + this.cierraParent));
         }
     }
 
@@ -69,8 +120,10 @@ namespace Compi
     public enum SentenceType
     {
         SentenciaSimpleIf,
-        SentenciaComplexIf,
-        SentenciaRepeat,
+        SentenciaElse,
+        SentenciaEndIf,
+        SentenciaRepeatStart,
+        SentenciaRepeatEnd,
         SentenciaAssign,
         SentenciaRead,
         SentenciaWrite,
