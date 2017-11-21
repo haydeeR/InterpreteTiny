@@ -40,6 +40,8 @@ namespace Compi
 
         private ListViewItem.ListViewSubItem lvSubItem = null;
 
+        private string fullFileName;
+
         public editorGramatica(ini i)
         {
             this.formini = i;
@@ -450,7 +452,14 @@ namespace Compi
         private void buttonCadenaEntrada_Click(object sender, EventArgs e)
         {
             //this.llenarTablaAcciones(this.PagCodigo.Text);
+
         }
+
+
+        private void tokenizar() {
+
+        }
+
 
         private void llenarTablaAcciones(string cadena)
         {

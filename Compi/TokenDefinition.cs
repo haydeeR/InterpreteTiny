@@ -20,7 +20,25 @@ namespace Compi
 
         public TokenMatch Match(string inputString)
         {
-            return null;
+            var match = mRegex.Match(inputString);
+
+            if (match.Success)
+            {
+                string remainingText = string.Empty;
+                if (match.Length != inputString.Length)
+                    remainingText = inputString.Substring(match.Length);
+
+                return new TokenMatch() {
+                    isMatch = true,
+                    RemainingText = remainingText,
+                    mTokenType = tokenType,
+                    Value = match.Value
+                };
+            }
+            else
+            {
+                return new TokenMatch() { isMatch = false };
+            }
         }
     }
 
@@ -31,5 +49,29 @@ namespace Compi
         public TokenType mTokenType { get; set; }
         public string Value { get; set; }
         public string RemainingText { get; set; }
+    }
+
+
+    public class DslToken
+    {
+        public DslToken(TokenType tokenType)
+        {
+            TokenType = tokenType;
+            Value = string.Empty;
+        }
+
+        public DslToken(TokenType tokenType, string value)
+        {
+            TokenType = tokenType;
+            Value = value;
+        }
+
+        public TokenType TokenType { get; set; }
+        public string Value { get; set; }
+
+        public DslToken Clone()
+        {
+            return new DslToken(TokenType, Value);
+        }
     }
 }

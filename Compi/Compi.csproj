@@ -80,6 +80,7 @@
     <Compile Include="Tabla_Errores.cs" />
     <Compile Include="TE.cs" />
     <Compile Include="Token.cs" />
+    <Compile Include="TokenDefinition.cs" />
     <Compile Include="TS.cs" />
     <EmbeddedResource Include="EditorYAnalisisGramaticas.resx">
       <DependentUpon>EditorYAnalisisGramaticas.cs</DependentUpon>

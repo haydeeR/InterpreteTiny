@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace Compi
 {
@@ -69,20 +70,20 @@ namespace Compi
             string repeatStart = "repeat{";
             string repeatEnd = @"}until\(" + exp + @"\)";
 
-            string simpleIfSentence = "";
-            string complexIfSentence = "";
-            string repeatSentence = "";
-            string assignSentence = "";
-            string readSentence = "";
-            string writeSentence = "";
-            string declareSentence = "";
+            //string simpleIfSentence = "";
+            //string complexIfSentence = "";
+            //string repeatSentence = "";
+            //string assignSentence = "";
+            //string readSentence = "";
+            //string writeSentence = "";
+            //string declareSentence = "";
 
-            string sentencia = (@"^" + simpleIfSentence + @"|" + complexIfSentence + @"|" + repeatSentence + @"|" + 
-                assignSentence + @"|" + readSentence + @"|" + writeSentence + @"|" + declareSentence);
+            //string sentencia = (@"^" + simpleIfSentence + @"|" + complexIfSentence + @"|" + repeatSentence + @"|" + 
+            //    assignSentence + @"|" + readSentence + @"|" + writeSentence + @"|" + declareSentence);
 
-            string secuenciaSentenciaAux = @"" + sentencia + @";" + sentencia + @"";
-            string secuenciaSentencia = @"" + secuenciaSentenciaAux + @"|" + sentencia;
-             
+            //string secuenciaSentenciaAux = @"" + sentencia + @";" + sentencia + @"";
+            //string secuenciaSentencia = @"" + secuenciaSentenciaAux + @"|" + sentencia;
+
 
             this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaAssign, assignPattern));
 
@@ -112,6 +113,73 @@ namespace Compi
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.AbreParent, @"^" + this.abreParent));
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.CierraParent, @"^" + this.cierraParent));
         }
+
+        public List<DslToken> getTokens(string line)
+        {
+            List<DslToken> tokens = new List<DslToken>();
+            string remainingText = line.Trim();
+
+            while (!string.IsNullOrWhiteSpace(remainingText))
+            {
+                var match = FindMatch(remainingText);
+                if (match.isMatch)
+                {
+                    tokens.Add(new DslToken(match.mTokenType, match.Value));
+                    remainingText = match.RemainingText;
+                }
+                else
+                {
+                    remainingText = remainingText.Substring(1);
+                }
+            }
+
+            //tokens.Add(new DslToken(TokenType.));
+
+            return tokens;
+        }
+
+
+        public List<DslToken> tokeniza(string fileName)
+        {
+            List<DslToken> tokens = new List<DslToken>();
+
+            try
+            {
+                if (File.Exists(fileName))
+                {
+                    using (StreamReader sr = new StreamReader(fileName))
+                    {
+                        while (sr.Peek() >= 0)
+                        {
+                            tokens.AddRange(getTokens(sr.ReadLine()));
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+
+            return tokens;
+        }
+
+
+
+        private TokenMatch FindMatch(string textLine)
+        {
+            foreach (var tokenDefinition in this.tokenDefinitions)
+            {
+                var match = tokenDefinition.Match(textLine);
+                if (match.isMatch)
+                    return match;
+            }
+
+            return new TokenMatch() { isMatch = false };
+        }
+
+
+
     }
 
     /// <summary>
