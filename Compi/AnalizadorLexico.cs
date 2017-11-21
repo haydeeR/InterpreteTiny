@@ -46,11 +46,11 @@ namespace Compi
 
         private void agregaSentenceDefinitions()
         {
-            string declarePattern = @"^(Var|var)\{(int|float)(\s)+" + this.id + @"(\s)*(,(\s)*(" + this.id + @"))*\}";
-            string readPattern = @"^read\(" + this.id + @"\)";
+            string declarePattern = @"^(Var|var)\{(int|float)(\s)+" + this.id + @"(\s)*(,(\s)*(" + this.id + @"))*\};?";
+            string readPattern = @"^read\(" + this.id + @"\);?";
             string printPattern = "^" + this.cadena + @"," + this.identificadores + "|" + this.cadena + "|" + this.identificadores;
-            string writePattern = @"^write\((\s)*" + printPattern + @"(\s)*\)";
-            string assignPattern = "^" + this.id + @"(\s)*:=(\s)*" + "";
+            string writePattern = @"^write\((\s)*" + printPattern + @"(\s)*\);?";
+            string assignPattern = "^" + this.id + @"(\s)*:=(\s)*" + ";?";
 
 
             string factor = @"(" + this.numero + "|" + this.id + ")";
@@ -65,10 +65,10 @@ namespace Compi
 
 
             string ifPattern = @"^if\(" + exp + @"\){";
-            string elseIfPattern = @"else{";
-            string endIfPattern = "}endif;";
-            string repeatStart = "repeat{";
-            string repeatEnd = @"}until\(" + exp + @"\)";
+            string elseIfPattern = @"^else{";
+            string endIfPattern = "^}endif;?";
+            string repeatStart = "^repeat{";
+            string repeatEnd = @"^}until\(" + exp + @"\);?";
 
             //string simpleIfSentence = "";
             //string complexIfSentence = "";
@@ -114,6 +114,38 @@ namespace Compi
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.CierraParent, @"^" + this.cierraParent));
         }
 
+
+        public List<DslToken> tokeniza(string fileName)
+        {
+            List<DslToken> tokens = new List<DslToken>();
+            List<DslSentence> sentences = new List<DslSentence>();
+            string line;
+
+            try
+            {
+                if (File.Exists(fileName))
+                {
+                    using (StreamReader sr = new StreamReader(fileName))
+                    {
+                        while (sr.Peek() >= 0)
+                        {
+                            line = sr.ReadLine();
+                            //tokens.AddRange(getTokens(line));
+                            sentences.AddRange(getSentenceDefinitions(line));
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+
+            return tokens;
+        }
+
+
+        #region "Match por tokens"
         public List<DslToken> getTokens(string line)
         {
             List<DslToken> tokens = new List<DslToken>();
@@ -139,33 +171,6 @@ namespace Compi
         }
 
 
-        public List<DslToken> tokeniza(string fileName)
-        {
-            List<DslToken> tokens = new List<DslToken>();
-
-            try
-            {
-                if (File.Exists(fileName))
-                {
-                    using (StreamReader sr = new StreamReader(fileName))
-                    {
-                        while (sr.Peek() >= 0)
-                        {
-                            tokens.AddRange(getTokens(sr.ReadLine()));
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("The process failed: {0}", e.ToString());
-            }
-
-            return tokens;
-        }
-
-
-
         private TokenMatch FindMatch(string textLine)
         {
             foreach (var tokenDefinition in this.tokenDefinitions)
@@ -177,9 +182,49 @@ namespace Compi
 
             return new TokenMatch() { isMatch = false };
         }
+        #endregion
 
 
 
+
+        #region "Match por lineas"
+        public List<DslSentence> getSentenceDefinitions(string line)
+        {
+            List<DslSentence> sentences = new List<DslSentence>();
+            string remainingText = line.Trim();
+
+            while (!string.IsNullOrWhiteSpace(remainingText))
+            {
+                var match = FindMatchLine(remainingText);
+                if (match.isMatch)
+                {
+                    sentences.Add(new DslSentence(match.mSentenceType, match.Value));
+                    remainingText = match.RemainingText;
+                }
+                else
+                {
+                    remainingText = remainingText.Substring(1);
+                }
+            }
+
+            //tokens.Add(new DslToken(TokenType.));
+
+            return sentences;
+        }
+
+
+        private SentenceMatch FindMatchLine(string textLine)
+        {
+            foreach (var sentenceDefinition in this.sentenceDefinitions)
+            {
+                var match = sentenceDefinition.Match(textLine);
+                if (match != null && match.isMatch)
+                    return match;
+            }
+
+            return new SentenceMatch() { isMatch = false };
+        }
+        #endregion
     }
 
     /// <summary>

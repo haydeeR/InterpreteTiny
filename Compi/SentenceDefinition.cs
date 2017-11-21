@@ -19,10 +19,32 @@ namespace Compi
         }
 
 
+
         public SentenceMatch Match(string inputString)
         {
-            return null;
+            var match = mRegex.Match(inputString);
+
+            if (match.Success)
+            {
+                string remainingText = string.Empty;
+                if (match.Length != inputString.Length)
+                    remainingText = "";
+
+                return new SentenceMatch()
+                {
+                    isMatch = true,
+                    RemainingText = remainingText,
+                    mSentenceType = sentenceType,
+                    Value = inputString
+                };
+            }
+            else
+            {
+                return new SentenceMatch() { isMatch = false };
+            }
         }
+
+
     }
 
 
@@ -33,5 +55,31 @@ namespace Compi
         public SentenceType mSentenceType { get; set; }
         public string Value { get; set; }
         public string RemainingText { get; set; }
+    }
+
+
+    public class DslSentence
+    {
+        public SentenceType sentenceType { get; set; }
+        public string value { get; set; }
+
+        public DslSentence(SentenceType sentenceType)
+        {
+            this.sentenceType = sentenceType;
+            this.value = string.Empty;
+        }
+
+
+        public DslSentence(SentenceType sentenceType, string value)
+        {
+            this.sentenceType = sentenceType;
+            this.value = value;
+        }
+
+
+        public DslSentence Clone()
+        {
+            return new DslSentence(this.sentenceType, this.value);
+        }
     }
 }
