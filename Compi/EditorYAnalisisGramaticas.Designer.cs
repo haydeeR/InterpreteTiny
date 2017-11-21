@@ -190,7 +190,7 @@
             // lR1ToolStripMenuItem
             // 
             this.lR1ToolStripMenuItem.Name = "lR1ToolStripMenuItem";
-            this.lR1ToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
+            this.lR1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.lR1ToolStripMenuItem.Text = "LR1";
             this.lR1ToolStripMenuItem.Click += new System.EventHandler(this.lR1ToolStripMenuItem_Click);
             // 

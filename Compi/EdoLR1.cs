@@ -36,10 +36,13 @@ namespace Compi
 
         public string accion = "";
 
+        public List<String> listReducciones = null;
+
         public EdoLR1()
         {
             this.producciones = new List<Produccion>();
             this.listAristas = new List<AristaLR1>();
+            this.listReducciones = new List<String>();
         }
 
         public void setId(int id)
