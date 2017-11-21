@@ -88,6 +88,21 @@ namespace Compi
             return this.tokens;
         }
 
+        public string getTokensAsString(int indiceTokenBusqueda)
+        {
+            string aux = this.getNTerminal() + " -> ";
+            int i = 0;
+            foreach (string s in this.tokens)
+            {
+                if (s != ".")
+                    aux += s;
+                if (i == indiceTokenBusqueda)
+                    aux += ".";
+                i++;
+            }
+            return aux;
+        }
+
         public string getTokensAsString()
         {
             string aux = "";

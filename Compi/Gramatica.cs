@@ -1112,10 +1112,14 @@ namespace Compi
                         if (p.getNTerminal()[(p.getNTerminal().Length - 1)] == '\'')
                         {
                             e.setAccion(" Aceptar ");
-                            break;
                         }
                         else
-                            e.setAccion("R" + e.getProducciones()[0].getId().ToString());
+                        {
+                            foreach (char tokenDeBusqueda in p.getTokenBusqueda())
+                            {
+                                e.listReducciones.Add(tokenDeBusqueda.ToString() +"# R" + e.getProducciones()[0].getId().ToString());
+                            }
+                        }
                     }
                 }
             }

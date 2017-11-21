@@ -178,7 +178,7 @@
             // lR1ToolStripMenuItem
             // 
             this.lR1ToolStripMenuItem.Name = "lR1ToolStripMenuItem";
-            this.lR1ToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
+            this.lR1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.lR1ToolStripMenuItem.Text = "LR1";
             this.lR1ToolStripMenuItem.Click += new System.EventHandler(this.lR1ToolStripMenuItem_Click);
             // 
@@ -247,6 +247,7 @@
             // 
             this.tablaLr1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
+            this.tablaLr1.FullRowSelect = true;
             this.tablaLr1.GridLines = true;
             this.tablaLr1.Location = new System.Drawing.Point(456, 104);
             this.tablaLr1.Name = "tablaLr1";

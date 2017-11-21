@@ -35,7 +35,7 @@ namespace Compi
         /// Esta variable es solo para visualizar la barra en en la introduccón
         /// </summary>
         private ini formini = null;
-        
+
         private ListViewItem lvAux = null;
 
         private ListViewItem.ListViewSubItem lvSubItem = null;
@@ -111,7 +111,7 @@ namespace Compi
                     txtOfProgram = sr.ReadToEnd();
                     tabControl1.TabPages.Add(fileName);
                     tabIndex = tabControl1.TabPages.Count - 1;
-                    tabControl1.TabPages[tabControl1.TabPages.Count - 1].Controls.Add(CreaText(txtOfProgram,Color.White,Color.Black,tabControl1));
+                    tabControl1.TabPages[tabControl1.TabPages.Count - 1].Controls.Add(CreaText(txtOfProgram, Color.White, Color.Black, tabControl1));
                     tabControl1.TabPages[tabControl1.TabPages.Count - 1].Controls.Add(imprimeCodigo(pathFile));
                     tabControl1.TabPages[tabControl1.TabPages.Count - 1].Controls.Add(imprimeCodigo(""));
                     tabIndex = tabControl1.TabPages.Count - 1;
@@ -269,7 +269,7 @@ namespace Compi
             for (int i = pila.Count() - 1; i >= ind; i--)
                 pila.Remove(pila[i]);
         }
-        
+
         private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
@@ -294,46 +294,30 @@ namespace Compi
         /// </summary>
         public void dibujaAFD()
         {
-            int indice = 0;
-            string cadenaAux = "";
             List<EdoLR1> listEdos = g.getListaEdos();
-            List<EdoLR1> listAux = new List<EdoLR1>();
-       //     List<TreeNode> = new List<TreeNode>();
             EdoLR1 edoBase = listEdos[0];
-            foreach (EdoLR1 e in listEdos)
+            
+            // Add a root TreeNode for each Edo LR1 object in the ArrayList.
+            foreach (EdoLR1 edo in listEdos)
             {
-                TreeNode nodo = new TreeNode();
-
-            }
-
-            foreach (AristaLR1 arista in edoBase.getListArista())
-            {
-                cadenaAux = "";
-                if (arista.getEdoDestino() != arista.getEdoOrigen())
+                treeView1.Nodes.Add(new TreeNode(edo.getTokenDeLlegada()));
+                // Add a child treenode for each Order object in the current EdoLR1 object.
+                foreach (Produccion p1 in edo.getProducciones())
                 {
-                    indice++;
-                    TreeNode newNode = new TreeNode();
-                    foreach (Produccion p in arista.getEdoDestino().getProducciones())
-                    {
-                        cadenaAux += p.getNTerminal() + "->" + p.getTokensAsString();
-                    }
-                    arista.getEdoDestino().visitado = true;
-                    listAux.Add(arista.getEdoDestino());
-                    newNode.Text = cadenaAux;
-                    //nodoBase.Nodes.Add(newNode);
+                    treeView1.Nodes[listEdos.IndexOf(edo)].Nodes.Add(
+                      new TreeNode(p1.getTokensAsString(p1.getTokens().IndexOf(edo.getTokenDeLlegada()))));
                 }
             }
-          //  this.treeView1.Nodes.Add(nodoBase);
+            //  this.treeView1.Nodes.Add(nodoBase);
         }
-        
+
 
         public void muestraTermYNTerm()
         {
             List<string> nTerminales = g.getNTerminal();
             List<string> terminales = g.getTerminales();
             this.cabeceras = new List<string>();
-            int i = 0;
-
+            
             tablaLr1.Clear();
             tablaLr1.Columns.Add("Estados");
             foreach (string term in terminales)
@@ -345,90 +329,53 @@ namespace Compi
             this.cabeceras.Add("$");
             foreach (string nterm in nTerminales)
             {
-                i = (nterm.Count() - 1);
-                if (nterm[i].ToString().CompareTo("'") != 0)
-                {
-                    tablaLr1.Columns.Add(nterm);
-                    this.cabeceras.Add(nterm);
-                }
+                tablaLr1.Columns.Add(nterm);
+                this.cabeceras.Add(nterm);
             }
-            this.llenarTablaLR1(terminales, nTerminales);
+            this.llenarTablaLR1();
         }
 
-        public void llenarTablaLR1(List<string> terminales, List<string> nTerminales)
-        {
+        public void llenarTablaLR1()
+        { 
             List<EdoLR1> listEdos = g.getListaEdos();
             ListViewItem lvAux = null;
             ListViewItem.ListViewSubItem lvSubItem = null;
-            this.tablaSint = new List<List<String>>();
-            int indEdo = 0, indToken = 0;
-
+            String[] arrayReduccion = null;
+            string tokenDeBusqueda = "";
+            
             foreach (EdoLR1 e in listEdos)
             {
                 lvAux = tablaLr1.Items.Add(e.getId().ToString());
-                tablaSint.Add(new List<string>());
-                indToken = 0;
-                foreach (string t in terminales)
+                foreach (string cabecera in this.cabeceras)
                 {
                     lvSubItem = lvAux.SubItems.Add(" -- ");
-                    tablaSint[indEdo].Add("--");
                     if (e.getListArista().Count > 0)
                     {
                         foreach (AristaLR1 a in e.getListArista())
                         {
-                            if (a.getEdoDestino().getTokenDeLlegada() == t)
+                            if (a.getEdoDestino().getTokenDeLlegada() == cabecera)
                             {
                                 lvSubItem.Text = a.getAccion();
-                                tablaSint[indEdo][indToken] = a.getAccion();
                             }
                         }
                     }
-                    foreach (Produccion p in e.getProducciones())
-                    {
-                        if (p.getTokens()[(p.getTokens().Count - 1)] == "." && p.getTokenBusqueda() == t)
-                        {
-                            if (p.getNTerminal()[(p.getNTerminal().Length - 1)] != '\'')
-                            {
-                                lvSubItem.Text = e.getAccion();
-                                tablaSint[indEdo][indToken] = e.getAccion();
-                                break;
-                            }
-                        }
-                    }
-                    indToken++;
-                }
-                lvSubItem = lvAux.SubItems.Add(" -- ");
-                tablaSint[indEdo].Add("--");
-                foreach (Produccion p in e.getProducciones())
-                {
-                    if (p.getTokenBusqueda() == "$" || e.getAccion() == " Aceptar ")
+                    if (cabecera.Length - 1 == '\'')
                     {
                         lvSubItem.Text = e.getAccion();
-                        tablaSint[indEdo][indToken] = e.getAccion();
                     }
-                }
-                indToken++;
-                foreach (string nt in nTerminales)
-                {//Pintar reducciones
-                    if (nt[(nt.Count() - 1)] != '\'')
+                    if (e.listReducciones.Count > 0)
                     {
-                        lvSubItem = lvAux.SubItems.Add(" -- ");
-                        tablaSint[indEdo].Add("--");
-                        if (e.getListArista().Count > 0)
+                        foreach(string reduccion in e.listReducciones)
                         {
-                            foreach (AristaLR1 a in e.getListArista())
+                            arrayReduccion = reduccion.Split('#');
+                            tokenDeBusqueda = arrayReduccion[0];
+                            if (tokenDeBusqueda == cabecera)
                             {
-                                if (a.getEdoDestino().getTokenDeLlegada() == nt)
-                                {
-                                    lvSubItem.Text = a.getAccion();
-                                    tablaSint[indEdo][indToken] = a.getAccion();
-                                }
+                                lvSubItem.Text = arrayReduccion[1];
                             }
                         }
                     }
-                    indToken++;
                 }
-                indEdo++;
             }
         }
 
