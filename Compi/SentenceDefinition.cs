@@ -11,11 +11,13 @@ namespace Compi
     {
         private Regex mRegex;
         private readonly SentenceType sentenceType;
+        private string pattern = "";
 
         public SentenceDefinition(SentenceType mSentenceType, string mRegexPattern)
         {
             mRegex = new Regex(mRegexPattern, RegexOptions.IgnoreCase);
             sentenceType = mSentenceType;
+            pattern = mRegexPattern;
         }
 
 
@@ -23,6 +25,7 @@ namespace Compi
         public SentenceMatch Match(string inputString)
         {
             var match = mRegex.Match(inputString);
+            //var match = Regex.Match(inputString, this.pattern, RegexOptions.IgnoreCase);
 
             if (match.Success)
             {
