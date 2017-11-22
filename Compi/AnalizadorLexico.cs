@@ -10,36 +10,14 @@ namespace Compi
 {
     class AnalizadorLexico
     {
-        /// <summary>
-        /// Patron de los caracteres aceptables en la gramatica
-        /// </summary>
-        Regex patron = null;
         List<TokenDefinition> tokenDefinitions;
         List<SentenceDefinition> sentenceDefinitions;
-        string id, cadena, numero, keywords, opComp, opSuma, opMult, opPote;
-        string identificadores, abreLlaves, cierraLlaves, abreParent, cierraParent;
-
 
 
         public AnalizadorLexico()
         {
-            this.patron = new Regex(@"[A-Za-z!-~0-9]+");
             this.tokenDefinitions = new List<TokenDefinition>();
             this.sentenceDefinitions = new List<SentenceDefinition>();
-
-            this.id = @"_[a-zA-Z0-9]+";
-            this.cadena = @"""([a-zA-Z0-9]|(:|;|,|\.|\[|\]|\*|\+|\?|¿|¡|!|#|%|&|/|~))+""";
-            this.numero = @"\d+";
-            this.keywords = @"(if|then|else|end|read|write|print|repeat|until|:=|Var|var)";
-            this.opComp = @"(==|<|>)";
-            this.opSuma = @"(\+|-)";
-            this.opMult = @"(\*|/)";
-            this.opPote = @"\^";
-            this.abreParent = @"\(";
-            this.cierraParent = @"\)";
-            this.abreLlaves = @"\{";
-            this.cierraLlaves = @"\}";
-            this.identificadores = @"(\s)*" + this.id + @"(\s)*(,(\s)*" + this.id + @"(\s)*)*";
 
             this.agregaTokenDefinitions();
             this.agregaSentenceDefinitions();
@@ -48,66 +26,40 @@ namespace Compi
 
         private void agregaSentenceDefinitions()
         {
-            string declarePattern = @"^(((Var)|(var))\{(int|float)(\s)+" + this.id + @"(\s)*(,(\s)*(" + this.id + @"))*\};?)$";
-            string readPattern = @"^(read\(" + this.id + @"\);?)$";
-            string printPattern = @"(" + this.cadena + @"," + this.identificadores + @")|(" + this.cadena + @")|(" + this.identificadores + @")";
-            string writePattern = @"^(((write)\()(" + printPattern + @")(\);?))$";
-
-
-            string factor = @"((" + this.numero + @")|(" + this.id + @"))";
-            string potenciaAux = @"(" + factor + @"(\s)*\^(\s)*" + factor + @")";
-            string potencia = @"(" + potenciaAux + @")|(" + factor + @")";
-            string termAux = @"(" + potencia + @"(\s)*" + this.opMult + @"(\s)*" + potencia + @")";
-            string term = @"(" + termAux + @")|(" + potencia + @")";
-
-            string expSimpleAux = @"(" + term + @"(\s)*" + this.opSuma + @"(\s)*" + term + @")";
-            string expSimple = @"(" + expSimpleAux + @")|(" + term + @")";
-            string exp = @"(" + expSimple + @"(\s)*" + this.opComp + @"(\s)*" + expSimple + @")|(" + expSimple + @")";
-
-            string assignPattern = @"^((" + this.id + @"):=(" + exp + ");?)$";
-
-            string ifPattern = @"^((if\()(" + exp + @")(\)\{))$";
-            string elseIfPattern = @"^(\}?else\{)$";
-            string endIfPattern = @"^(\}?endif;?)$";
-            string repeatStart = @"^(repeat{)$";
-            string repeatEnd = @"^((\})?(until\()(" + exp + @")(\);?)" + @")$";
-
-
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaDeclara, declarePattern));
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaAssign, assignPattern));
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaRead, readPattern));
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaWrite, writePattern));
-
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaSimpleIf, ifPattern));
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaElse, elseIfPattern));
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaEndIf, endIfPattern));
-
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaRepeatStart, repeatStart));
-            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaRepeatEnd, repeatEnd));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaDeclara, GRegex.declarePattern));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaAssign, GRegex.assignPattern));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaRead, GRegex.readPattern));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaWrite, GRegex.writePattern));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaSimpleIf, GRegex.ifPattern));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaElse, GRegex.elseIfPattern));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaEndIf, GRegex.endIfPattern));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaRepeatStart, GRegex.repeatStart));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaRepeatEnd, GRegex.repeatEnd));
+            this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaFinBloque, GRegex.endSentencesBlock));
         }
 
 
         private void agregaTokenDefinitions()
         {
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Id, @"^" + this.id));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Cadena, @"^" + this.cadena));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Numero, @"^" + this.numero));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.KeyWord, @"^" + this.keywords));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorComp, @"^" + this.opComp));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorSuma, @"^" + this.opSuma));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorMult, @"^" + this.opMult));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorPote, @"^" + this.opPote));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Id, @"^" + GRegex.id));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Cadena, @"^" + GRegex.cadena));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.Numero, @"^" + GRegex.numero));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.KeyWord, @"^" + GRegex.keywords));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorComp, @"^" + GRegex.opComp));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorSuma, @"^" + GRegex.opSuma));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorMult, @"^" + GRegex.opMult));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorPote, @"^" + GRegex.opPote));
 
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.AbreParent, @"^" + this.abreParent));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.CierraParent, @"^" + this.cierraParent));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.AbreLlaves, @"^" + this.abreParent));
-            this.tokenDefinitions.Add(new TokenDefinition(TokenType.CierraLlaves, @"^" + this.cierraParent));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.AbreParent, @"^" + GRegex.abreParent));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.CierraParent, @"^" + GRegex.cierraParent));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.AbreLlaves, @"^" + GRegex.abreLlaves));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.CierraLlaves, @"^" + GRegex.cierraLlaves));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.FinInstruccion, @"^" + GRegex.finInstruccion));
         }
 
 
-        public List<DslToken> tokeniza(string fileName)
+        private List<DslSentence> clasificaSentencias(string fileName)
         {
-            List<DslToken> tokens = new List<DslToken>();
             List<DslSentence> sentences = new List<DslSentence>();
             string line;
 
@@ -120,7 +72,6 @@ namespace Compi
                         while (sr.Peek() >= 0)
                         {
                             line = sr.ReadLine();
-                            //tokens.AddRange(getTokens(line));
                             sentences.AddRange(getSentenceDefinitions(line));
                         }
                     }
@@ -129,6 +80,26 @@ namespace Compi
             catch (Exception e)
             {
                 Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+
+            return sentences;
+        }
+
+
+
+        public List<List<DslToken>> tokeniza(string fileName)
+        {
+            List<List<DslToken>> tokens = new List<List<DslToken>>();
+            List<DslSentence> sentences = clasificaSentencias(fileName);
+
+            if(sentences != null && sentences.Count > 0)
+            {
+                foreach(DslSentence sentencia in sentences)
+                {
+                    List<DslToken> tokensXLine = new List<DslToken>();
+                    tokensXLine.AddRange(getTokens(sentencia.value));
+                    tokens.Add(tokensXLine);
+                }
             }
 
             return tokens;
@@ -154,8 +125,6 @@ namespace Compi
                     remainingText = remainingText.Substring(1);
                 }
             }
-
-            //tokens.Add(new DslToken(TokenType.));
 
             return tokens;
         }
@@ -231,6 +200,7 @@ namespace Compi
         SentenciaRead,
         SentenciaWrite,
         SentenciaDeclara,
+        SentenciaFinBloque,
     }
 
 
@@ -251,5 +221,6 @@ namespace Compi
         CierraParent,
         AbreLlaves,
         CierraLlaves,
+        FinInstruccion,
     }
 }

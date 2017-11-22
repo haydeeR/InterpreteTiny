@@ -47,6 +47,7 @@
     <Compile Include="AnalizadorLexico.cs" />
     <Compile Include="AristaLR1.cs" />
     <Compile Include="EdoLR1.cs" />
+    <Compile Include="GRegex.cs" />
     <Compile Include="ini.cs">
       <SubType>Form</SubType>
     </Compile>
