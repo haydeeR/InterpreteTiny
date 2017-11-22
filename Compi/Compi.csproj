@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalizadorLexico.cs" />
+    <Compile Include="ArbolAS.cs" />
     <Compile Include="AristaLR1.cs" />
     <Compile Include="EdoLR1.cs" />
     <Compile Include="GRegex.cs" />
