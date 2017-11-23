@@ -400,11 +400,6 @@ namespace Compi
         {
             //this.llenarTablaAcciones(this.PagCodigo.Text);
 
-            if (!string.IsNullOrEmpty(this.fullFileName) && File.Exists(this.fullFileName))
-            {
-                AnalizadorLexico analizadorLex = new AnalizadorLexico();
-                analizadorLex.tokeniza(this.fullFileName);
-            }
         }
 
 
@@ -537,7 +532,6 @@ namespace Compi
                    // tabIndex = tabControl2.TabPages.Count - 1;
                     //Se carga el programa
                     txtOfProgram = sr.ReadToEnd();
-                    this.fullFileName = fnew.FileName;
                 }
                 //Se cierra el archivo que se abrio
                 sr.Close();
