@@ -399,7 +399,8 @@ namespace Compi
         private void buttonCadenaEntrada_Click(object sender, EventArgs e)
         {
             //this.llenarTablaAcciones(this.PagCodigo.Text);
-
+            AnalizadorLexico analizer = new AnalizadorLexico();
+            analizer.tokeniza(this.fullFileName);
         }
 
 
@@ -537,6 +538,7 @@ namespace Compi
                 sr.Close();
                 buttonCadenaEntrada.Enabled = true;
                 this.g = new Gramatica(fileName);
+                this.fullFileName = pathFile;
             }
         }
         /// <summary>
