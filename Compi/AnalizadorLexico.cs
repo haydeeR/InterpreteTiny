@@ -55,6 +55,7 @@ namespace Compi
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.AbreLlaves, @"^" + GRegex.abreLlaves));
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.CierraLlaves, @"^" + GRegex.cierraLlaves));
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.FinInstruccion, @"^" + GRegex.finInstruccion));
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.SeparadorComa, @"^" + GRegex.separatorComma));
         }
 
 
@@ -222,5 +223,6 @@ namespace Compi
         AbreLlaves,
         CierraLlaves,
         FinInstruccion,
+        SeparadorComa,
     }
 }

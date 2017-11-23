@@ -21,6 +21,7 @@ namespace Compi
         public static readonly string abreLlaves = @"\{";
         public static readonly string cierraLlaves = @"\}";
         public static readonly string finInstruccion = @";";
+        public static readonly string separatorComma = @",";
         public static readonly string identificadores = @"(\s)*" + id + @"(\s)*(,(\s)*" + id + @"(\s)*)*";
 
 
