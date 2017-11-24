@@ -238,6 +238,38 @@ namespace Compi
             return cuadruplos;
         }
 
+        private Cuadruplo generaCuadruploIf(ArbolAS nodo, Cuadruplo cuadruploGeneroIzq, Cuadruplo cuadruploGeneroDer)
+        {
+            Cuadruplo aux = null;
+
+            DslToken dslToken = nodo.getToken();
+            if (dslToken.TokenType != TokenType.KeyWord)
+            {
+                aux = new Cuadruplo(operador: nodo.getToken(),
+                                                op1: cuadruploGeneroIzq.resultado.tokenType,
+                                                op2: cuadruploGeneroDer.resultado.tokenType);
+                cuadruplos.Add(aux);
+                //return aux;
+            }
+            else if (dslToken.TokenType == TokenType.KeyWord && dslToken.Value == "if")
+            {
+                aux = new Cuadruplo(new Resultado("GoTo", new DslToken(TokenType.Id)),
+                                                operador: nodo.getToken(),
+                                                op1: cuadruploGeneroIzq.resultado.tokenType,
+                                                op2: (new DslToken(TokenType.Numero, "1")));
+                // Se le asigna el id del cuadruplo a su correspondiente DslToken
+                aux.resultado.tokenType.Value = aux.Id.ToString();
+                // Se le asigna el id del cruaduplo que continuará si 
+                // se cumple con la condición del "if"
+                aux.resultado.Value = cuadruploGeneroDer.Id.ToString();
+
+                cuadruplos.Add(aux);
+                //return aux;
+            }
+
+            return aux;
+        }
+
         private Cuadruplo generaCuadruplo(ArbolAS nodo)
         {
             Cuadruplo cuadruploGeneroIzq = null;
@@ -257,16 +289,35 @@ namespace Compi
             // Primer caso, es un operador, y como nodos hijos solo tiene números sin nietos
             if (cuadruploGeneroIzq == null && cuadruploGeneroDer == null)
             {
-                Cuadruplo aux = new Cuadruplo(cuadruplos.Count,
-                                            operador: nodo.getToken(),
+                Cuadruplo aux = new Cuadruplo(operador: nodo.getToken(),
                                             op1: (nodoIzquierdo != null ? nodoIzquierdo.getToken() : null),
                                             op2: (nodoDerecho != null ? nodoDerecho.getToken() : null));
                 cuadruplos.Add(aux);
                 return aux;
             }
-            else if (cuadruploGeneroIzq != null || cuadruploGeneroDer != null)
+            else if (cuadruploGeneroIzq != null && cuadruploGeneroDer != null)
             {
 
+                Cuadruplo aux = generaCuadruploIf(nodo, cuadruploGeneroIzq, cuadruploGeneroDer);
+                if (aux != null)
+                    cuadruplos.Add(aux);
+                return aux;
+            }
+            else if (cuadruploGeneroIzq == null && nodoIzquierdo != null && cuadruploGeneroDer != null)
+            {
+                Cuadruplo aux = new Cuadruplo(operador: nodo.getToken(),
+                                                op1: nodoIzquierdo.getToken(),
+                                                op2: cuadruploGeneroDer.resultado.tokenType);
+                cuadruplos.Add(aux);
+                return aux;
+            }
+            else if (cuadruploGeneroIzq != null && cuadruploGeneroDer == null && nodoDerecho != null)
+            {
+                Cuadruplo aux = new Cuadruplo(operador: nodo.getToken(),
+                                                op1: cuadruploGeneroIzq.resultado.tokenType,
+                                                op2: nodoDerecho.getToken());
+                cuadruplos.Add(aux);
+                return aux;
             }
 
             return null;

@@ -12,16 +12,34 @@ namespace Compi
         DslToken operando1;
         DslToken operando2;
         DslToken operador;
+        //DslToken
         Resultado _resultado;
 
-        public Cuadruplo(int index, DslToken operador = null, DslToken op1 = null, DslToken op2 = null)
+        public Cuadruplo(DslToken operador = null, DslToken op1 = null, DslToken op2 = null)
         {
             this.id = Guid.NewGuid();
             this.operando1 = op1;
             this.operando2 = op2;
             this.operador = operador;
-            this._resultado = new Resultado(this.id.ToString());
+            this._resultado = new Resultado(this.id.ToString(), new DslToken(TokenType.Id, this.id.ToString()));
         }
+
+        public Cuadruplo(Resultado resultado, DslToken operador = null, DslToken op1 = null, DslToken op2 = null)
+        {
+            this.id = Guid.NewGuid();
+            this.operando1 = op1;
+            this.operando2 = op2;
+            this.operador = operador;
+            this._resultado = resultado;
+        }
+
+
+        public Guid Id
+        {
+            get { return this.id; }
+            set { this.id = value; }
+        }
+
 
         public Resultado resultado
         {
@@ -29,28 +47,30 @@ namespace Compi
             set { this._resultado = value; }
         }
 
-        public string name_resultado
+        public string nameResult
         {
             get { return this._resultado.NameVar; }
             set { this._resultado.NameVar = value; }
         }
 
-        public string value_resultado
+        public string valueResult
         {
             get { return this._resultado.Value; }
             set { this._resultado.Value = value; }
         }
     }
 
-    public struct Resultado
+    public class Resultado
     {
         string _nameVar;
         string _value;
+        DslToken _tokenType;
 
-        public Resultado(string name)
+        public Resultado(string name, DslToken tokenType)
         {
             this._nameVar = name;
             this._value = string.Empty;
+            this._tokenType = tokenType;
         }
 
         public string NameVar
@@ -63,6 +83,12 @@ namespace Compi
         {
             get { return _value; }
             set { this._value = value; }
+        }
+
+        public DslToken tokenType
+        {
+            get { return this._tokenType; }
+            set { this._tokenType = value; }
         }
     }
 }
