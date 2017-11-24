@@ -298,7 +298,7 @@ namespace Compi
         {
             List<EdoLR1> listEdos = g.getListaEdos();
             EdoLR1 edoBase = listEdos[0];
-            
+
             // Add a root TreeNode for each Edo LR1 object in the ArrayList.
             foreach (EdoLR1 edo in listEdos)
             {
@@ -319,7 +319,7 @@ namespace Compi
             List<string> nTerminales = g.getNTerminal();
             List<string> terminales = g.getTerminales();
             this.cabeceras = new List<string>();
-            
+
             tablaLr1.Clear();
             tablaLr1.Columns.Add("Estados");
             foreach (string term in terminales)
@@ -338,13 +338,13 @@ namespace Compi
         }
 
         public void llenarTablaLR1()
-        { 
+        {
             List<EdoLR1> listEdos = g.getListaEdos();
             ListViewItem lvAux = null;
             ListViewItem.ListViewSubItem lvSubItem = null;
             String[] arrayReduccion = null;
             string tokenDeBusqueda = "";
-            
+
             foreach (EdoLR1 e in listEdos)
             {
                 lvAux = tablaLr1.Items.Add(e.getId().ToString());
@@ -367,7 +367,7 @@ namespace Compi
                     }
                     if (e.listReducciones.Count > 0)
                     {
-                        foreach(string reduccion in e.listReducciones)
+                        foreach (string reduccion in e.listReducciones)
                         {
                             arrayReduccion = reduccion.Split('#');
                             tokenDeBusqueda = arrayReduccion[0];
@@ -404,7 +404,8 @@ namespace Compi
         }
 
 
-        private void tokenizar() {
+        private void tokenizar()
+        {
 
         }
 
@@ -526,11 +527,11 @@ namespace Compi
                 {
                     txtOfProgram = sr.ReadToEnd();
                     tabControl2.TabPages[0].Tag = fileName;
-                   // tabIndex = tabControl2.TabPages.Count - 1;
-                    tabControl2.TabPages[tabControl2.TabPages.Count - 2].Controls.Add(CreaText(txtOfProgram,Color.Black,Color.White,tabControl2 ));
+                    // tabIndex = tabControl2.TabPages.Count - 1;
+                    tabControl2.TabPages[tabControl2.TabPages.Count - 2].Controls.Add(CreaText(txtOfProgram, Color.Black, Color.White, tabControl2));
                     tabControl2.TabPages[tabControl2.TabPages.Count - 2].Controls.Add(imprimeCodigo(pathFile));
                     tabControl2.TabPages[tabControl2.TabPages.Count - 2].Controls.Add(imprimeCodigo(""));
-                   // tabIndex = tabControl2.TabPages.Count - 1;
+                    // tabIndex = tabControl2.TabPages.Count - 1;
                     //Se carga el programa
                     txtOfProgram = sr.ReadToEnd();
                 }
@@ -566,6 +567,86 @@ namespace Compi
         private void toolStripDropDownButton3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private ArbolAS raiz;
+
+        private void creaArbol()
+        {
+            ArbolAS label_002 = new ArbolAS(new DslToken(TokenType.KeyWord, ":="));
+            ArbolAS id_001 = new ArbolAS(new DslToken(TokenType.Id, "_Id001"));
+            ArbolAS opMult_001 = new ArbolAS(new DslToken(TokenType.OperadorMult, "*"));
+            ArbolAS opMult_001_iz = new ArbolAS(new DslToken(TokenType.Numero, "3"));
+            ArbolAS opMult_001_der = new ArbolAS(new DslToken(TokenType.Numero, "4"));
+            opMult_001.setNodoIzquierdo(opMult_001_iz);
+            opMult_001.setNodoDerecho(opMult_001_der);
+            label_002.setNodoIzquierdo(id_001);
+            label_002.setNodoDerecho(opMult_001);
+
+
+            ArbolAS label_001 = new ArbolAS(new DslToken(TokenType.KeyWord, ":="));
+            ArbolAS id_002 = new ArbolAS(new DslToken(TokenType.Id, "_Id001"));
+            ArbolAS opMult_002 = new ArbolAS(new DslToken(TokenType.OperadorMult, "*"));
+            ArbolAS opMult_002_iz = new ArbolAS(new DslToken(TokenType.Numero, "6"));
+            ArbolAS opMult_002_der = new ArbolAS(new DslToken(TokenType.Numero, "8"));
+            opMult_002.setNodoIzquierdo(opMult_002_iz);
+            opMult_002.setNodoDerecho(opMult_002_der);
+            label_001.setNodoIzquierdo(id_002);
+            label_001.setNodoDerecho(opMult_002);
+
+            ArbolAS else_001 = new ArbolAS(new DslToken(TokenType.KeyWord, "else"));
+            else_001.setNodoIzquierdo(label_001);
+            else_001.setNodoDerecho(label_002);
+
+
+            ArbolAS exp_001 = new ArbolAS(new DslToken(TokenType.OperadorComp, "<"));
+            ArbolAS operandoComp_001_der = new ArbolAS(new DslToken(TokenType.Numero, "10"));
+            ArbolAS exp_002 = new ArbolAS(new DslToken(TokenType.OperadorSuma, "+"));
+            ArbolAS id_003 = new ArbolAS(new DslToken(TokenType.Id, "_Id003"));
+            ArbolAS opSum_001 = new ArbolAS(new DslToken(TokenType.OperadorMult, "+"));
+            ArbolAS opSum_001_iz = new ArbolAS(new DslToken(TokenType.Numero, "6"));
+            ArbolAS opSum_001_der = new ArbolAS(new DslToken(TokenType.Numero, "8"));
+            opSum_001.setNodoIzquierdo(opSum_001_iz);
+            opSum_001.setNodoDerecho(opSum_001_der);
+            exp_002.setNodoIzquierdo(id_003);
+            exp_002.setNodoDerecho(opSum_001);
+            exp_001.setNodoDerecho(operandoComp_001_der);
+            exp_001.setNodoIzquierdo(exp_002);
+
+
+            ArbolAS if_001 = new ArbolAS(new DslToken(TokenType.KeyWord, "if"));
+            if_001.setNodoIzquierdo(exp_001);
+            if_001.setNodoDerecho(else_001);
+
+            ArbolAS id_004 = new ArbolAS(new DslToken(TokenType.Id, "_Id004"));
+            id_004.setNodoIzquierdo(if_001);
+
+            ArbolAS write_001 = new ArbolAS(new DslToken(TokenType.KeyWord, "write"));
+            write_001.setNodoIzquierdo(id_004);
+
+            ArbolAS id_005 = new ArbolAS(new DslToken(TokenType.Id, "_Id004"));
+
+            ArbolAS read_001 = new ArbolAS(new DslToken(TokenType.KeyWord, "read"));
+            read_001.setNodoIzquierdo(id_005);
+
+            ArbolAS num_001 = new ArbolAS(new DslToken(TokenType.Numero, "7"));
+
+            num_001.setNodoIzquierdo(read_001);
+            num_001.setNodoDerecho(write_001);
+
+            ArbolAS num_002 = new ArbolAS(new DslToken(TokenType.Numero, "2"));
+
+            ArbolAS opSum_002 = new ArbolAS(new DslToken(TokenType.OperadorSuma, "+"));
+            opSum_002.setNodoIzquierdo(num_002);
+            opSum_002.setNodoDerecho(num_001);
+
+            ArbolAS id_006 = new ArbolAS(new DslToken(TokenType.Id, "_Id006"));
+            ArbolAS assign_001 = new ArbolAS(new DslToken(TokenType.KeyWord, ":="));
+
+            assign_001.setNodoIzquierdo(id_006);
+            assign_001.setNodoDerecho(opSum_002);
+
+            this.raiz = assign_001;
         }
     }
 }

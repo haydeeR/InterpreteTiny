@@ -110,9 +110,9 @@ namespace Compi
             List<List<DslToken>> tokens = new List<List<DslToken>>();
             List<DslSentence> sentences = clasificaSentencias(fileName);
 
-            if(sentences != null && sentences.Count > 0)
+            if (sentences != null && sentences.Count > 0)
             {
-                foreach(DslSentence sentencia in sentences)
+                foreach (DslSentence sentencia in sentences)
                 {
                     List<DslToken> tokensXLine = new List<DslToken>();
                     tokensXLine.AddRange(getTokens(sentencia.value));
@@ -129,7 +129,7 @@ namespace Compi
 
 
         #region "Match por tokens"
-        
+
         /// <summary>
         /// Tokeniza la linea que recibe por parametro
         /// </summary>
@@ -217,6 +217,60 @@ namespace Compi
             return new SentenceMatch() { isMatch = false };
         }
         #endregion
+
+
+        // ##################################################################################
+        // Métodos necesarios para generar los cuadruplos
+        // ##################################################################################
+
+        private List<Cuadruplo> cuadruplos;
+
+        public List<Cuadruplo> recorreArbol(ArbolAS raiz)
+        {
+            cuadruplos = new List<Cuadruplo>();
+
+            if (raiz.getNodoIzquierdo() != null)
+                generaCuadruplo(raiz.getNodoIzquierdo());
+
+            if (raiz.getNodoDerecho() != null)
+                generaCuadruplo(raiz.getNodoDerecho());
+
+            return cuadruplos;
+        }
+
+        private Cuadruplo generaCuadruplo(ArbolAS nodo)
+        {
+            Cuadruplo cuadruploGeneroIzq = null;
+            Cuadruplo cuadruploGeneroDer = null;
+            ArbolAS nodoIzquierdo = nodo.getNodoIzquierdo();
+            ArbolAS nodoDerecho = nodo.getNodoDerecho();
+
+            if (nodoIzquierdo == null && nodoDerecho == null)
+                return null;
+
+            if (nodoIzquierdo != null)
+                cuadruploGeneroIzq = generaCuadruplo(nodoIzquierdo);
+
+            if (nodoDerecho != null)
+                cuadruploGeneroDer = generaCuadruplo(nodoDerecho);
+
+            // Primer caso, es un operador, y como nodos hijos solo tiene números sin nietos
+            if (cuadruploGeneroIzq == null && cuadruploGeneroDer == null)
+            {
+                Cuadruplo aux = new Cuadruplo(cuadruplos.Count,
+                                            operador: nodo.getToken(),
+                                            op1: (nodoIzquierdo != null ? nodoIzquierdo.getToken() : null),
+                                            op2: (nodoDerecho != null ? nodoDerecho.getToken() : null));
+                cuadruplos.Add(aux);
+                return aux;
+            }
+            else if (cuadruploGeneroIzq != null || cuadruploGeneroDer != null)
+            {
+
+            }
+
+            return null;
+        }
     }
 
     /// <summary>

@@ -61,5 +61,16 @@ namespace Compi
         {
             return this.nodoDerecho;
         }
+
+
+        public void setNodoIzquierdo(ArbolAS nodo)
+        {
+            this.nodoIzquierdo = nodo;
+        }
+
+        public void setNodoDerecho(ArbolAS nodo)
+        {
+            this.nodoDerecho = nodo;
+        }
     }
 }
