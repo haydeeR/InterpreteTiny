@@ -48,6 +48,7 @@
     <Compile Include="ArbolAS.cs" />
     <Compile Include="AristaLR1.cs" />
     <Compile Include="Cuadruplo.cs" />
+    <Compile Include="Cuadruplos.cs" />
     <Compile Include="EdoLR1.cs" />
     <Compile Include="GRegex.cs" />
     <Compile Include="ini.cs">
