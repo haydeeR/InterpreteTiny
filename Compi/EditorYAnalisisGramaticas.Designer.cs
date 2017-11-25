@@ -487,6 +487,7 @@
             this.tablaLr1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.tablaLr1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablaLr1.FullRowSelect = true;
             this.tablaLr1.GridLines = true;
             this.tablaLr1.Location = new System.Drawing.Point(3, 78);
             this.tablaLr1.Name = "tablaLr1";

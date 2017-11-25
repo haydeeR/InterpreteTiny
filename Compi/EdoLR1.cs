@@ -117,5 +117,34 @@ namespace Compi
             return this.accion;
         }
 
+        public List<Produccion> getProduccionesDeTransicion(string token)
+        {
+            List<Produccion> produccionesDeTransicion = new List<Produccion>();
+            int indiceAux = 0;
+            foreach(Produccion p in this.getProducciones())
+            {
+                indiceAux = p.getTokens().IndexOf(".") + 1;
+                if (indiceAux < p.getTokens().Count && p.getTokens()[indiceAux] == token)
+                {
+                    produccionesDeTransicion.Add(p);
+                }
+            }
+            return produccionesDeTransicion;
+        }
+
+        public List<int> getIndicesDeTokenDeTransicion(string token)
+        {
+            List<int> indicesDeTransicion = new List<int>();
+            int indiceAux = 0;
+            foreach (Produccion p in this.getProducciones())
+            {
+                indiceAux = p.getTokens().IndexOf(".") + 1;
+                if (indiceAux < p.getTokens().Count && p.getTokens()[indiceAux] == token)
+                {
+                    indicesDeTransicion.Add(indiceAux);
+                }
+            }
+            return indicesDeTransicion;
+        }
     }
 }

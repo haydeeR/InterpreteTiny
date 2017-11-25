@@ -307,7 +307,7 @@ namespace Compi
                 foreach (Produccion p1 in edo.getProducciones())
                 {
                     treeView1.Nodes[listEdos.IndexOf(edo)].Nodes.Add(
-                      new TreeNode(p1.getTokensAsString(p1.getTokens().IndexOf(edo.getTokenDeLlegada()))));
+                      new TreeNode(p1.getTokensAsString(p1.getTokens().IndexOf(edo.getTokenDeLlegada()))) + " | " + p1.getTokenBusqueda());
                 }
             }
             //  this.treeView1.Nodes.Add(nodoBase);
@@ -398,9 +398,10 @@ namespace Compi
 
         private void buttonCadenaEntrada_Click(object sender, EventArgs e)
         {
-            //this.llenarTablaAcciones(this.PagCodigo.Text);
+            List<List<DslToken>> listasDeTokens = null;
             AnalizadorLexico analizer = new AnalizadorLexico();
-            analizer.tokeniza(this.fullFileName);
+            listasDeTokens = analizer.tokeniza(this.fullFileName);
+            //this.llenarTablaAcciones(listasDeTokens);
         }
 
 
@@ -409,9 +410,9 @@ namespace Compi
         }
 
 
-        private void llenarTablaAcciones(string cadena)
+        private void llenarTablaAcciones(List<List<DslToken>> cadena)
         {
-            string cadenaAuxiliar = cadena.Trim();
+            string cadenaAuxiliar = "";// cadena.Trim();
             string arrCad = cadena + "$";
             bool finalizar = false;
             int ren = 0, col = 0, numProduccion = 0;
@@ -459,7 +460,7 @@ namespace Compi
                                     pila.Add(this.tablaSint[ren][col]);
                                     this.insertaAccionEnTabla(accion);
                                     break;
-                                case ' ':
+                                case '-':
                                     if (this.tablaSint[ren][col] == " Aceptar ")
                                     {
                                         accion.Add(this.tablaSint[ren][col]);
