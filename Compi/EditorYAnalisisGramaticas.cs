@@ -371,6 +371,8 @@ namespace Compi
                         {
                             arrayReduccion = reduccion.Split('#');
                             tokenDeBusqueda = arrayReduccion[0];
+                            if (tokenDeBusqueda == ">" || tokenDeBusqueda == "<")
+                                tokenDeBusqueda = @"\" + tokenDeBusqueda;
                             if (tokenDeBusqueda == cabecera)
                             {
                                 lvSubItem.Text = arrayReduccion[1];
