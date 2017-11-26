@@ -14,6 +14,10 @@ namespace Compi
         List<SentenceDefinition> sentenceDefinitions;
 
 
+        /// <summary>
+        /// Constructor de la clase
+        /// </summary>
+
         public AnalizadorLexico()
         {
             this.tokenDefinitions = new List<TokenDefinition>();
@@ -23,7 +27,9 @@ namespace Compi
             this.agregaSentenceDefinitions();
         }
 
-
+        /// <summary>
+        /// Se agregan a la lista las definiciones de sentencias
+        /// </summary>
         private void agregaSentenceDefinitions()
         {
             this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaDeclara, GRegex.declarePattern));
@@ -38,7 +44,9 @@ namespace Compi
             this.sentenceDefinitions.Add(new SentenceDefinition(SentenceType.SentenciaFinBloque, GRegex.endSentencesBlock));
         }
 
-
+        /// <summary>
+        /// Se agregan a la lista las definiciones de los tokens
+        /// </summary>
         private void agregaTokenDefinitions()
         {
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.Id, @"^" + GRegex.id));
@@ -58,7 +66,12 @@ namespace Compi
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.SeparadorComa, @"^" + GRegex.separatorComma));
         }
 
-
+        /// <summary>
+        /// Recorre todas las sentencias que encuentra en el archivo 
+        /// de la ruta que se recibe por parametro
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         private List<DslSentence> clasificaSentencias(string fileName)
         {
             List<DslSentence> sentences = new List<DslSentence>();
@@ -87,7 +100,11 @@ namespace Compi
         }
 
 
-
+        /// <summary>
+        /// Tokeniza cada línea que fue clasificada
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public List<List<DslToken>> tokeniza(string fileName)
         {
             List<List<DslToken>> tokens = new List<List<DslToken>>();
@@ -106,8 +123,18 @@ namespace Compi
             return tokens;
         }
 
+        // ##################################################################################
+        // Match para tokenizar las expresiones 
+        // ##################################################################################
+
 
         #region "Match por tokens"
+        
+        /// <summary>
+        /// Tokeniza la linea que recibe por parametro
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
         public List<DslToken> getTokens(string line)
         {
             List<DslToken> tokens = new List<DslToken>();
@@ -130,7 +157,11 @@ namespace Compi
             return tokens;
         }
 
-
+        /// <summary>
+        /// Valida por cada definición de token para encontrar coincidencia
+        /// </summary>
+        /// <param name="textLine"></param>
+        /// <returns></returns>
         private TokenMatch FindMatch(string textLine)
         {
             foreach (var tokenDefinition in this.tokenDefinitions)
@@ -144,8 +175,9 @@ namespace Compi
         }
         #endregion
 
-
-
+        // ##################################################################################
+        // Match para clasificar cada línea del código
+        // ##################################################################################
 
         #region "Match por lineas"
         public List<DslSentence> getSentenceDefinitions(string line)
