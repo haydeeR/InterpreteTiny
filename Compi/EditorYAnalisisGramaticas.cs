@@ -528,9 +528,9 @@ namespace Compi
                     txtOfProgram = sr.ReadToEnd();
                     tabControl2.TabPages[0].Tag = fileName;
                     // tabIndex = tabControl2.TabPages.Count - 1;
-                    tabControl2.TabPages[tabControl2.TabPages.Count - 2].Controls.Add(CreaText(txtOfProgram, Color.Black, Color.White, tabControl2));
-                    tabControl2.TabPages[tabControl2.TabPages.Count - 2].Controls.Add(imprimeCodigo(pathFile));
-                    tabControl2.TabPages[tabControl2.TabPages.Count - 2].Controls.Add(imprimeCodigo(""));
+                    tabControl2.TabPages[0].Controls.Add(CreaText(txtOfProgram, Color.Black, Color.White, tabControl2));
+                    tabControl2.TabPages[0].Controls.Add(imprimeCodigo(pathFile));
+                    tabControl2.TabPages[0].Controls.Add(imprimeCodigo(""));
                     // tabIndex = tabControl2.TabPages.Count - 1;
                     //Se carga el programa
                     txtOfProgram = sr.ReadToEnd();
@@ -569,10 +569,13 @@ namespace Compi
 
         }
 
+        private List<ArbolAS> arboles = new List<ArbolAS>();
         private ArbolAS raiz;
 
         private void creaArbol()
         {
+            arboles = new List<ArbolAS>();
+
             ArbolAS label_002 = new ArbolAS(new DslToken(TokenType.KeyWord, ":="));
             ArbolAS id_001 = new ArbolAS(new DslToken(TokenType.Id, "_Id001"));
             ArbolAS opMult_001 = new ArbolAS(new DslToken(TokenType.OperadorMult, "*"));
@@ -582,7 +585,6 @@ namespace Compi
             opMult_001.setNodoDerecho(opMult_001_der);
             label_002.setNodoIzquierdo(id_001);
             label_002.setNodoDerecho(opMult_001);
-
 
             ArbolAS label_001 = new ArbolAS(new DslToken(TokenType.KeyWord, ":="));
             ArbolAS id_002 = new ArbolAS(new DslToken(TokenType.Id, "_Id001"));
@@ -598,7 +600,6 @@ namespace Compi
             else_001.setNodoIzquierdo(label_001);
             else_001.setNodoDerecho(label_002);
 
-
             ArbolAS exp_001 = new ArbolAS(new DslToken(TokenType.OperadorComp, "<"));
             ArbolAS operandoComp_001_der = new ArbolAS(new DslToken(TokenType.Numero, "10"));
             ArbolAS exp_002 = new ArbolAS(new DslToken(TokenType.OperadorSuma, "+"));
@@ -613,40 +614,33 @@ namespace Compi
             exp_001.setNodoDerecho(operandoComp_001_der);
             exp_001.setNodoIzquierdo(exp_002);
 
-
             ArbolAS if_001 = new ArbolAS(new DslToken(TokenType.KeyWord, "if"));
             if_001.setNodoIzquierdo(exp_001);
             if_001.setNodoDerecho(else_001);
+            
 
             ArbolAS id_004 = new ArbolAS(new DslToken(TokenType.Id, "_Id004"));
-            id_004.setNodoIzquierdo(if_001);
-
             ArbolAS write_001 = new ArbolAS(new DslToken(TokenType.KeyWord, "write"));
             write_001.setNodoIzquierdo(id_004);
 
             ArbolAS id_005 = new ArbolAS(new DslToken(TokenType.Id, "_Id004"));
-
             ArbolAS read_001 = new ArbolAS(new DslToken(TokenType.KeyWord, "read"));
             read_001.setNodoIzquierdo(id_005);
 
             ArbolAS num_001 = new ArbolAS(new DslToken(TokenType.Numero, "7"));
-
-            num_001.setNodoIzquierdo(read_001);
-            num_001.setNodoDerecho(write_001);
-
             ArbolAS num_002 = new ArbolAS(new DslToken(TokenType.Numero, "2"));
-
             ArbolAS opSum_002 = new ArbolAS(new DslToken(TokenType.OperadorSuma, "+"));
             opSum_002.setNodoIzquierdo(num_002);
             opSum_002.setNodoDerecho(num_001);
-
             ArbolAS id_006 = new ArbolAS(new DslToken(TokenType.Id, "_Id006"));
             ArbolAS assign_001 = new ArbolAS(new DslToken(TokenType.KeyWord, ":="));
-
             assign_001.setNodoIzquierdo(id_006);
             assign_001.setNodoDerecho(opSum_002);
 
-            this.raiz = assign_001;
+            arboles.Add(assign_001);
+            arboles.Add(read_001);
+            arboles.Add(write_001);
+            arboles.Add(if_001);
         }
     }
 }

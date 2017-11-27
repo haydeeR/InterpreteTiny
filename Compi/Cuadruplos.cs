@@ -14,6 +14,21 @@ namespace Compi
 
         private List<Cuadruplo> cuadruplos;
 
+        public List<List<Cuadruplo>> recorreArboles(List<ArbolAS> arboles)
+        {
+            List<List<Cuadruplo>> listsArboles = new List<List<Cuadruplo>>();
+
+            if (arboles != null)
+                foreach (ArbolAS arbol in arboles)
+                {
+                    List<Cuadruplo> listaux = null;
+                    if ((listaux = recorreArbol(arbol)) != null)
+                        listsArboles.Add(listaux);
+                }
+
+            return listsArboles;
+        }
+
         public List<Cuadruplo> recorreArbol(ArbolAS raiz)
         {
             cuadruplos = new List<Cuadruplo>();

@@ -67,6 +67,13 @@
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tablaLr1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPageCuadruplos = new System.Windows.Forms.TabPage();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.toolStrip1.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -76,6 +83,7 @@
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tabPageCuadruplos.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -262,6 +270,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl2.Controls.Add(this.tabPage1);
             this.tabControl2.Controls.Add(this.tabPage2);
+            this.tabControl2.Controls.Add(this.tabPageCuadruplos);
             this.tabControl2.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl2.Location = new System.Drawing.Point(3, 63);
             this.tabControl2.Name = "tabControl2";
@@ -289,7 +298,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 27);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(917, 259);
+            this.tabPage2.Size = new System.Drawing.Size(886, 238);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Consola";
             // 
@@ -297,10 +306,11 @@
             // 
             this.richTextBox1.BackColor = System.Drawing.Color.SlateGray;
             this.richTextBox1.Cursor = System.Windows.Forms.Cursors.PanWest;
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox1.ForeColor = System.Drawing.Color.White;
-            this.richTextBox1.Location = new System.Drawing.Point(6, 6);
+            this.richTextBox1.Location = new System.Drawing.Point(3, 3);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(894, 408);
+            this.richTextBox1.Size = new System.Drawing.Size(876, 228);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = ">>>";
             // 
@@ -311,6 +321,7 @@
             this.columnHeader3,
             this.columnHeader4});
             this.tablaAcciones.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablaAcciones.FullRowSelect = true;
             this.tablaAcciones.GridLines = true;
             this.tablaAcciones.Location = new System.Drawing.Point(3, 78);
             this.tablaAcciones.Name = "tablaAcciones";
@@ -414,7 +425,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 59F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(894, 54);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
@@ -487,6 +498,7 @@
             this.tablaLr1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.tablaLr1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablaLr1.FullRowSelect = true;
             this.tablaLr1.GridLines = true;
             this.tablaLr1.Location = new System.Drawing.Point(3, 78);
             this.tablaLr1.Name = "tablaLr1";
@@ -499,6 +511,55 @@
             // 
             this.columnHeader1.Text = "Estados";
             this.columnHeader1.Width = 190;
+            // 
+            // tabPageCuadruplos
+            // 
+            this.tabPageCuadruplos.Controls.Add(this.listView1);
+            this.tabPageCuadruplos.Location = new System.Drawing.Point(4, 27);
+            this.tabPageCuadruplos.Name = "tabPageCuadruplos";
+            this.tabPageCuadruplos.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageCuadruplos.Size = new System.Drawing.Size(886, 238);
+            this.tabPageCuadruplos.TabIndex = 2;
+            this.tabPageCuadruplos.Text = "Cuadruplos";
+            this.tabPageCuadruplos.UseVisualStyleBackColor = true;
+            // 
+            // listView1
+            // 
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader5,
+            this.columnHeader6,
+            this.columnHeader7,
+            this.columnHeader8,
+            this.columnHeader9});
+            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.FullRowSelect = true;
+            this.listView1.GridLines = true;
+            this.listView1.Location = new System.Drawing.Point(3, 3);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(880, 232);
+            this.listView1.TabIndex = 0;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "ID";
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Operando 1";
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "Operando 2";
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Operador";
+            // 
+            // columnHeader9
+            // 
+            this.columnHeader9.Text = "Resultado";
             // 
             // editorGramatica
             // 
@@ -530,6 +591,7 @@
             this.tableLayoutPanel6.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            this.tabPageCuadruplos.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -575,5 +637,12 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.ListView tablaLr1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.TabPage tabPageCuadruplos;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
+        private System.Windows.Forms.ColumnHeader columnHeader9;
     }
 }
