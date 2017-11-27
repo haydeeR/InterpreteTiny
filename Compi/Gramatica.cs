@@ -823,6 +823,8 @@ namespace Compi
         {
             EdoLR1 edo = null, nuevo = null, edoSiguiente = null;
             EdoLR1 aux = null;
+            List<Produccion> produccionesDetransicion = null;
+            List<int> indicesDeProduccionesDeTransicion = null;
             int maxEdos = this.listaEdos.Count();
             int indToken = 0;
             string t = "";
@@ -837,6 +839,7 @@ namespace Compi
                     while (indToken < p.getTokens().Count)
                     {
                         t = p.getTokens()[indToken];
+                      
                         if (t == ".")
                         {
                             punto = true;
@@ -849,7 +852,9 @@ namespace Compi
                         {
                             if (punto)
                             {
-                                nuevo = this.irA(p, t, indToken);
+                                produccionesDetransicion = edo.getProduccionesDeTransicion(t);
+                                indicesDeProduccionesDeTransicion = edo.getIndicesDeTokenDeTransicion(t);
+                                nuevo = this.irA(produccionesDetransicion, t, indicesDeProduccionesDeTransicion);
                                 aux = this.existe(nuevo);
                                 if (aux != null)
                                 {
@@ -886,13 +891,17 @@ namespace Compi
         /// <param name="edo">Estado a evaluar</param>
         /// <param name="token">token con el que hace el avance</param>
         /// <returns>Un nuevo estado con el que se hizo la transicion</returns>
-        public EdoLR1 irA(Produccion p, string token, int indtoken)
+        public EdoLR1 irA(List<Produccion> producciones, string token, List<int> indtoken)
         {
             EdoLR1 nEdo = new EdoLR1();
             nEdo.setTokenDeLlegada(token);
-            Produccion pAvanzada = new Produccion(p);
-            pAvanzada.avanzaIndicadorDeProceso(indtoken);
-            nEdo.setProduccion(pAvanzada);
+            Produccion pAvanzada = null;
+            foreach(Produccion p in producciones)
+            {
+                pAvanzada = new Produccion(p);
+                pAvanzada.avanzaIndicadorDeProceso(indtoken[producciones.IndexOf(p)]);
+                nEdo.setProduccion(pAvanzada);
+            }
             return (nEdo);
         }
 
@@ -909,13 +918,13 @@ namespace Compi
             Produccion p = null;
             string primero = "";
             int maxTam = edo.getProducciones().Count();
-            string terminal = "";
+            string betta = "";
 
             for (int i = 0; i < maxTam; i++)
             {
                 p = edo.getProducciones()[i];
-                terminal = p.produccionLR();
-                if (this.getNTerminal().Contains(terminal))
+                betta = p.produccionLR();
+                if (this.getNTerminal().Contains(betta))
                 {
                     primero = getPrimera(p, p.getGamma(), p.getTokenBusqueda());
                     //Agregar producciones iniciales del no terminal B, con primera de gamma
@@ -1061,20 +1070,22 @@ namespace Compi
             int indiceIndicador = p.getTokens().IndexOf(".");
             string token = "";
             Produccion pNueva = null;
+            List<Produccion> listaProduccionesDelTerminal = null;
 
+            //Si el punto no esta en la posicion final de la producción
             if ((indiceIndicador + 1) < p.getTokens().Count())
             {
                 token = p.getTokens()[(indiceIndicador + 1)];
-                foreach (Produccion pIni in this.tokensXProd)
+                
+                listaProduccionesDelTerminal = this.tokensXProd.Where(x => x.getNTerminal() == token).ToList();
+
+                foreach (Produccion pIni in listaProduccionesDelTerminal)
                 {
                     pNueva = new Produccion("1");
-                    if (pIni.getNTerminal().CompareTo(token) == 0)
-                    {
-                        pNueva.copiaP(pIni);
-                        pNueva.setTokenBusqueda(conjuntoPrim);
-                        if (!this.existe(pNueva, edo))
-                            edo.setProduccion(pNueva);
-                    }
+                    pNueva.copiaP(pIni);
+                    pNueva.setTokenBusqueda(conjuntoPrim);
+                    if (!this.existe(pNueva, edo))
+                        edo.setProduccion(pNueva);
                 }
             }
         }

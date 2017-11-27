@@ -124,12 +124,12 @@ namespace Compi
             return this.gamma;
         }
         /// <summary>
-        /// Metodo que forma las partes de una produccion para que sea de la forma 
-        /// LR0 el nucleo del analisis sintactico LR1
-        /// Esto se refiere que existe en la produccion un alpha que puede ser igual a epsilon
-        /// unTerminal, un contador de avance(.), un conjunto de terminales no terminales o epsilon
-        /// y metodo de busqueda hacia adelante
-        /// </summary>
+        /// Metodo que forma las partes de una produccion LR1
+        /// Esto se refiere que existe en la produccion 
+        /// unTerminal, un contador de avance(.),
+        /// * un alpha No terminal que puede ser igual a epsilon
+        /// un Gamma que es un conjunto de terminales
+        /// como tokenes de busqueda hacia adelante </summary>
         public string produccionLR()
         {
             List<string> listaAux = this.tokens; 
