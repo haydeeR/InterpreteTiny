@@ -345,21 +345,32 @@ namespace Compi
             String[] arrayReduccion = null;
             string tokenDeBusqueda = "";
 
+            TablaDesplazamientos tabDesp = new TablaDesplazamientos(listEdos);
             foreach (EdoLR1 e in listEdos)
             {
                 lvAux = tablaLr1.Items.Add(e.getId().ToString());
                 foreach (string cabecera in this.cabeceras)
                 {
+                    tabDesp.agregaColumna(cabecera);
+                    tabDesp.agregaValor(cabecera, " -- ");
                     lvSubItem = lvAux.SubItems.Add(" -- ");
                     if (e.getListArista().Count > 0)
                     {
-                        foreach (AristaLR1 a in e.getListArista())
+                        AristaLR1 a = e.getListArista().First(x => x.getEdoDestino().getTokenDeLlegada() == cabecera);
+
+                        if (a != null)
                         {
-                            if (a.getEdoDestino().getTokenDeLlegada() == cabecera)
-                            {
-                                lvSubItem.Text = a.getAccion();
-                            }
+                            lvSubItem.Text = a.getAccion();
+                            tabDesp.cambiaValor(listEdos.IndexOf(e), cabecera, a.getAccion());
                         }
+
+                        //foreach (AristaLR1 a in e.getListArista())
+                        //{
+                        //    if (a.getEdoDestino().getTokenDeLlegada() == cabecera)
+                        //    {
+                        //        lvSubItem.Text = a.getAccion();
+                        //    }
+                        //}
                     }
                     if (cabecera.Length - 1 == '\'')
                     {
@@ -373,9 +384,11 @@ namespace Compi
                             tokenDeBusqueda = arrayReduccion[0];
                             if (tokenDeBusqueda == ">" || tokenDeBusqueda == "<")
                                 tokenDeBusqueda = @"\" + tokenDeBusqueda;
+
                             if (tokenDeBusqueda == cabecera)
                             {
                                 lvSubItem.Text = arrayReduccion[1];
+                                tabDesp.cambiaValor(listEdos.IndexOf(e), cabecera, arrayReduccion[1]);
                             }
                         }
                     }
@@ -620,7 +633,7 @@ namespace Compi
             ArbolAS if_001 = new ArbolAS(new DslToken(TokenType.KeyWord, "if"));
             if_001.setNodoIzquierdo(exp_001);
             if_001.setNodoDerecho(else_001);
-            
+
 
             ArbolAS id_004 = new ArbolAS(new DslToken(TokenType.Id, "_Id004"));
             ArbolAS write_001 = new ArbolAS(new DslToken(TokenType.KeyWord, "write"));

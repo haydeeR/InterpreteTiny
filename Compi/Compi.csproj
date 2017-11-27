@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accion.cs" />
     <Compile Include="AnalizadorLexico.cs" />
     <Compile Include="ArbolAS.cs" />
     <Compile Include="AristaLR1.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="NuevaGramatica.Designer.cs">
       <DependentUpon>NuevaGramatica.cs</DependentUpon>
     </Compile>
+    <Compile Include="ParDatos.cs" />
     <Compile Include="PrimeroYSiguienteModal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,9 +82,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SentenceDefinition.cs" />
+    <Compile Include="TablaDeAcciones.cs" />
+    <Compile Include="TablaDesplazamientos.cs" />
     <Compile Include="tabla_de_simbolos.cs" />
     <Compile Include="Tabla_Errores.cs" />
     <Compile Include="TE.cs" />
+    <Compile Include="TokenColumn.cs" />
     <Compile Include="TokenDefinition.cs" />
     <Compile Include="TS.cs" />
     <EmbeddedResource Include="EditorYAnalisisGramaticas.resx">
