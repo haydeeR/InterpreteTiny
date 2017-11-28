@@ -35,9 +35,16 @@ namespace Compi
 
         public int agregaColumna(string token)
         {
-            TokenColumn column = new TokenColumn(token);
-            this.despXToken.Add(column);
-            return this.despXToken.IndexOf(column);
+            var columna = this.despXToken.FirstOrDefault(x => x.Token.Equals(token));
+
+            if (columna == null)
+            {
+                TokenColumn column = new TokenColumn(token);
+                this.despXToken.Add(column);
+                return this.despXToken.IndexOf(column);
+            }
+
+            return this.despXToken.IndexOf(columna);
         }
 
 
