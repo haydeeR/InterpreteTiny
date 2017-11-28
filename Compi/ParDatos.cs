@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Compi
 {
-    class ParDatos
+    class PilaDesplazamientos
     {
+        EdoLR1 estado;
         string cadenaEntrada;
         string token;
         int indEstado;
-        EdoLR1 estado;
+        
 
         public string Cadena { get { return this.cadenaEntrada; } set { this.cadenaEntrada = value; } }
         public string Token { get { return this.token; } set { this.token = value; } }

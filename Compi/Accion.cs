@@ -11,23 +11,23 @@ namespace Compi
     /// </summary>
     class Accion
     {
-        List<ParDatos> pares;
+        List<PilaDesplazamientos> pares;
         string cadenaEntrada;
         string acciones;
 
         public string CadenaEntrada { get { return this.cadenaEntrada; } set { this.cadenaEntrada = value; } }
-        public List<ParDatos> Pares { get { return this.pares; } set { this.pares = value; } }
+        public List<PilaDesplazamientos> Pares { get { return this.pares; } set { this.pares = value; } }
         public string Acciones { get { return this.acciones; } set { this.acciones = value; } }
 
 
         public Accion()
         {
-            this.pares = new List<ParDatos>();
+            this.pares = new List<PilaDesplazamientos>();
             cadenaEntrada = string.Empty;
         }
 
 
-        public int agregaPar(ParDatos par)
+        public int agregaPar(PilaDesplazamientos par)
         {
             int index;
 
@@ -38,7 +38,7 @@ namespace Compi
         }
 
 
-        public int eliminaPar(ParDatos par)
+        public int eliminaPar(PilaDesplazamientos par)
         {
             int index;
 
@@ -46,6 +46,14 @@ namespace Compi
             this.pares.Remove(par);
 
             return index;
+        }
+
+        public int getIndexUltEdoPares()
+        {
+            int res = -1;
+            if (this.pares != null && this.pares.Count > 0)
+                res = this.pares[this.pares.Count - 1].IndiceEstado;
+            return res;
         }
     }
 }

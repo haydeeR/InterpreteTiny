@@ -385,7 +385,7 @@ namespace Compi
                     }
                     if (e.listReducciones.Count > 0)
                     {
-                        var reduccion = e.listReducciones.FirstOrDefault(x => x.Split('#')[0] != "<" && x.Split('#')[0] != ">" ? x.Split('#')[0].Contains(cabecera):(@"\" + x.Split('#')[0]).Contains(cabecera));
+                        var reduccion = e.listReducciones.FirstOrDefault(x => x.Split('#')[0] != "<" && x.Split('#')[0] != ">" ? x.Split('#')[0].Contains(cabecera) : (@"\" + x.Split('#')[0]).Contains(cabecera));
 
                         if (reduccion != null)
                         {
@@ -443,76 +443,27 @@ namespace Compi
 
         private void llenarTablaAcciones(List<List<DslToken>> cadena)
         {
+            List<EdoLR1> estadosAux = g != null? g.getListaEdos(): null;
+            if (estadosAux != null && estadosAux.Count > 0)
+            {
+                TablaDeAcciones tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g.getListaEdos()[0]);
 
+                foreach (List<DslToken> listaTokens in cadena)
+                {
+                    foreach (DslToken token in listaTokens)
+                    {
+                        for (int ind = 0; ind < token.Value.Length; ind++)
+                        {
+                            tablaDeAcciones.agregaCaracter(token.Value[ind].ToString());
+                        }
+                    }
+                }
+            }
         }
 
-        //private void llenarTablaAcciones(List<List<DslToken>> cadena)
-        //{
-        //    string cadenaAuxiliar = "";// cadena.Trim();
-        //    string arrCad = cadena + "$";
-        //    bool finalizar = false;
-        //    int ren = 0, col = 0, numProduccion = 0;
-        //    List<String> pila = new List<string>();
-        //    List<String> accion = new List<string>();
-        //    int indCadena = 0, indPila = 0;
-        //    pila.Add(g.getListaEdos()[0].getId().ToString());
-        //    String auxAccion;
-        //    String token = "";
-        //    char aux, charAux;
 
-        //    if (cadenaAuxiliar != "")
-        //    {
-        //        while (indCadena < arrCad.Count() && !finalizar)
-        //        {
-        //            this.insertaTabla(pila, arrCad, indCadena);
-        //            ren = Convert.ToInt32(pila[pila.Count() - 1]);
-        //            aux = arrCad[indCadena];
-        //            col = this.cabeceras.IndexOf(aux.ToString());
-        //            if (col != -1)
-        //            {
-        //                accion.Add(this.tablaSint[ren][col]);
-        //                if (this.tablaSint[ren][col].Count() > 0)
-        //                {
-        //                    charAux = this.tablaSint[ren][col][0];
-        //                    switch (charAux)
-        //                    {
-        //                        case 'S':
-        //                            pila.Add(arrCad[indCadena].ToString());
-        //                            auxAccion = accion[accion.Count() - 1];
-        //                            auxAccion = auxAccion.Remove(0, 1);
-        //                            pila.Add(auxAccion.ToString());
-        //                            this.insertaAccionEnTabla(accion);
-        //                            break;
-        //                        case 'R':
-        //                            auxAccion = this.tablaSint[ren][col];
-        //                            charAux = auxAccion[(auxAccion.Count() - 1)];
-        //                            numProduccion = Convert.ToInt32(charAux.ToString());
-        //                            token = this.g.getTokensXProd()[numProduccion].getTokens()[1];
-        //                            indPila = pila.IndexOf(token);
-        //                            this.reducePila(indPila, pila);
-        //                            ren = Convert.ToInt32(pila[pila.Count() - 1]);
-        //                            pila.Add(this.g.getTokensXProd()[numProduccion].getNTerminal());
-        //                            col = this.cabeceras.IndexOf(this.g.getTokensXProd()[numProduccion].getNTerminal());
-        //                            pila.Add(this.tablaSint[ren][col]);
-        //                            this.insertaAccionEnTabla(accion);
-        //                            break;
-        //                        case '-':
-        //                            if (this.tablaSint[ren][col] == " Aceptar ")
-        //                            {
-        //                                accion.Add(this.tablaSint[ren][col]);
-        //                                this.insertaAccionEnTabla(accion);
-        //                                finalizar = true;
-        //                            }
-        //                            break;
-        //                    }
-        //                }//else error
-        //                if (arrCad[indCadena] != '$')
-        //                    indCadena++;
-        //            }
-        //        }
-        //    }
+        
 
-        //}
 
         public void insertaRegistro(string pila, string cadena)
         {
