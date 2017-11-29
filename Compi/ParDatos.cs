@@ -6,17 +6,22 @@ using System.Threading.Tasks;
 
 namespace Compi
 {
-    class PilaDesplazamientos
+    class Desplazamiento
     {
-        EdoLR1 estado;
-        string cadenaEntrada;
+        EdoLR1 edoOrigen;
+        EdoLR1 edoActual;
         string token;
-        int indEstado;
-        
 
-        public string Cadena { get { return this.cadenaEntrada; } set { this.cadenaEntrada = value; } }
+        public EdoLR1 EstadoOrigen { get { return this.edoOrigen; } set { this.edoOrigen = value; } }
+        public EdoLR1 EstadoActual { get { return this.edoActual; } set { this.edoActual = value; } }
         public string Token { get { return this.token; } set { this.token = value; } }
-        public int IndiceEstado { get { return this.indEstado; } set { this.indEstado = value; } }
-        public EdoLR1 Estado { get { return this.estado; } set { this.estado = value; } }
+
+
+        public Desplazamiento(EdoLR1 edo0, EdoLR1 edo1, string tokenDesp)
+        {
+            this.edoOrigen = edo0;
+            this.edoActual = edo1;
+            this.token = tokenDesp;
+        }
     }
 }

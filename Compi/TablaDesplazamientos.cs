@@ -70,7 +70,6 @@ namespace Compi
 
         public void cambiaValor(int indEdo, string token, string nuevoValor)
         {
-            int index = -1;
             TokenColumn column = this.despXToken.First(x => x.Token.Equals(token));
             if (column != null)
             {

@@ -13,6 +13,11 @@ namespace Compi
         List<TokenDefinition> tokenDefinitions;
         List<SentenceDefinition> sentenceDefinitions;
 
+        List<List<DslToken>> tokens;
+        List<DslSentence> sentences;
+
+        public List<List<DslToken>> TokenDefinitions { get { return this.tokens; } }
+        public List<DslSentence> SentenceDefinitions { get { return this.sentences; } }
 
         /// <summary>
         /// Constructor de la clase
@@ -105,7 +110,7 @@ namespace Compi
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public List<List<DslToken>> tokeniza(string fileName)
+        public void tokeniza(string fileName)
         {
             List<List<DslToken>> tokens = new List<List<DslToken>>();
             List<DslSentence> sentences = clasificaSentencias(fileName);
@@ -118,9 +123,10 @@ namespace Compi
                     tokensXLine.AddRange(getTokens(sentencia.value));
                     tokens.Add(tokensXLine);
                 }
+                this.sentences = sentences;
+                this.tokens = tokens;
             }
 
-            return tokens;
         }
 
         // ##################################################################################
@@ -217,7 +223,7 @@ namespace Compi
             return new SentenceMatch() { isMatch = false };
         }
         #endregion
-        
+
     }
 
     /// <summary>

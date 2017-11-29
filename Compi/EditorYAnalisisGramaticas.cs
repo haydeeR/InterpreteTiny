@@ -429,8 +429,13 @@ namespace Compi
         private void buttonCadenaEntrada_Click(object sender, EventArgs e)
         {
             List<List<DslToken>> listasDeTokens = null;
+            List<DslSentence> listasDeSentencias = null;
             AnalizadorLexico analizer = new AnalizadorLexico();
-            listasDeTokens = analizer.tokeniza(this.fullFileName);
+            analizer.tokeniza(this.fullFileName);
+            listasDeTokens = analizer.TokenDefinitions;
+            listasDeSentencias = analizer.SentenceDefinitions;
+
+            this.llenarTablaAcciones(listasDeSentencias);
             //this.llenarTablaAcciones(listasDeTokens);
         }
 
@@ -441,28 +446,35 @@ namespace Compi
         }
 
 
-        private void llenarTablaAcciones(List<List<DslToken>> cadena)
+        private void llenarTablaAcciones(List<DslSentence> cadenas)
         {
-            List<EdoLR1> estadosAux = g != null? g.getListaEdos(): null;
+            List<EdoLR1> estadosAux = g != null ? g.getListaEdos() : null;
             if (estadosAux != null && estadosAux.Count > 0)
             {
                 TablaDeAcciones tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g.getListaEdos()[0]);
 
-                foreach (List<DslToken> listaTokens in cadena)
+                foreach (DslSentence cadLinea in cadenas)
                 {
-                    foreach (DslToken token in listaTokens)
+                    for (int ind = 0; ind < cadLinea.value.Length; ind++)
                     {
-                        for (int ind = 0; ind < token.Value.Length; ind++)
-                        {
-                            tablaDeAcciones.agregaCaracter(token.Value[ind].ToString());
-                        }
+                        tablaDeAcciones.agregaCaracter(cadLinea.value[ind].ToString(), estadosAux, cadLinea.value.Substring(ind));
                     }
                 }
             }
+            //foreach (List<DslToken> listaTokens in cadena)
+            //{
+            //    foreach (DslToken token in listaTokens)
+            //    {
+            //        for (int ind = 0; ind < token.Value.Length; ind++)
+            //        {
+            //            tablaDeAcciones.agregaCaracter(token.Value[ind].ToString(), estadosAux, "");
+            //        }
+            //    }
+            //}
         }
 
 
-        
+
 
 
         public void insertaRegistro(string pila, string cadena)

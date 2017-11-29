@@ -20,8 +20,13 @@ namespace Compi
 
         public int agregaAccion(Accion accion)
         {
-            this.acciones.Add(accion);
-            return this.acciones.IndexOf(accion);
+            if (accion != null)
+            {
+                this.acciones.Add(accion);
+                return this.acciones.IndexOf(accion);
+            }
+
+            return -1;
         }
 
         public int eliminaAccion(Accion accion)
@@ -31,47 +36,50 @@ namespace Compi
             return index;
         }
 
-        public int agregaCaracter(string caracter)
+        public int agregaCaracter(string caracter, List<EdoLR1> estados, string cadenaEntrada)
         {
             Accion ultimaAccion = this.acciones[this.acciones.Count - 1];
             string nuevAccion;
+            int indEdo;
             int ultEstado = -1;
             int result = 0;
-            
 
-            if(ultimaAccion != null)
+
+            if (ultimaAccion != null)
             {
                 ultEstado = ultimaAccion.getIndexUltEdoPares();
                 nuevAccion = tablaDesplazamientos.dameValor(ultEstado, caracter);
-                nuevAccion = nuevAccion.Split('#').ToString();
 
+                if (nuevAccion.Contains("S"))
+                {
+                    nuevAccion = nuevAccion.Replace("S", "");
+                    if (int.TryParse(nuevAccion, out indEdo))
+                        this.agregaAccion(this.creaAccion(ultimaAccion,ultimaAccion.getEdoActual(),estados[indEdo], caracter, cadenaEntrada));
+                }
+                else if (nuevAccion.Contains("R"))
+                {
+
+                }
             }
 
             return result;
         }
 
 
-        private Accion creaAccion(EdoLR1 edo, string token)
+        private Accion creaAccion(Accion accionOrigen, EdoLR1 edoAnterior,EdoLR1 edoDestino, string token, string cadenaEntrada)
         {
-            Accion accion = new Accion();
-            //PilaDesplazamientos
+            Accion accion = new Accion(accionOrigen, "");
+            accion.agregaDesplazamiento(new Desplazamiento(edoAnterior, edoDestino, token));
+            accion.CadenaEntrada = cadenaEntrada;
 
-            return null;
+            return accion;
         }
 
 
         private Accion creaAccionInicial(EdoLR1 edo0)
         {
-            Accion accionInicial = new Accion();
-
-            PilaDesplazamientos parIniciales = new PilaDesplazamientos();
-            parIniciales.Token = "$";
-            parIniciales.IndiceEstado = 0;
-            parIniciales.Estado = edo0;
-            parIniciales.Cadena = string.Empty;
-
-            accionInicial.Pares.Add(parIniciales);
-
+            Accion accionInicial = new Accion(null,"");
+            accionInicial.agregaDesplazamiento(new Desplazamiento(null, edo0, "$"));
             return accionInicial;
         }
     }

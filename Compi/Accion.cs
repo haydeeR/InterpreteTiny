@@ -11,49 +11,67 @@ namespace Compi
     /// </summary>
     class Accion
     {
-        List<PilaDesplazamientos> pares;
+        List<Desplazamiento> desplazamientos;
         string cadenaEntrada;
         string acciones;
 
         public string CadenaEntrada { get { return this.cadenaEntrada; } set { this.cadenaEntrada = value; } }
-        public List<PilaDesplazamientos> Pares { get { return this.pares; } set { this.pares = value; } }
+        public List<Desplazamiento> Desplazamientos { get { return this.desplazamientos; } set { this.desplazamientos = value; } }
         public string Acciones { get { return this.acciones; } set { this.acciones = value; } }
 
 
-        public Accion()
+        public Accion(Accion accionAnterior, string cadEntrada)
         {
-            this.pares = new List<PilaDesplazamientos>();
-            cadenaEntrada = string.Empty;
+            cadenaEntrada = cadEntrada;
+            this.desplazamientos = new List<Desplazamiento>();
+
+            if (accionAnterior != null && accionAnterior.desplazamientos.Count > 0)
+                this.desplazamientos.AddRange(accionAnterior.desplazamientos);
         }
 
 
-        public int agregaPar(PilaDesplazamientos par)
+        public int agregaDesplazamiento(Desplazamiento par)
         {
             int index;
 
-            this.pares.Add(par);
-            index = this.pares.IndexOf(par);
+            this.desplazamientos.Add(par);
+            index = this.desplazamientos.IndexOf(par);
 
             return index;
         }
 
 
-        public int eliminaPar(PilaDesplazamientos par)
+        public int eliminaDesplazamiento(Desplazamiento par)
         {
             int index;
 
-            index = this.pares.IndexOf(par);
-            this.pares.Remove(par);
+            index = this.desplazamientos.IndexOf(par);
+            this.desplazamientos.Remove(par);
 
             return index;
         }
+
+
 
         public int getIndexUltEdoPares()
         {
             int res = -1;
-            if (this.pares != null && this.pares.Count > 0)
-                res = this.pares[this.pares.Count - 1].IndiceEstado;
+            if (this.desplazamientos != null && this.desplazamientos.Count > 0)
+                res = this.desplazamientos[this.desplazamientos.Count - 1].EstadoActual.getId();
             return res;
+        }
+
+
+
+        public EdoLR1 getEdoActual()
+        {
+            if (this.desplazamientos != null && this.desplazamientos.Count > 0)
+            {
+                Desplazamiento ultDesp = this.desplazamientos[this.desplazamientos.Count - 1];
+                return ultDesp.EstadoActual;
+            }
+
+            return null;
         }
     }
 }
