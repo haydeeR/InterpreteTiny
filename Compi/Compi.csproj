@@ -51,6 +51,7 @@
     <Compile Include="Cuadruplo.cs" />
     <Compile Include="Cuadruplos.cs" />
     <Compile Include="EdoLR1.cs" />
+    <Compile Include="EsquemaDeTraduccion.cs" />
     <Compile Include="GRegex.cs" />
     <Compile Include="ini.cs">
       <SubType>Form</SubType>

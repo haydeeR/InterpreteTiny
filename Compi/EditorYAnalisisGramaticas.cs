@@ -537,7 +537,7 @@ namespace Compi
                 //Se cierra el archivo que se abrio
                 sr.Close();
                 buttonCadenaEntrada.Enabled = true;
-                this.g = new Gramatica(fileName);
+                //this.g = new Gramatica(fileName);
                 this.fullFileName = pathFile;
             }
         }

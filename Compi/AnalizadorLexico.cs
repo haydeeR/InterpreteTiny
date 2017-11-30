@@ -120,7 +120,7 @@ namespace Compi
                 foreach (DslSentence sentencia in sentences)
                 {
                     List<DslToken> tokensXLine = new List<DslToken>();
-                    tokensXLine.AddRange(getTokens(sentencia.value));
+                    tokensXLine.AddRange(getTokens(sentencia.value.Replace(" ", "")));
                     tokens.Add(tokensXLine);
                 }
                 this.sentences = sentences;

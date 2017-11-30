@@ -80,7 +80,7 @@ namespace Compi
 
         public string dameValor(int numEstado, string token)
         {
-            TokenColumn column = this.despXToken.First(x => x.Token.Equals(token));
+            TokenColumn column = this.despXToken.FirstOrDefault(x => x.Token.Equals(token));
             string resultado = column != null ? column.dameValor(numEstado) : string.Empty;
             return resultado;
         }
