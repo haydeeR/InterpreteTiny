@@ -449,28 +449,33 @@ namespace Compi
         private void llenarTablaAcciones(List<DslSentence> cadenas)
         {
             List<EdoLR1> estadosAux = g != null ? g.getListaEdos() : null;
+            bool desplazo = false;
+            bool operaExitosa = false;
+
             if (estadosAux != null && estadosAux.Count > 0)
             {
                 TablaDeAcciones tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g.getListaEdos()[0]);
 
                 foreach (DslSentence cadLinea in cadenas)
                 {
-                    for (int ind = 0; ind < cadLinea.value.Length; ind++)
+                    string cadAux = cadLinea.value.Replace(" ", "");
+                    for (int ind = 0; ind < cadAux.Length; ind++)
                     {
-                        tablaDeAcciones.agregaCaracter(cadLinea.value[ind].ToString(), estadosAux, cadLinea.value.Substring(ind));
+                        operaExitosa = tablaDeAcciones.agregaCaracter(cadAux[ind].ToString(), estadosAux, cadAux.Substring(ind), out desplazo);
+                        if (!operaExitosa)
+                            break;
+                        ind = !desplazo ? (ind - 1) : ind;
                     }
+                    if (!operaExitosa)
+                        break;
                 }
+
+                this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
+                this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;
+                this.dataGridViewTablaAcciones.Columns[0].DataPropertyName = "Acciones";
+                this.dataGridViewTablaAcciones.Columns[1].DataPropertyName = "CadenaEntrada";
+                this.dataGridViewTablaAcciones.Columns[2].DataPropertyName = "AccionDespOReduc";
             }
-            //foreach (List<DslToken> listaTokens in cadena)
-            //{
-            //    foreach (DslToken token in listaTokens)
-            //    {
-            //        for (int ind = 0; ind < token.Value.Length; ind++)
-            //        {
-            //            tablaDeAcciones.agregaCaracter(token.Value[ind].ToString(), estadosAux, "");
-            //        }
-            //    }
-            //}
         }
 
 
@@ -479,7 +484,7 @@ namespace Compi
 
         public void insertaRegistro(string pila, string cadena)
         {
-            this.lvAux = this.tablaAcciones.Items.Add(pila);
+            //this.lvAux = this.tablaAcciones.Items.Add(pila);
             this.lvSubItem = this.lvAux.SubItems.Add(cadena);
 
         }

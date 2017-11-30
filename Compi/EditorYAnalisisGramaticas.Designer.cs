@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(editorGramatica));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.abrirGramaticaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,10 +59,6 @@
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tablaAcciones = new System.Windows.Forms.ListView();
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label2 = new System.Windows.Forms.Label();
             this.buttonCadenaEntrada = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
@@ -76,6 +74,10 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.dataGridViewTablaAcciones = new System.Windows.Forms.DataGridView();
+            this.colPila = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCadena = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAccion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip1.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -88,6 +90,7 @@
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTablaAcciones)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -304,7 +307,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 27);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(886, 238);
+            this.tabPage2.Size = new System.Drawing.Size(906, 238);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Consola";
             // 
@@ -316,7 +319,7 @@
             this.richTextBox1.ForeColor = System.Drawing.Color.White;
             this.richTextBox1.Location = new System.Drawing.Point(3, 3);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(876, 228);
+            this.richTextBox1.Size = new System.Drawing.Size(896, 228);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = ">>>";
             // 
@@ -326,7 +329,7 @@
             this.tabPageCuadruplos.Location = new System.Drawing.Point(4, 27);
             this.tabPageCuadruplos.Name = "tabPageCuadruplos";
             this.tabPageCuadruplos.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCuadruplos.Size = new System.Drawing.Size(886, 238);
+            this.tabPageCuadruplos.Size = new System.Drawing.Size(906, 238);
             this.tabPageCuadruplos.TabIndex = 2;
             this.tabPageCuadruplos.Text = "Cuadruplos";
             this.tabPageCuadruplos.UseVisualStyleBackColor = true;
@@ -344,7 +347,7 @@
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(880, 232);
+            this.listView1.Size = new System.Drawing.Size(900, 232);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -368,38 +371,6 @@
             // columnHeader9
             // 
             this.columnHeader9.Text = "Resultado";
-            // 
-            // tablaAcciones
-            // 
-            this.tablaAcciones.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4});
-            this.tablaAcciones.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablaAcciones.FullRowSelect = true;
-            this.tablaAcciones.GridLines = true;
-            this.tablaAcciones.Location = new System.Drawing.Point(3, 22);
-            this.tablaAcciones.Name = "tablaAcciones";
-            this.tablaAcciones.Size = new System.Drawing.Size(448, 304);
-            this.tablaAcciones.TabIndex = 14;
-            this.tablaAcciones.UseCompatibleStateImageBehavior = false;
-            this.tablaAcciones.View = System.Windows.Forms.View.Details;
-            this.tablaAcciones.SelectedIndexChanged += new System.EventHandler(this.tablaAcciones_SelectedIndexChanged);
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Pila";
-            this.columnHeader2.Width = 123;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Cadena";
-            this.columnHeader3.Width = 102;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Accion";
-            this.columnHeader4.Width = 177;
             // 
             // label2
             // 
@@ -514,7 +485,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 335F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(920, 335);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
@@ -523,7 +494,7 @@
             this.tableLayoutPanel6.ColumnCount = 1;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.Controls.Add(this.label2, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.tablaAcciones, 0, 1);
+            this.tableLayoutPanel6.Controls.Add(this.dataGridViewTablaAcciones, 0, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(463, 3);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
@@ -600,6 +571,61 @@
             this.tableLayoutPanel8.Size = new System.Drawing.Size(444, 265);
             this.tableLayoutPanel8.TabIndex = 11;
             // 
+            // dataGridViewTablaAcciones
+            // 
+            this.dataGridViewTablaAcciones.AllowUserToAddRows = false;
+            this.dataGridViewTablaAcciones.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.LightBlue;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
+            this.dataGridViewTablaAcciones.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridViewTablaAcciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewTablaAcciones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colPila,
+            this.colCadena,
+            this.colAccion});
+            this.dataGridViewTablaAcciones.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewTablaAcciones.Location = new System.Drawing.Point(3, 22);
+            this.dataGridViewTablaAcciones.Name = "dataGridViewTablaAcciones";
+            this.dataGridViewTablaAcciones.ReadOnly = true;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
+            this.dataGridViewTablaAcciones.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridViewTablaAcciones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewTablaAcciones.Size = new System.Drawing.Size(448, 304);
+            this.dataGridViewTablaAcciones.TabIndex = 16;
+            // 
+            // colPila
+            // 
+            this.colPila.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colPila.HeaderText = "PILA";
+            this.colPila.MinimumWidth = 100;
+            this.colPila.Name = "colPila";
+            this.colPila.ReadOnly = true;
+            this.colPila.ToolTipText = "Pila de desplazamientos y/o reducciones.";
+            // 
+            // colCadena
+            // 
+            this.colCadena.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colCadena.HeaderText = "CADENA";
+            this.colCadena.MinimumWidth = 100;
+            this.colCadena.Name = "colCadena";
+            this.colCadena.ReadOnly = true;
+            this.colCadena.ToolTipText = "Cadena de entrada.";
+            // 
+            // colAccion
+            // 
+            this.colAccion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colAccion.HeaderText = "ACCION";
+            this.colAccion.MinimumWidth = 100;
+            this.colAccion.Name = "colAccion";
+            this.colAccion.ReadOnly = true;
+            this.colAccion.ToolTipText = "Desplazamiento o Reducción que se aplicará.";
+            // 
             // editorGramatica
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -634,6 +660,7 @@
             this.tableLayoutPanel7.PerformLayout();
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTablaAcciones)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -661,10 +688,6 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.ListView tablaAcciones;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonCadenaEntrada;
         private System.Windows.Forms.TreeView treeView1;
@@ -688,5 +711,9 @@
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
+        private System.Windows.Forms.DataGridView dataGridViewTablaAcciones;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPila;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCadena;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colAccion;
     }
 }
