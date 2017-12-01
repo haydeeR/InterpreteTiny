@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Tsimbolos
 {
-   public class tabla_de_simbolos
+   public class MetaSimbolo
     {
 
         public string simbolo;
@@ -18,7 +18,7 @@ namespace Tsimbolos
         public string tipo;
         public string descripcion;
 
-        public tabla_de_simbolos(string simb,string val,int nunlin,int tam,int ambit,int id_,string tip,string descrip,string tipvar)
+        public MetaSimbolo(string simb,string val,int nunlin,int tam,int ambit,int id_,string tip,string descrip,string tipvar)
         {
 
             simbolo = simb;
@@ -35,7 +35,7 @@ namespace Tsimbolos
 
         
 
-        public tabla_de_simbolos()
+        public MetaSimbolo()
         {
                 
         }

@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(editorGramatica));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.abrirGramaticaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,15 +69,15 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.dataGridViewTablaAcciones = new System.Windows.Forms.DataGridView();
+            this.colPila = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCadena = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAccion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tablaLr1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.dataGridViewTablaAcciones = new System.Windows.Forms.DataGridView();
-            this.colPila = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCadena = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAccion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip1.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -87,10 +87,10 @@
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTablaAcciones)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTablaAcciones)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -504,6 +504,61 @@
             this.tableLayoutPanel6.Size = new System.Drawing.Size(454, 329);
             this.tableLayoutPanel6.TabIndex = 1;
             // 
+            // dataGridViewTablaAcciones
+            // 
+            this.dataGridViewTablaAcciones.AllowUserToAddRows = false;
+            this.dataGridViewTablaAcciones.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.LightBlue;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.White;
+            this.dataGridViewTablaAcciones.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridViewTablaAcciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewTablaAcciones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colPila,
+            this.colCadena,
+            this.colAccion});
+            this.dataGridViewTablaAcciones.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewTablaAcciones.Location = new System.Drawing.Point(3, 22);
+            this.dataGridViewTablaAcciones.Name = "dataGridViewTablaAcciones";
+            this.dataGridViewTablaAcciones.ReadOnly = true;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.White;
+            this.dataGridViewTablaAcciones.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            this.dataGridViewTablaAcciones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewTablaAcciones.Size = new System.Drawing.Size(448, 304);
+            this.dataGridViewTablaAcciones.TabIndex = 16;
+            // 
+            // colPila
+            // 
+            this.colPila.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colPila.HeaderText = "PILA";
+            this.colPila.MinimumWidth = 100;
+            this.colPila.Name = "colPila";
+            this.colPila.ReadOnly = true;
+            this.colPila.ToolTipText = "Pila de desplazamientos y/o reducciones.";
+            // 
+            // colCadena
+            // 
+            this.colCadena.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colCadena.HeaderText = "CADENA";
+            this.colCadena.MinimumWidth = 100;
+            this.colCadena.Name = "colCadena";
+            this.colCadena.ReadOnly = true;
+            this.colCadena.ToolTipText = "Cadena de entrada.";
+            // 
+            // colAccion
+            // 
+            this.colAccion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colAccion.HeaderText = "ACCION";
+            this.colAccion.MinimumWidth = 100;
+            this.colAccion.Name = "colAccion";
+            this.colAccion.ReadOnly = true;
+            this.colAccion.ToolTipText = "Desplazamiento o Reducción que se aplicará.";
+            // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 1;
@@ -571,61 +626,6 @@
             this.tableLayoutPanel8.Size = new System.Drawing.Size(444, 265);
             this.tableLayoutPanel8.TabIndex = 11;
             // 
-            // dataGridViewTablaAcciones
-            // 
-            this.dataGridViewTablaAcciones.AllowUserToAddRows = false;
-            this.dataGridViewTablaAcciones.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.LightBlue;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
-            this.dataGridViewTablaAcciones.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridViewTablaAcciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewTablaAcciones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colPila,
-            this.colCadena,
-            this.colAccion});
-            this.dataGridViewTablaAcciones.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewTablaAcciones.Location = new System.Drawing.Point(3, 22);
-            this.dataGridViewTablaAcciones.Name = "dataGridViewTablaAcciones";
-            this.dataGridViewTablaAcciones.ReadOnly = true;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
-            this.dataGridViewTablaAcciones.RowsDefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridViewTablaAcciones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewTablaAcciones.Size = new System.Drawing.Size(448, 304);
-            this.dataGridViewTablaAcciones.TabIndex = 16;
-            // 
-            // colPila
-            // 
-            this.colPila.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colPila.HeaderText = "PILA";
-            this.colPila.MinimumWidth = 100;
-            this.colPila.Name = "colPila";
-            this.colPila.ReadOnly = true;
-            this.colPila.ToolTipText = "Pila de desplazamientos y/o reducciones.";
-            // 
-            // colCadena
-            // 
-            this.colCadena.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colCadena.HeaderText = "CADENA";
-            this.colCadena.MinimumWidth = 100;
-            this.colCadena.Name = "colCadena";
-            this.colCadena.ReadOnly = true;
-            this.colCadena.ToolTipText = "Cadena de entrada.";
-            // 
-            // colAccion
-            // 
-            this.colAccion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colAccion.HeaderText = "ACCION";
-            this.colAccion.MinimumWidth = 100;
-            this.colAccion.Name = "colAccion";
-            this.colAccion.ReadOnly = true;
-            this.colAccion.ToolTipText = "Desplazamiento o Reducción que se aplicará.";
-            // 
             // editorGramatica
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -643,6 +643,7 @@
             this.Name = "editorGramatica";
             this.Text = "Editor y Analizador de gramaticas";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.editorGramatica_FormClosed);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabControl2.ResumeLayout(false);
@@ -654,13 +655,13 @@
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTablaAcciones)).EndInit();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel7.PerformLayout();
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTablaAcciones)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

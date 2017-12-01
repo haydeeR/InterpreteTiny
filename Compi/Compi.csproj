@@ -47,6 +47,7 @@
     <Compile Include="Accion.cs" />
     <Compile Include="AnalizadorLexico.cs" />
     <Compile Include="ArbolAS.cs" />
+    <Compile Include="NodoArblAS.cs" />
     <Compile Include="AristaLR1.cs" />
     <Compile Include="Cuadruplo.cs" />
     <Compile Include="Cuadruplos.cs" />
@@ -85,12 +86,12 @@
     <Compile Include="SentenceDefinition.cs" />
     <Compile Include="TablaDeAcciones.cs" />
     <Compile Include="TablaDesplazamientos.cs" />
-    <Compile Include="tabla_de_simbolos.cs" />
+    <Compile Include="MetaSimbolo.cs" />
     <Compile Include="Tabla_Errores.cs" />
     <Compile Include="TE.cs" />
     <Compile Include="TokenColumn.cs" />
     <Compile Include="TokenDefinition.cs" />
-    <Compile Include="TS.cs" />
+    <Compile Include="TablaSimbolos.cs" />
     <EmbeddedResource Include="EditorYAnalisisGramaticas.resx">
       <DependentUpon>EditorYAnalisisGramaticas.cs</DependentUpon>
     </EmbeddedResource>

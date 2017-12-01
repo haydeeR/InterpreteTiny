@@ -435,8 +435,8 @@ namespace Compi
             listasDeTokens = analizer.TokenDefinitions;
             listasDeSentencias = analizer.SentenceDefinitions;
 
-            this.llenarTablaAcciones(listasDeSentencias);
-            //this.llenarTablaAcciones(listasDeTokens);
+            //Llena la tabla de acciones en base a las sentencias
+            //this.llenarTablaAcciones(listasDeSentencias);
         }
 
 
@@ -573,44 +573,44 @@ namespace Compi
 
         }
 
-        private List<ArbolAS> arboles = new List<ArbolAS>();
-        private ArbolAS raiz;
+        private List<NodoArblAS> arboles = new List<NodoArblAS>();
+        private NodoArblAS raiz;
 
         private void creaArbol()
         {
-            arboles = new List<ArbolAS>();
+            arboles = new List<NodoArblAS>();
 
-            ArbolAS label_002 = new ArbolAS(new DslToken(TokenType.KeyWord, ":="));
-            ArbolAS id_001 = new ArbolAS(new DslToken(TokenType.Id, "_Id001"));
-            ArbolAS opMult_001 = new ArbolAS(new DslToken(TokenType.OperadorMult, "*"));
-            ArbolAS opMult_001_iz = new ArbolAS(new DslToken(TokenType.Numero, "3"));
-            ArbolAS opMult_001_der = new ArbolAS(new DslToken(TokenType.Numero, "4"));
+            NodoArblAS label_002 = new NodoArblAS(new DslToken(TokenType.KeyWord, ":="));
+            NodoArblAS id_001 = new NodoArblAS(new DslToken(TokenType.Id, "_Id001"));
+            NodoArblAS opMult_001 = new NodoArblAS(new DslToken(TokenType.OperadorMult, "*"));
+            NodoArblAS opMult_001_iz = new NodoArblAS(new DslToken(TokenType.Numero, "3"));
+            NodoArblAS opMult_001_der = new NodoArblAS(new DslToken(TokenType.Numero, "4"));
             opMult_001.setNodoIzquierdo(opMult_001_iz);
             opMult_001.setNodoDerecho(opMult_001_der);
             label_002.setNodoIzquierdo(id_001);
             label_002.setNodoDerecho(opMult_001);
 
-            ArbolAS label_001 = new ArbolAS(new DslToken(TokenType.KeyWord, ":="));
-            ArbolAS id_002 = new ArbolAS(new DslToken(TokenType.Id, "_Id001"));
-            ArbolAS opMult_002 = new ArbolAS(new DslToken(TokenType.OperadorMult, "*"));
-            ArbolAS opMult_002_iz = new ArbolAS(new DslToken(TokenType.Numero, "6"));
-            ArbolAS opMult_002_der = new ArbolAS(new DslToken(TokenType.Numero, "8"));
+            NodoArblAS label_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, ":="));
+            NodoArblAS id_002 = new NodoArblAS(new DslToken(TokenType.Id, "_Id001"));
+            NodoArblAS opMult_002 = new NodoArblAS(new DslToken(TokenType.OperadorMult, "*"));
+            NodoArblAS opMult_002_iz = new NodoArblAS(new DslToken(TokenType.Numero, "6"));
+            NodoArblAS opMult_002_der = new NodoArblAS(new DslToken(TokenType.Numero, "8"));
             opMult_002.setNodoIzquierdo(opMult_002_iz);
             opMult_002.setNodoDerecho(opMult_002_der);
             label_001.setNodoIzquierdo(id_002);
             label_001.setNodoDerecho(opMult_002);
 
-            ArbolAS else_001 = new ArbolAS(new DslToken(TokenType.KeyWord, "else"));
+            NodoArblAS else_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "else"));
             else_001.setNodoIzquierdo(label_001);
             else_001.setNodoDerecho(label_002);
 
-            ArbolAS exp_001 = new ArbolAS(new DslToken(TokenType.OperadorComp, "<"));
-            ArbolAS operandoComp_001_der = new ArbolAS(new DslToken(TokenType.Numero, "10"));
-            ArbolAS exp_002 = new ArbolAS(new DslToken(TokenType.OperadorSuma, "+"));
-            ArbolAS id_003 = new ArbolAS(new DslToken(TokenType.Id, "_Id003"));
-            ArbolAS opSum_001 = new ArbolAS(new DslToken(TokenType.OperadorMult, "+"));
-            ArbolAS opSum_001_iz = new ArbolAS(new DslToken(TokenType.Numero, "6"));
-            ArbolAS opSum_001_der = new ArbolAS(new DslToken(TokenType.Numero, "8"));
+            NodoArblAS exp_001 = new NodoArblAS(new DslToken(TokenType.OperadorComp, "<"));
+            NodoArblAS operandoComp_001_der = new NodoArblAS(new DslToken(TokenType.Numero, "10"));
+            NodoArblAS exp_002 = new NodoArblAS(new DslToken(TokenType.OperadorSuma, "+"));
+            NodoArblAS id_003 = new NodoArblAS(new DslToken(TokenType.Id, "_Id003"));
+            NodoArblAS opSum_001 = new NodoArblAS(new DslToken(TokenType.OperadorMult, "+"));
+            NodoArblAS opSum_001_iz = new NodoArblAS(new DslToken(TokenType.Numero, "6"));
+            NodoArblAS opSum_001_der = new NodoArblAS(new DslToken(TokenType.Numero, "8"));
             opSum_001.setNodoIzquierdo(opSum_001_iz);
             opSum_001.setNodoDerecho(opSum_001_der);
             exp_002.setNodoIzquierdo(id_003);
@@ -618,26 +618,26 @@ namespace Compi
             exp_001.setNodoDerecho(operandoComp_001_der);
             exp_001.setNodoIzquierdo(exp_002);
 
-            ArbolAS if_001 = new ArbolAS(new DslToken(TokenType.KeyWord, "if"));
+            NodoArblAS if_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "if"));
             if_001.setNodoIzquierdo(exp_001);
             if_001.setNodoDerecho(else_001);
 
 
-            ArbolAS id_004 = new ArbolAS(new DslToken(TokenType.Id, "_Id004"));
-            ArbolAS write_001 = new ArbolAS(new DslToken(TokenType.KeyWord, "write"));
+            NodoArblAS id_004 = new NodoArblAS(new DslToken(TokenType.Id, "_Id004"));
+            NodoArblAS write_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
             write_001.setNodoIzquierdo(id_004);
 
-            ArbolAS id_005 = new ArbolAS(new DslToken(TokenType.Id, "_Id004"));
-            ArbolAS read_001 = new ArbolAS(new DslToken(TokenType.KeyWord, "read"));
+            NodoArblAS id_005 = new NodoArblAS(new DslToken(TokenType.Id, "_Id004"));
+            NodoArblAS read_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "read"));
             read_001.setNodoIzquierdo(id_005);
 
-            ArbolAS num_001 = new ArbolAS(new DslToken(TokenType.Numero, "7"));
-            ArbolAS num_002 = new ArbolAS(new DslToken(TokenType.Numero, "2"));
-            ArbolAS opSum_002 = new ArbolAS(new DslToken(TokenType.OperadorSuma, "+"));
+            NodoArblAS num_001 = new NodoArblAS(new DslToken(TokenType.Numero, "7"));
+            NodoArblAS num_002 = new NodoArblAS(new DslToken(TokenType.Numero, "2"));
+            NodoArblAS opSum_002 = new NodoArblAS(new DslToken(TokenType.OperadorSuma, "+"));
             opSum_002.setNodoIzquierdo(num_002);
             opSum_002.setNodoDerecho(num_001);
-            ArbolAS id_006 = new ArbolAS(new DslToken(TokenType.Id, "_Id006"));
-            ArbolAS assign_001 = new ArbolAS(new DslToken(TokenType.KeyWord, ":="));
+            NodoArblAS id_006 = new NodoArblAS(new DslToken(TokenType.Id, "_Id006"));
+            NodoArblAS assign_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, ":="));
             assign_001.setNodoIzquierdo(id_006);
             assign_001.setNodoDerecho(opSum_002);
 
@@ -645,6 +645,11 @@ namespace Compi
             arboles.Add(read_001);
             arboles.Add(write_001);
             arboles.Add(if_001);
+        }
+
+        private void editorGramatica_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.formini.Close();
         }
     }
 }

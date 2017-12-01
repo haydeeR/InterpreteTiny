@@ -8,69 +8,27 @@ namespace Compi
 {
     class ArbolAS
     {
-        DslToken token = null;
-        ArbolAS nodoDerecho = null;
-        ArbolAS nodoIzquierdo = null;
+        List<List<DslToken>> tokens;
+        List<DslSentence> sentences;
+        List<NodoArblAS> raices;
+        Stack<NodoArblAS> pilaNodos;
 
-        public ArbolAS(DslToken token)
+        public ArbolAS(List<List<DslToken>> theTokens, List<DslSentence> theSentences)
         {
-            this.token = token;
-            this.nodoDerecho = null;
-            this.nodoIzquierdo = null;
-        }
+            this.tokens = theTokens;
+            this.sentences = theSentences;
 
-        public ArbolAS(DslToken token,DslToken tokenIz, DslToken tokenDer)
-        {
-            this.token = token; 
-            this.nodoIzquierdo = new ArbolAS(tokenIz);
-            this.nodoDerecho = new ArbolAS(tokenDer);
-        }
-
-        public void setToken(DslToken token)
-        {
-            this.token = token;
-        }
-
-        public DslToken getToken()
-        {
-            return this.token;
-        }
-
-        public void setNodoIzquierdo(DslToken token)
-        {
-            if (this.token != null)
-                this.nodoIzquierdo.setToken(token);
-            else
-                this.nodoIzquierdo = new ArbolAS(token);
-        }
-
-        public ArbolAS getNodoIzquierdo()
-        {
-            return this.nodoIzquierdo;
-        }
-
-        public void setNodoDerecho(DslToken token)
-        {
-            if (this.token != null)
-                this.nodoDerecho.setToken(token);
-            else
-                this.nodoDerecho = new ArbolAS(token);
-        }
-
-        public ArbolAS getNodoDerecho()
-        {
-            return this.nodoDerecho;
+            this.raices = new List<NodoArblAS>();
+            this.pilaNodos = new Stack<NodoArblAS>();
         }
 
 
-        public void setNodoIzquierdo(ArbolAS nodo)
+        public void creaArboles()
         {
-            this.nodoIzquierdo = nodo;
+
         }
 
-        public void setNodoDerecho(ArbolAS nodo)
-        {
-            this.nodoDerecho = nodo;
-        }
+
+
     }
 }

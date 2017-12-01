@@ -14,12 +14,12 @@ namespace Compi
 
         private List<Cuadruplo> cuadruplos;
 
-        public List<List<Cuadruplo>> recorreArboles(List<ArbolAS> arboles)
+        public List<List<Cuadruplo>> recorreArboles(List<NodoArblAS> arboles)
         {
             List<List<Cuadruplo>> listsArboles = new List<List<Cuadruplo>>();
 
             if (arboles != null)
-                foreach (ArbolAS arbol in arboles)
+                foreach (NodoArblAS arbol in arboles)
                 {
                     List<Cuadruplo> listaux = null;
                     if ((listaux = recorreArbol(arbol)) != null)
@@ -29,7 +29,7 @@ namespace Compi
             return listsArboles;
         }
 
-        public List<Cuadruplo> recorreArbol(ArbolAS raiz)
+        public List<Cuadruplo> recorreArbol(NodoArblAS raiz)
         {
             cuadruplos = new List<Cuadruplo>();
 
@@ -44,12 +44,12 @@ namespace Compi
 
 
 
-        private Cuadruplo generaCuadruplo(ArbolAS nodo)
+        private Cuadruplo generaCuadruplo(NodoArblAS nodo)
         {
             Cuadruplo cuadruploGeneroIzq = null;
             Cuadruplo cuadruploGeneroDer = null;
-            ArbolAS nodoIzquierdo = nodo.getNodoIzquierdo();
-            ArbolAS nodoDerecho = nodo.getNodoDerecho();
+            NodoArblAS nodoIzquierdo = nodo.getNodoIzquierdo();
+            NodoArblAS nodoDerecho = nodo.getNodoDerecho();
 
             if (nodoIzquierdo == null && nodoDerecho == null)
                 return null;
@@ -100,7 +100,7 @@ namespace Compi
         }
 
 
-        private Cuadruplo generaCuadruplo(ArbolAS nodo, Cuadruplo cuadruploGeneroIzq, Cuadruplo cuadruploGeneroDer)
+        private Cuadruplo generaCuadruplo(NodoArblAS nodo, Cuadruplo cuadruploGeneroIzq, Cuadruplo cuadruploGeneroDer)
         {
             Cuadruplo aux = null;
 
@@ -123,7 +123,7 @@ namespace Compi
 
 
 
-        private Cuadruplo generaCuadruploIf(ArbolAS nodo, Cuadruplo cuadruploGeneroIzq, Cuadruplo cuadruploGeneroDer)
+        private Cuadruplo generaCuadruploIf(NodoArblAS nodo, Cuadruplo cuadruploGeneroIzq, Cuadruplo cuadruploGeneroDer)
         {
             Cuadruplo aux = null;
 
@@ -149,7 +149,7 @@ namespace Compi
             return aux;
         }
 
-        private Cuadruplo generaCuadruploElse(ArbolAS nodo, Cuadruplo cuadruploGeneroIzq, Cuadruplo cuadruploGeneroDer)
+        private Cuadruplo generaCuadruploElse(NodoArblAS nodo, Cuadruplo cuadruploGeneroIzq, Cuadruplo cuadruploGeneroDer)
         {
 
 

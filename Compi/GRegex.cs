@@ -26,7 +26,7 @@ namespace Compi
 
 
 
-        public static readonly string declarePattern = @"^(((Var)|(var))\{(int|float)(\s)+" + id + @"(\s)*(,(\s)*(" + id + @"))*\};?)$";
+        public static readonly string declarePattern = @"^(((Var)|(var))\{(int|float)(\s)*" + id + @"(\s)*(,(\s)*(" + id + @"))*\};?)$";
         public static readonly string readPattern = @"^(read\(" + id + @"\);?)$";
         public static readonly string printPattern = @"(" + cadena + @"," + identificadores + @")|(" + cadena + @")|(" + identificadores + @")";
         public static readonly string writePattern = @"^(((write)\()(" + printPattern + @")(\);?))$";

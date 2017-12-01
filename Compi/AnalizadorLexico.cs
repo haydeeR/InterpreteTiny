@@ -90,7 +90,7 @@ namespace Compi
                     {
                         while (sr.Peek() >= 0)
                         {
-                            line = sr.ReadLine();
+                            line = sr.ReadLine().Trim().Replace(" ", "");
                             sentences.AddRange(getSentenceDefinitions(line));
                         }
                     }
@@ -120,6 +120,7 @@ namespace Compi
                 foreach (DslSentence sentencia in sentences)
                 {
                     List<DslToken> tokensXLine = new List<DslToken>();
+
                     tokensXLine.AddRange(getTokens(sentencia.value.Replace(" ", "")));
                     tokens.Add(tokensXLine);
                 }
