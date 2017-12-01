@@ -85,4 +85,23 @@ namespace Compi
             return new DslSentence(this.sentenceType, this.value);
         }
     }
+
+
+
+    /// <summary>
+    /// Define que tipo de sentencia es la línea
+    /// </summary>
+    public enum SentenceType
+    {
+        SentenciaSimpleIf,
+        SentenciaElse,
+        SentenciaEndIf,
+        SentenciaRepeatStart,
+        SentenciaRepeatEnd,
+        SentenciaAssign,
+        SentenciaRead,
+        SentenciaWrite,
+        SentenciaDeclara,
+        SentenciaFinBloque,
+    }
 }

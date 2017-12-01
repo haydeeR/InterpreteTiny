@@ -12,6 +12,7 @@ namespace Compi
         List<DslSentence> sentences;
         List<NodoArblAS> raices;
         Stack<NodoArblAS> pilaNodos;
+        Stack<NodoArblAS> pilaNodosAux;
 
         List<TokenType> tokensIgnorar;
         List<TokenType> tokensImportantes;
@@ -61,6 +62,7 @@ namespace Compi
             this.tokensImportantes = new List<TokenType>();
 
             this.tokensImportantes.Add(TokenType.KeyWord);
+            this.tokensImportantes.Add(TokenType.OperadorAssign);
             this.tokensImportantes.Add(TokenType.OperadorComp);
             this.tokensImportantes.Add(TokenType.OperadorSuma);
             this.tokensImportantes.Add(TokenType.OperadorMult);
@@ -72,6 +74,8 @@ namespace Compi
         public void generaRamas()
         {
             NodoArblAS nodoAux;
+            this.pilaNodosAux = new Stack<NodoArblAS>();
+            bool finDeLinea = false;
 
             for (int index = 0; index < this.sentences.Count; index++)
             {
@@ -79,10 +83,29 @@ namespace Compi
                 {
                     this.tokens[index].ForEach(token =>
                     {
-                        nodoAux = this.creaNodo(token);
-                        if (nodoAux != null)
-                            agregaNodoPila(nodoAux);
+                        if (token.TokenType != TokenType.FinInstruccion)
+                        {
+                            nodoAux = this.creaNodo(token);
+                            if (nodoAux != null)
+                                agregaNodoPila(nodoAux);
+                        }
+                        else
+                        {
+                            finDeLinea = true;
+                            nodoAux = this.reduceNodosFinDeLinea();
+                            if (nodoAux != null)
+                                this.raices.Add(nodoAux);
+                        }
                     });
+
+                    if (!finDeLinea)
+                    {
+                        nodoAux = this.reduceNodosFinDeLinea();
+                        if (nodoAux != null)
+                            this.raices.Add(nodoAux);
+                    }
+                    else
+                        finDeLinea = false;
                 }
             }
         }
@@ -96,40 +119,122 @@ namespace Compi
 
 
 
-        public void agregaNodoPila(NodoArblAS nodo)
+        public void agregaNodoPila(NodoArblAS nuevoNodo)
         {
-            DslToken tokenAux = nodo.getToken();
+            DslToken tokenAux = nuevoNodo.getToken();
+            NodoArblAS ultimoNodoA;
 
             if (this.pilaNodos.Count == 0)
             {
-                this.pilaNodos.Push(nodo);
+                this.pilaNodos.Push(nuevoNodo);
                 return;
             }
-
-            if (this.tokensNormales.Contains(tokenAux.TokenType))
+            else if (nuevoNodo.getToken().TokenType == TokenType.AbreParent ||
+                nuevoNodo.getToken().TokenType == TokenType.AbreLlaves)
             {
-                this.pilaNodos.Push(nodo);
+                this.pilaNodos.Push(nuevoNodo);
+                return;
             }
-            else if (this.tokensIgnorar.Contains(tokenAux.TokenType))
+            else if (nuevoNodo.getToken().TokenType == TokenType.CierraParent)
             {
-                if (tokenAux.TokenType == TokenType.AbreParent ||
-                    tokenAux.TokenType == TokenType.AbreLlaves)
+                this.reduceNodosParentesis();
+            }
+            else if (nuevoNodo.getToken().TokenType == TokenType.CierraLlaves)
+            {
+                this.reduceNodosLlaves();
+            }
+            else
+            {
+                ultimoNodoA = this.pilaNodos.Peek();
+                if (nuevoNodo.tieneMayorPrioridad(ultimoNodoA) == 1)
                 {
-                    this.pilaNodos.Push(nodo);
-                    this.cuentaLLavesParentesis(nodo);
+                    if (nuevoNodo.setNodo(ultimoNodoA))
+                    {
+                        this.pilaNodos.Pop();
+                        this.pilaNodos.Push(nuevoNodo);
+                    }
                 }
                 else
                 {
-                    this.reduceNodos(nodo);
+                    this.pilaNodos.Push(nuevoNodo);
                 }
             }
-            else if (this.tokensImportantes.Contains(tokenAux.TokenType))
-            {
-                NodoArblAS nodoAux = this.reordenaPila(nodo);
-                if (nodoAux != null)
-                    this.pilaNodos.Push(nodoAux);
-            }
         }
+        //DslToken tokenAux = nodo.getToken();
+        //NodoArblAS ultimoNodoA;
+
+        //if (this.pilaNodos.Count == 0)
+        //{
+        //    this.pilaNodos.Push(nodo);
+        //    return;
+        //}
+        //else if (nodo.getToken().TokenType == TokenType.AbreParent ||
+        //    nodo.getToken().TokenType == TokenType.AbreLlaves)
+        //{
+        //    this.pilaNodos.Push(nodo);
+        //    return;
+        //}
+        //else if (nodo.getToken().TokenType == TokenType.CierraParent)
+        //{
+        //    this.reduceNodosParentesis();
+        //}
+        //else if (nodo.getToken().TokenType == TokenType.CierraLlaves)
+        //{
+        //    this.reduceNodosLlaves(nodo);
+        //}
+        //else
+        //{
+        //    ultimoNodoA = this.pilaNodos.Peek();
+        //    if (ultimoNodoA.tieneMayorPrioridad(nodo) == 1)
+        //    {
+        //        if (ultimoNodoA.getToken().TokenType != TokenType.AbreParent &&
+        //            ultimoNodoA.getToken().TokenType != TokenType.AbreLlaves)
+        //            ultimoNodoA.setNodo(nodo);
+        //        else
+        //            this.pilaNodos.Push(nodo);
+        //    }
+        //    else if (ultimoNodoA.tieneMayorPrioridad(nodo) == 0)
+        //    {
+        //        this.pilaNodos.Push(nodo);
+        //    }
+        //    else
+        //    {
+        //        while (ultimoNodoA != null && ultimoNodoA.tieneMayorPrioridad(nodo) == -1)
+        //        {
+        //            ultimoNodoA = this.pilaNodos.Pop();
+        //            nodo.setNodo(ultimoNodoA);
+        //            ultimoNodoA = this.pilaNodos.Count > 0 ? this.pilaNodos.Peek() : null;
+
+        //            if (ultimoNodoA == null || ultimoNodoA.tieneMayorPrioridad(nodo) >= 0)
+        //                this.pilaNodos.Push(nodo);
+        //        }
+        //    }
+        //}
+
+
+        //if (this.tokensNormales.Contains(tokenAux.TokenType))
+        //{
+        //    this.pilaNodos.Push(nodo);
+        //}
+        //else if (this.tokensIgnorar.Contains(tokenAux.TokenType))
+        //{
+        //    if (tokenAux.TokenType == TokenType.AbreParent ||
+        //        tokenAux.TokenType == TokenType.AbreLlaves)
+        //    {
+        //        this.pilaNodos.Push(nodo);
+        //        this.cuentaLLavesParentesis(nodo);
+        //    }
+        //    else
+        //    {
+        //        this.reduceNodos(nodo);
+        //    }
+        //}
+        //else if (this.tokensImportantes.Contains(tokenAux.TokenType))
+        //{
+        //    NodoArblAS nodoAux = this.reordenaPila(nodo);
+        //    if (nodoAux != null)
+        //        this.pilaNodos.Push(nodoAux);
+        //}
 
 
 
@@ -151,7 +256,7 @@ namespace Compi
             NodoArblAS ultimoNodo;
 
             ultimoNodo = this.pilaNodos.Peek();
-            while (this.tokensNormales.Contains(ultimoNodo.getToken().TokenType))
+            while (ultimoNodo.tieneMayorPrioridad(nuevoNodoImportante) == -1)
             {
                 ultimoNodo = this.pilaNodos.Pop();
                 nuevoNodoImportante.setNodo(ultimoNodo);
@@ -163,41 +268,143 @@ namespace Compi
 
 
 
-        public void reduceNodos(NodoArblAS nuevoNodo)
+        public NodoArblAS reduceNodosParentesis()
         {
-            DslToken nuevoToken = nuevoNodo.getToken();
+            NodoArblAS ultimoNodo = this.pilaNodos.Peek();
+            NodoArblAS otroNodo = null;
 
-            if (nuevoToken.TokenType == TokenType.CierraLlaves)
-                this.reduceNodosLlaves(nuevoNodo);
-            else if (nuevoToken.TokenType == TokenType.CierraParent)
-                this.reduceNodosParentesis(nuevoNodo);
-            else if (nuevoToken.TokenType == TokenType.FinInstruccion)
-                this.reduceNodosFinDeLinea(nuevoNodo);
+            while (ultimoNodo.getToken().TokenType != TokenType.AbreParent)
+            {
+                ultimoNodo = this.pilaNodos.Pop();
+                otroNodo = this.pilaNodos.Peek();
 
+                if (otroNodo.getToken().TokenType == TokenType.AbreParent)
+                {
+                    this.pilaNodos.Pop();
+                    this.pilaNodos.Push(ultimoNodo);
+                    break;
+                }
+
+                if (ultimoNodo.tieneMayorPrioridad(otroNodo) == 1)
+                {
+                    if (ultimoNodo.setNodo(otroNodo))
+                    {
+                        this.pilaNodos.Pop();
+                        this.pilaNodos.Push(ultimoNodo);
+                    }
+                }
+                else
+                {
+                    otroNodo.setNodo(ultimoNodo);
+                }
+
+                ultimoNodo = this.pilaNodos.Peek();
+            }
+
+
+            return ultimoNodo;
         }
 
 
 
-        public NodoArblAS reduceNodosParentesis(NodoArblAS nuevoNodo)
+        public NodoArblAS reduceNodosLlaves()
         {
+            NodoArblAS ultimoNodo = this.pilaNodos.Peek();
+            NodoArblAS otroNodo = null;
 
-            return null;
+            while (ultimoNodo.getToken().TokenType != TokenType.AbreLlaves)
+            {
+                ultimoNodo = this.pilaNodos.Pop();
+                otroNodo = this.pilaNodos.Peek();
+
+                if (otroNodo.getToken().TokenType == TokenType.AbreLlaves)
+                {
+                    this.pilaNodos.Pop();
+                    this.pilaNodos.Push(ultimoNodo);
+                    break;
+                }
+
+                if (ultimoNodo.tieneMayorPrioridad(otroNodo) == 1)
+                {
+                    if (ultimoNodo.setNodo(otroNodo))
+                    {
+                        this.pilaNodos.Pop();
+                        this.pilaNodos.Push(ultimoNodo);
+                    }
+                }
+                else
+                {
+                    otroNodo.setNodo(ultimoNodo);
+                }
+
+                ultimoNodo = this.pilaNodos.Peek();
+            }
+
+
+            return ultimoNodo;
         }
 
 
-
-        public NodoArblAS reduceNodosLlaves(NodoArblAS nuevoNodo)
+        public NodoArblAS reduceNodosFinDeLinea()
         {
+            Stack<NodoArblAS> bufferAux = null;
+            NodoArblAS ultimoNodo = null;
+            NodoArblAS otroNodo = null;
 
-            return null;
-        }
+
+            if (this.pilaNodos.Count == 1)
+                return this.pilaNodos.Pop();
+
+            bufferAux = new Stack<NodoArblAS>();
+            ultimoNodo = this.pilaNodos.Peek();
+
+            if (ultimoNodo.getToken().TokenType == TokenType.AbreLlaves ||
+                ultimoNodo.getToken().TokenType == TokenType.AbreParent)
+                return null;
+
+            while (this.pilaNodos.Count > 1 &&
+                (ultimoNodo.getToken().TokenType != TokenType.AbreLlaves ||
+                ultimoNodo.getToken().TokenType != TokenType.AbreParent))
+            {
+                ultimoNodo = this.pilaNodos.Pop();
+                otroNodo = this.pilaNodos.Peek();
+
+                if (otroNodo.getToken().TokenType == TokenType.AbreLlaves ||
+                otroNodo.getToken().TokenType == TokenType.AbreParent)
+                {
+                    this.pilaNodos.Push(ultimoNodo);
+                    return null;
+                }
+
+                if (ultimoNodo.tieneMayorPrioridad(otroNodo) == 1)
+                {
+                    if (ultimoNodo.setNodo(otroNodo))
+                    {
+                        this.pilaNodos.Pop();
+                        this.pilaNodos.Push(ultimoNodo);
+                    }
+                }
+                else if (ultimoNodo.tieneMayorPrioridad(otroNodo) == -1)
+                {
+                    otroNodo.setNodo(ultimoNodo);
+                    while (bufferAux.Count > 0)
+                    {
+                        if (otroNodo.setNodo(bufferAux.Peek()))
+                            bufferAux.Pop();
+                        else
+                            break;
+                    }
+                }
+                else
+                {
+                    bufferAux.Push(ultimoNodo);
+                }
+
+                ultimoNodo = this.pilaNodos.Peek();
+            }
 
 
-
-        public NodoArblAS reduceNodosFinDeLinea(NodoArblAS nuevoNodo)
-        {
-
-            return null;
+            return this.pilaNodos.Pop();
         }
     }
 }

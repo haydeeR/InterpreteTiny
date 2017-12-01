@@ -58,6 +58,8 @@ namespace Compi
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.Cadena, @"^" + GRegex.cadena));
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.Numero, @"^" + GRegex.numero));
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.KeyWord, @"^" + GRegex.keywords));
+
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorAssign, @"^" + GRegex.opAssign));
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorComp, @"^" + GRegex.opComp));
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorSuma, @"^" + GRegex.opSuma));
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorMult, @"^" + GRegex.opMult));
@@ -225,44 +227,5 @@ namespace Compi
         }
         #endregion
 
-    }
-
-    /// <summary>
-    /// Define que tipo de sentencia es la línea
-    /// </summary>
-    public enum SentenceType
-    {
-        SentenciaSimpleIf,
-        SentenciaElse,
-        SentenciaEndIf,
-        SentenciaRepeatStart,
-        SentenciaRepeatEnd,
-        SentenciaAssign,
-        SentenciaRead,
-        SentenciaWrite,
-        SentenciaDeclara,
-        SentenciaFinBloque,
-    }
-
-
-    /// <summary>
-    /// Define que tipo de token es
-    /// </summary>
-    public enum TokenType
-    {
-        Id,
-        Cadena,
-        Numero,
-        KeyWord,
-        OperadorComp,
-        OperadorSuma,
-        OperadorMult,
-        OperadorPote,
-        AbreParent,
-        CierraParent,
-        AbreLlaves,
-        CierraLlaves,
-        FinInstruccion,
-        SeparadorComa,
     }
 }
