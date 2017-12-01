@@ -11,7 +11,7 @@ namespace Compi
         public static readonly string id = @"_[a-zA-Z0-9]+";
         public static readonly string cadena = @"""([a-zA-Z0-9]|(:|;|,|\.|\[|\]|\*|\+|\?|¿|¡|!|#|%|&|/|~))+""";
         public static readonly string numero = @"\d+";
-        public static readonly string keywords = @"(if|then|else|endif|read|write|print|repeat|until|:=|Var|var)";
+        public static readonly string keywords = @"(if|else|endif|read|write|repeat|until|:=|Var|var)";
         public static readonly string opComp = @"(==|<|>)";
         public static readonly string opSuma = @"(\+|-)";
         public static readonly string opMult = @"(\*|/)";

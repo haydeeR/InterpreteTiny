@@ -72,5 +72,25 @@ namespace Compi
         {
             this.nodoDerecho = nodo;
         }
+
+
+        public bool setNodo(NodoArblAS nodo)
+        {
+            bool result = false;
+
+            if (this.nodoIzquierdo == null)
+            {
+                this.nodoIzquierdo = nodo;
+                result = true;
+            }
+            else if(this.nodoDerecho == null)
+            {
+                this.nodoDerecho = nodo;
+                result = true;
+            }
+
+            return result;
+        }
+
     }
 }

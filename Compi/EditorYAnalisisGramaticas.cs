@@ -44,6 +44,8 @@ namespace Compi
 
         private TablaDesplazamientos tablaDesplazamientos = null;
 
+        private ArbolAS arbol = null;
+
         public editorGramatica(ini i)
         {
             this.formini = i;
@@ -429,11 +431,15 @@ namespace Compi
         private void buttonCadenaEntrada_Click(object sender, EventArgs e)
         {
             List<List<DslToken>> listasDeTokens = null;
-            List<DslSentence> listasDeSentencias = null;
+            List<DslSentence> listaDeSentencias = null;
             AnalizadorLexico analizer = new AnalizadorLexico();
             analizer.tokeniza(this.fullFileName);
             listasDeTokens = analizer.TokenDefinitions;
-            listasDeSentencias = analizer.SentenceDefinitions;
+            listaDeSentencias = analizer.SentenceDefinitions;
+
+            this.arbol = new ArbolAS(listasDeTokens, listaDeSentencias);
+            this.arbol.generaRamas();
+
 
             //Llena la tabla de acciones en base a las sentencias
             //this.llenarTablaAcciones(listasDeSentencias);
