@@ -75,7 +75,7 @@ namespace Compi
         {
             NodoArblAS nodoAux;
             this.pilaNodosAux = new Stack<NodoArblAS>();
-            bool finDeLinea = false;
+            //bool finDeLinea = false;
 
             for (int index = 0; index < this.sentences.Count; index++)
             {
@@ -83,29 +83,29 @@ namespace Compi
                 {
                     this.tokens[index].ForEach(token =>
                     {
-                        if (token.TokenType != TokenType.FinInstruccion)
-                        {
-                            nodoAux = this.creaNodo(token);
-                            if (nodoAux != null)
-                                agregaNodoPila(nodoAux);
-                        }
-                        else
-                        {
-                            finDeLinea = true;
-                            nodoAux = this.reduceNodosFinDeLinea();
-                            if (nodoAux != null)
-                                this.raices.Add(nodoAux);
-                        }
+                        //if (token.TokenType != TokenType.FinInstruccion)
+                        //{
+                        nodoAux = this.creaNodo(token);
+                        if (nodoAux != null)
+                            agregaNodoPila(nodoAux);
+                        //}
+                        //else
+                        //{
+                        //    finDeLinea = true;
+                        //    nodoAux = this.reduceNodosFinDeLinea();
+                        //    if (nodoAux != null)
+                        //        this.raices.Add(nodoAux);
+                        //}
                     });
 
-                    if (!finDeLinea)
-                    {
-                        nodoAux = this.reduceNodosFinDeLinea();
-                        if (nodoAux != null)
-                            this.raices.Add(nodoAux);
-                    }
-                    else
-                        finDeLinea = false;
+                    //if (!finDeLinea)
+                    //{
+                    //    nodoAux = this.reduceNodosFinDeLinea();
+                    //    if (nodoAux != null)
+                    //        this.raices.Add(nodoAux);
+                    //}
+                    //else
+                    //    finDeLinea = false;
                 }
             }
         }
@@ -160,81 +160,6 @@ namespace Compi
                 }
             }
         }
-        //DslToken tokenAux = nodo.getToken();
-        //NodoArblAS ultimoNodoA;
-
-        //if (this.pilaNodos.Count == 0)
-        //{
-        //    this.pilaNodos.Push(nodo);
-        //    return;
-        //}
-        //else if (nodo.getToken().TokenType == TokenType.AbreParent ||
-        //    nodo.getToken().TokenType == TokenType.AbreLlaves)
-        //{
-        //    this.pilaNodos.Push(nodo);
-        //    return;
-        //}
-        //else if (nodo.getToken().TokenType == TokenType.CierraParent)
-        //{
-        //    this.reduceNodosParentesis();
-        //}
-        //else if (nodo.getToken().TokenType == TokenType.CierraLlaves)
-        //{
-        //    this.reduceNodosLlaves(nodo);
-        //}
-        //else
-        //{
-        //    ultimoNodoA = this.pilaNodos.Peek();
-        //    if (ultimoNodoA.tieneMayorPrioridad(nodo) == 1)
-        //    {
-        //        if (ultimoNodoA.getToken().TokenType != TokenType.AbreParent &&
-        //            ultimoNodoA.getToken().TokenType != TokenType.AbreLlaves)
-        //            ultimoNodoA.setNodo(nodo);
-        //        else
-        //            this.pilaNodos.Push(nodo);
-        //    }
-        //    else if (ultimoNodoA.tieneMayorPrioridad(nodo) == 0)
-        //    {
-        //        this.pilaNodos.Push(nodo);
-        //    }
-        //    else
-        //    {
-        //        while (ultimoNodoA != null && ultimoNodoA.tieneMayorPrioridad(nodo) == -1)
-        //        {
-        //            ultimoNodoA = this.pilaNodos.Pop();
-        //            nodo.setNodo(ultimoNodoA);
-        //            ultimoNodoA = this.pilaNodos.Count > 0 ? this.pilaNodos.Peek() : null;
-
-        //            if (ultimoNodoA == null || ultimoNodoA.tieneMayorPrioridad(nodo) >= 0)
-        //                this.pilaNodos.Push(nodo);
-        //        }
-        //    }
-        //}
-
-
-        //if (this.tokensNormales.Contains(tokenAux.TokenType))
-        //{
-        //    this.pilaNodos.Push(nodo);
-        //}
-        //else if (this.tokensIgnorar.Contains(tokenAux.TokenType))
-        //{
-        //    if (tokenAux.TokenType == TokenType.AbreParent ||
-        //        tokenAux.TokenType == TokenType.AbreLlaves)
-        //    {
-        //        this.pilaNodos.Push(nodo);
-        //        this.cuentaLLavesParentesis(nodo);
-        //    }
-        //    else
-        //    {
-        //        this.reduceNodos(nodo);
-        //    }
-        //}
-        //else if (this.tokensImportantes.Contains(tokenAux.TokenType))
-        //{
-        //    NodoArblAS nodoAux = this.reordenaPila(nodo);
-        //    if (nodoAux != null)
-        //        this.pilaNodos.Push(nodoAux);
-        //}
 
 
 

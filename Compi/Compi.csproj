@@ -74,6 +74,7 @@
       <DependentUpon>NuevaGramatica.cs</DependentUpon>
     </Compile>
     <Compile Include="ParDatos.cs" />
+    <Compile Include="Pilas.cs" />
     <Compile Include="PrimeroYSiguienteModal.cs">
       <SubType>Form</SubType>
     </Compile>

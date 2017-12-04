@@ -15,10 +15,12 @@ namespace Compi
         string cadenaEntrada;
         string acciones = string.Empty;
         string accionDespReduc = string.Empty;
+        string tipoAccion = string.Empty;
+        string token = string.Empty;
 
         public string CadenaEntrada { get { return this.cadenaEntrada; } set { this.cadenaEntrada = value; } }
         public List<Desplazamiento> Desplazamientos { get { return this.desplazamientos; } set { this.desplazamientos = value; } }
-
+        public string Token { get { return this.token; } set { this.token = value; } }
 
         public string AccionDespOReduc { get { return this.accionDespReduc; } set { this.accionDespReduc = value; } }
 
@@ -27,7 +29,13 @@ namespace Compi
             get
             {
                 this.acciones = string.Empty;
-                desplazamientos.ForEach(desp => this.acciones += (desp.Token + desp.EstadoActual.getId().ToString()));
+                desplazamientos.ForEach(desp =>
+                {
+                    //if (desplazamientos.IndexOf(desp) < desplazamientos.Count - 1)
+                    //{
+                    this.acciones += (desp.Token + desp.EstadoActual.getId().ToString());
+                    //}
+                });
                 return this.acciones;
             }
             set
@@ -37,11 +45,12 @@ namespace Compi
         }
 
 
-        public Accion(Accion accionAnterior, string cadEntrada, string newMov)
+        public Accion(Accion accionAnterior, string cadEntrada, string newMov, string tokenAccion)
         {
             this.acciones = string.Empty;
-            cadenaEntrada = cadEntrada;
+            this.cadenaEntrada = cadEntrada;
             this.accionDespReduc = newMov;
+            this.token = tokenAccion;
             this.desplazamientos = new List<Desplazamiento>();
 
             if (accionAnterior != null && accionAnterior.desplazamientos.Count > 0)

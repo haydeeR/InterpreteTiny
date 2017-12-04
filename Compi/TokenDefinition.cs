@@ -118,7 +118,7 @@ namespace Compi
             {
                 prioridad = 50;
             }
-            if (this.TokenType == TokenType.KeyWord)
+            else if (this.TokenType == TokenType.KeyWord)
             {
                 if (this.Value != null &&
                     (this.Value.Contains("read") ||
@@ -128,6 +128,10 @@ namespace Compi
                 {
                     prioridad = 20;
                 }
+            }
+            else if (this.TokenType == TokenType.FinInstruccion)
+            {
+                prioridad = 10;
             }
 
             return prioridad;
@@ -146,20 +150,21 @@ namespace Compi
     /// </summary>
     public enum TokenType
     {
-        Id,
-        Cadena,
-        Numero,
-        KeyWord,
-        OperadorAssign,
-        OperadorComp,
-        OperadorSuma,
-        OperadorMult,
-        OperadorPote,
-        AbreParent,
-        CierraParent,
-        AbreLlaves,
-        CierraLlaves,
-        FinInstruccion,
-        SeparadorComa,
+        Id,//0
+        Cadena,//1
+        Numero,//2
+        TipoDato,//4
+        OperadorAssign,//5
+        OperadorComp,//6
+        OperadorSuma,//7
+        OperadorMult,//8
+        OperadorPote,//9
+        KeyWord,//3
+        AbreParent,//10
+        CierraParent,//11
+        AbreLlaves,//12
+        CierraLlaves,//13
+        FinInstruccion,//14
+        SeparadorComa,//15
     }
 }

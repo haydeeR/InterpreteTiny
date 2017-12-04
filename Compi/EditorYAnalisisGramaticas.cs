@@ -437,12 +437,12 @@ namespace Compi
             listasDeTokens = analizer.TokenDefinitions;
             listaDeSentencias = analizer.SentenceDefinitions;
 
-            this.arbol = new ArbolAS(listasDeTokens, listaDeSentencias);
-            this.arbol.generaRamas();
+            //this.arbol = new ArbolAS(listasDeTokens, listaDeSentencias);
+            //this.arbol.generaRamas();
 
 
             //Llena la tabla de acciones en base a las sentencias
-            //this.llenarTablaAcciones(listasDeSentencias);
+            this.llenarTablaAcciones(listaDeSentencias);
         }
 
 
@@ -455,6 +455,7 @@ namespace Compi
         private void llenarTablaAcciones(List<DslSentence> cadenas)
         {
             List<EdoLR1> estadosAux = g != null ? g.getListaEdos() : null;
+            string cadenaDeEntrada = string.Empty;
             bool desplazo = false;
             bool operaExitosa = false;
 
@@ -462,19 +463,34 @@ namespace Compi
             {
                 TablaDeAcciones tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g.getListaEdos()[0]);
 
-                foreach (DslSentence cadLinea in cadenas)
+                try
                 {
-                    string cadAux = cadLinea.value.Replace(" ", "");
-                    for (int ind = 0; ind < cadAux.Length; ind++)
+                    if (File.Exists(this.fullFileName))
                     {
-                        operaExitosa = tablaDeAcciones.agregaCaracter(cadAux[ind].ToString(), estadosAux, cadAux.Substring(ind), out desplazo);
-                        if (!operaExitosa)
-                            break;
-                        ind = !desplazo ? (ind - 1) : ind;
+                        using (StreamReader sr = new StreamReader(this.fullFileName))
+                        {
+                            while (sr.Peek() >= 0)
+                            {
+                                cadenaDeEntrada += (sr.ReadLine().Trim().Replace(" ", ""));
+                            }
+                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("The process failed: {0}", e.ToString());
+                }
+
+                for (int ind = 0; ind < cadenaDeEntrada.Length; ind++)
+                {
+                    operaExitosa = tablaDeAcciones.agregaCaracter(cadenaDeEntrada[ind].ToString(), estadosAux, cadenaDeEntrada.Substring(ind), out desplazo);
                     if (!operaExitosa)
                         break;
+                    ind = !desplazo ? (ind - 1) : ind;
                 }
+
+                /*if (!operaExitosa)
+                    break;*/
 
                 this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
                 this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;
