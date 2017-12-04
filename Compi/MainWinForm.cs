@@ -10,10 +10,11 @@ using System.Windows.Forms;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
+using Tsimbolos;
 
 namespace Compi
 {
-    public partial class editorGramatica : Form
+    public partial class MainWinForm : Form
     {
         /// <summary>
         /// Variable para la gramatica a agregar
@@ -36,20 +37,27 @@ namespace Compi
         /// </summary>
         private ini formini = null;
 
+        private TablaSimbolos tablaSimbolos = null;
+
         private ListViewItem lvAux = null;
 
         private ListViewItem.ListViewSubItem lvSubItem = null;
 
-        private string fullFileName;
+        private string fullFileName = @"Gramatica\Tiny_Final.txt";
+
+        private string fullFileNamePrograma = string.Empty;
 
         private TablaDesplazamientos tablaDesplazamientos = null;
 
         private ArbolAS arbol = null;
 
-        public editorGramatica(ini i)
+        public MainWinForm(ini i)
         {
-            this.formini = i;
             InitializeComponent();
+            this.formini = i;
+            this.cargaGramatica();
+            this.mainTabControlContent.SelectedTab = this.mainTabControlContent.TabPages[1];
+            this.comBoxTipoEjecucion.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -108,23 +116,22 @@ namespace Compi
                 pathFile = fnew.FileName;
                 var fileName = Path.GetFileName(fnew.FileName);
                 //Si tiene ya un archivo el tabControl agrega una pestaña mas 
-                for (int i = 0; i < tabControl1.TabPages.Count; i++)
-                    if (fileName == tabControl1.TabPages[i].Text)
+                for (int i = 0; i < mainTabControlContent.TabPages.Count; i++)
+                    if (fileName == mainTabControlContent.TabPages[i].Text)
                         band = 1;
                 if (band == 0)
                 {
                     //Se carga el contenido del programa para ponerlo linea por linea en el tabControl
                     txtOfProgram = sr.ReadToEnd();
-                    tabControl1.TabPages.Add(fileName);
-                    tabIndex = tabControl1.TabPages.Count - 1;
-                    tabControl1.TabPages[tabControl1.TabPages.Count - 1].Controls.Add(CreaText(txtOfProgram, Color.White, Color.Black, tabControl1));
-                    tabControl1.TabPages[tabControl1.TabPages.Count - 1].Controls.Add(imprimeCodigo(pathFile));
-                    tabControl1.TabPages[tabControl1.TabPages.Count - 1].Controls.Add(imprimeCodigo(""));
-                    tabIndex = tabControl1.TabPages.Count - 1;
+                    mainTabControlContent.TabPages.Add(fileName);
+                    tabIndex = mainTabControlContent.TabPages.Count - 1;
+                    mainTabControlContent.TabPages[mainTabControlContent.TabPages.Count - 1].Controls.Add(CreaText(txtOfProgram, Color.White, Color.Black, mainTabControlContent));
+                    mainTabControlContent.TabPages[mainTabControlContent.TabPages.Count - 1].Controls.Add(imprimeCodigo(pathFile));
+                    mainTabControlContent.TabPages[mainTabControlContent.TabPages.Count - 1].Controls.Add(imprimeCodigo(""));
+                    tabIndex = mainTabControlContent.TabPages.Count - 1;
                 }
                 //Se cierra el archivo que se abrio
                 sr.Close();
-                analizaCodigo.Enabled = true;
                 this.g = new Gramatica(fileName);
             }
         }
@@ -136,15 +143,18 @@ namespace Compi
         /// <param name="e"></param>
         private void analizaCodigo_Click(object sender, EventArgs e)
         {
-            string aLine = "", nullLine = "";
-            string rutaError = rutaModificada(tabControl1.TabPages[tabIndex].Controls[1].Text);
-            if (File.Exists(rutaError))
-                File.Delete(rutaError);
+            this.analizaCodigo_Gramatica();
+        }
 
-            //Se analiza con el analizador lexico
-            StringReader strReader = new StringReader(this.tabControl1.TabPages[this.tabIndex].Controls[0].Text);
-            while ((aLine = strReader.ReadLine()) != null)
+
+        private void analizaCodigo_Gramatica()
+        {
+            string aLine = "", nullLine = "";
+
+            List<string> lineas = this.txtCtrlGramatica.Text.Replace("\r\n", "@").Split('@').ToList();
+            for (int ind = 0; ind < lineas.Count; ind++)
             {
+                aLine = lineas[ind];
                 if (aLine != null)
                 {
                     nullLine = aLine.Trim();
@@ -159,16 +169,9 @@ namespace Compi
                 else
                     break;
             }
-            this.btnSiguienteYPrim.Enabled = true;
-            this.toolStripDropDownButton3.Enabled = true;
             this.textBox1.BackColor = Color.Green;
             this.textBox1.ForeColor = Color.White;
             this.textBox1.Text = "Gramatica escrita correctamente";
-            /*
-            abrirArchError(actual2);
-            if (!File.Exists(actual2))
-                textBox1.Text = "No se encontraron errores";
-            */
         }
 
         public void abrirArchError(string rutaArch)
@@ -215,7 +218,7 @@ namespace Compi
         {
             if (tabIndex == -1)
                 tabIndex = 0;
-            tabControl1.TabPages[tabIndex].Tag = "modif";
+            mainTabControlContent.TabPages[tabIndex].Tag = "modif";
         }
 
         /// <summary>
@@ -236,13 +239,13 @@ namespace Compi
          */
         private void btnGuarda_Click(object sender, EventArgs e)
         {
-            if (tabIndex != -1 && tabControl1.TabPages[tabIndex].Tag.ToString() == "nomodif")
+            if (tabIndex != -1 && mainTabControlContent.TabPages[tabIndex].Tag.ToString() == "nomodif")
             {
                 StreamWriter myStream;
-                myStream = new System.IO.StreamWriter(tabControl1.TabPages[tabIndex].Controls[1].Text);
-                myStream.Write(tabControl1.TabPages[tabIndex].Controls[0].Text);
+                myStream = new System.IO.StreamWriter(mainTabControlContent.TabPages[tabIndex].Controls[1].Text);
+                myStream.Write(mainTabControlContent.TabPages[tabIndex].Controls[0].Text);
                 myStream.Close();
-                tabControl1.TabPages[tabIndex].Tag = "nomodif";
+                mainTabControlContent.TabPages[tabIndex].Tag = "nomodif";
             }
             else
                 guardarComo(null, null);
@@ -258,14 +261,14 @@ namespace Compi
                 saveFileDialog1.Filter = "txt files (*.txt)|*.txt";
                 saveFileDialog1.FilterIndex = 1;
                 saveFileDialog1.RestoreDirectory = true;
-                saveFileDialog1.FileName = tabControl1.TabPages[tabIndex].Text;
+                saveFileDialog1.FileName = mainTabControlContent.TabPages[tabIndex].Text;
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     myStream = new System.IO.StreamWriter(saveFileDialog1.FileName);
-                    myStream.Write(tabControl1.TabPages[tabIndex].Controls[0].Text);
+                    myStream.Write(mainTabControlContent.TabPages[tabIndex].Controls[0].Text);
                     myStream.Close();
-                    tabControl1.TabPages[tabIndex].Controls[1].Text = saveFileDialog1.FileName;
-                    tabControl1.TabPages[tabIndex].Tag = "nomodif";
+                    mainTabControlContent.TabPages[tabIndex].Controls[1].Text = saveFileDialog1.FileName;
+                    mainTabControlContent.TabPages[tabIndex].Tag = "nomodif";
                 }
             }
         }
@@ -283,16 +286,16 @@ namespace Compi
 
         private void lR1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //if (g != null && g.getNTerminal() != null)
-            //{
-            //    g.constructorLR1(this);
-            //    g.llenarTablaLR1();
-            //    this.dibujaAFD();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Esta gramatica  no tiene terminales");
-            //}
+            if (g != null && g.getNTerminal() != null)
+            {
+                //g.constructorLR1(this);
+                //g.llenarTablaLR1();
+                //this.dibujaAFD();
+            }
+            else
+            {
+                MessageBox.Show("Esta gramatica  no tiene terminales");
+            }
         }
 
         /// <summary>
@@ -432,54 +435,115 @@ namespace Compi
         {
             List<List<DslToken>> listasDeTokens = null;
             List<DslSentence> listaDeSentencias = null;
+            List<string> lineasTiny = null;
             AnalizadorLexico analizer = new AnalizadorLexico();
-            analizer.tokeniza(this.fullFileName);
-            listasDeTokens = analizer.TokenDefinitions;
-            listaDeSentencias = analizer.SentenceDefinitions;
+            string codigoTiny = string.Empty;
 
-            //this.arbol = new ArbolAS(listasDeTokens, listaDeSentencias);
-            //this.arbol.generaRamas();
+            codigoTiny = this.txtCtrlPrograma.Text.Replace("\t", "").Replace(" ", "");
+            lineasTiny = codigoTiny.Replace("\r\n", "@").Split('@').ToList();
 
+            if (lineasTiny != null && lineasTiny.Count > 0)
+            {
+                analizer.tokeniza(lineasTiny);
+                listasDeTokens = analizer.TokenDefinitions;
+                listaDeSentencias = analizer.SentenceDefinitions;
 
-            //Llena la tabla de acciones en base a las sentencias
-            this.llenarTablaAcciones(listaDeSentencias);
+                //Llenamos la tabal de simbolos
+                this.llenaTablaDeSimbolos(listaDeSentencias, listasDeTokens);
+                //Mostramos en el grid la tabla de simbolos
+                this.muestraTablaDeSimbolos();
+                //Llena la tabla de acciones en base a las sentencias
+                this.llenarTablaAcciones(lineasTiny);
+
+            }
         }
 
 
-        private void tokenizar()
+        private void llenaTablaDeSimbolos(List<DslSentence> sentencias, List<List<DslToken>> tokens)
         {
+            List<DslSentence> sentenciasDeclarativas = null;
 
+            if (sentencias != null && sentencias.Count > 0)
+            {
+                try
+                {
+                    //Obtenemos todas las lineas de sentencias declarativas que pudieran existir
+                    sentenciasDeclarativas = sentencias.Where(sentencia => sentencia.sentenceType == SentenceType.SentenciaDeclara).ToList();
+
+                    if (sentenciasDeclarativas != null && sentenciasDeclarativas.Count > 0)
+                    {
+                        //Inicializamos la tabla de simbolos
+                        this.tablaSimbolos = new TablaSimbolos();
+                        sentenciasDeclarativas.ForEach(sentenciasDeclarativa =>
+                        {
+                            int index = sentencias.IndexOf(sentenciasDeclarativa);
+                            if (index >= 0 && index < tokens.Count)
+                            {
+                                //Obtenemos el token que define el tipo de dato de los simbolos
+                                DslToken tipoDato = tokens[index].FirstOrDefault(tokenTipo => tokenTipo.TokenType == TokenType.TipoDato);
+
+                                if (tipoDato != null)
+                                {
+                                    //Obtenemos los tokens que son definiciones de simbolos
+                                    List<DslToken> tokensAux = tokens[index].Where(token =>
+                                                                                token.TokenType == TokenType.Id
+                                                                                ).ToList();
+                                    //Agregamos cada simbolo definido de la línea actual
+                                    tokensAux.ForEach(token =>
+                                    {
+                                        MetaSimbolo ms = new MetaSimbolo(
+                                            token.Value, "0", index, sizeof(int),
+                                            tipoDato.Value, tipoDato.Value);
+                                        this.tablaSimbolos.addMetaSimbolo(ms);
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+                catch (Exception excep)
+                {
+                    MessageBox.Show("Error al crear la tabla de símbolos.\r\n" + excep.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
 
-        private void llenarTablaAcciones(List<DslSentence> cadenas)
+        private void muestraTablaDeSimbolos()
+        {
+            this.dataGridViewTablaSimbolos.AutoGenerateColumns = false;
+            this.dataGridViewTablaSimbolos.DataSource = this.tablaSimbolos.metaSimbolos;
+
+            this.dataGridViewTablaSimbolos.Columns[0].DataPropertyName = "id";
+            this.dataGridViewTablaSimbolos.Columns[1].DataPropertyName = "tipo";
+            this.dataGridViewTablaSimbolos.Columns[2].DataPropertyName = "simbolo";
+            this.dataGridViewTablaSimbolos.Columns[3].DataPropertyName = "valor";
+
+            //this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
+            //this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;
+            //this.dataGridViewTablaAcciones.Columns[0].DataPropertyName = "Acciones";
+            //this.dataGridViewTablaAcciones.Columns[1].DataPropertyName = "CadenaEntrada";
+            //this.dataGridViewTablaAcciones.Columns[2].DataPropertyName = "AccionDespOReduc";
+        }
+
+
+        private void llenarTablaAcciones(List<string> lineasTiny)
         {
             List<EdoLR1> estadosAux = g != null ? g.getListaEdos() : null;
             string cadenaDeEntrada = string.Empty;
             bool desplazo = false;
             bool operaExitosa = false;
 
+
             if (estadosAux != null && estadosAux.Count > 0)
             {
                 TablaDeAcciones tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g.getListaEdos()[0]);
 
-                try
+                lineasTiny.ForEach(linea =>
                 {
-                    if (File.Exists(this.fullFileName))
-                    {
-                        using (StreamReader sr = new StreamReader(this.fullFileName))
-                        {
-                            while (sr.Peek() >= 0)
-                            {
-                                cadenaDeEntrada += (sr.ReadLine().Trim().Replace(" ", ""));
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("The process failed: {0}", e.ToString());
-                }
+                    if (linea.Trim() != string.Empty)
+                        cadenaDeEntrada += linea.Trim();
+                });
 
                 for (int ind = 0; ind < cadenaDeEntrada.Length; ind++)
                 {
@@ -489,8 +553,6 @@ namespace Compi
                     ind = !desplazo ? (ind - 1) : ind;
                 }
 
-                /*if (!operaExitosa)
-                    break;*/
 
                 this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
                 this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;
@@ -539,35 +601,30 @@ namespace Compi
 
         private void btn_getEnterString_Click(object sender, EventArgs e)
         {
-            int band = 0;
-            string pathFile = "";
-            string txtOfProgram = "";
             OpenFileDialog fnew = new OpenFileDialog();
+            string cadAux = string.Empty;
 
-            if (fnew.ShowDialog() == DialogResult.OK && fnew.FileName != "")
+            fnew.CheckFileExists = true;
+            fnew.CheckPathExists = true;
+            fnew.Multiselect = false;
+            fnew.Filter = "Archivos Tiny (.tiny)|*.tiny|Todos los Archivos (*.*)|*.*";
+
+            if (fnew.ShowDialog() == DialogResult.OK)
             {
-                StreamReader sr = new StreamReader(fnew.FileName);
-                pathFile = fnew.FileName;
-                var fileName = Path.GetFileName(fnew.FileName);
-                if (band == 0)
+                using (StreamReader sr = new StreamReader(fnew.FileName))
                 {
-                    txtOfProgram = sr.ReadToEnd();
-                    tabControl2.TabPages[0].Tag = fileName;
-                    // tabIndex = tabControl2.TabPages.Count - 1;
-                    tabControl2.TabPages[0].Controls.Add(CreaText(txtOfProgram, Color.Black, Color.White, tabControl2));
-                    tabControl2.TabPages[0].Controls.Add(imprimeCodigo(pathFile));
-                    tabControl2.TabPages[0].Controls.Add(imprimeCodigo(""));
-                    // tabIndex = tabControl2.TabPages.Count - 1;
-                    //Se carga el programa
-                    txtOfProgram = sr.ReadToEnd();
+                    while (sr.Peek() > 0)
+                    {
+                        cadAux += (sr.ReadLine() + "\r\n");
+                    }
+                    sr.Close();
                 }
-                //Se cierra el archivo que se abrio
-                sr.Close();
-                buttonCadenaEntrada.Enabled = true;
-                //this.g = new Gramatica(fileName);
-                this.fullFileName = pathFile;
+                this.fullFileNamePrograma = fnew.FileName;
+                this.txtCtrlPrograma.Text = cadAux;
             }
         }
+
+
         /// <summary>
         /// Opcion del menú para visualizar la ventana modal de los 
         /// conjuntos primero y siguiente
@@ -582,18 +639,23 @@ namespace Compi
             {
                 conjuntoPrimero = g.getConjuntoPrimero();
                 conjuntoSiguiente = g.getConjuntoSiguiente();
-                PrimeroYSiguienteModal FirstAndNextModal = new PrimeroYSiguienteModal();
-                FirstAndNextModal.muestraConjunto(conjuntoPrimero, conjuntoSiguiente);
-                FirstAndNextModal.Show();
             }
             else
                 MessageBox.Show("Antes de solicitar el conjunto primero debe crear o abrir una gramatica");
         }
 
-        private void toolStripDropDownButton3_Click(object sender, EventArgs e)
+        private void generaConjuntosPrimeroYSiguiente()
         {
-
+            List<string> conjuntoPrimero;
+            List<string> conjuntoSiguiente;
+            if (this.g != null)
+            {
+                conjuntoPrimero = g.getConjuntoPrimero();
+                conjuntoSiguiente = g.getConjuntoSiguiente();
+            }
         }
+
+
 
         private List<NodoArblAS> arboles = new List<NodoArblAS>();
         private NodoArblAS raiz;
@@ -672,6 +734,55 @@ namespace Compi
         private void editorGramatica_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.formini.Close();
+        }
+
+        private void MainWinForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void cargaGramatica()
+        {
+            if (this.fullFileName != string.Empty && File.Exists(this.fullFileName))
+            {
+                var fileName = Path.GetFileName(this.fullFileName);
+                try
+                {
+                    using (StreamReader sr = new StreamReader(this.fullFileName))
+                    {
+                        string texto = string.Empty;
+                        while (sr.Peek() >= 0)
+                        {
+                            texto += (sr.ReadLine() + "\r\n");
+                        }
+                        this.txtCtrlGramatica.Text = texto;
+                    }
+                    this.g = new Gramatica(fileName);
+                    this.analizaCodigo_Gramatica();
+                    this.generaConjuntosPrimeroYSiguiente();
+                    this.generaLR1();
+                }
+                catch (Exception excep)
+                {
+                    Console.WriteLine(excep.ToString());
+                }
+            }
+        }
+
+
+        private void generaLR1()
+        {
+            if (g != null && g.getNTerminal() != null)
+            {
+                g.constructorLR1(this);
+                g.llenarTablaLR1();
+                this.dibujaAFD();
+            }
+            else
+            {
+                MessageBox.Show("Esta gramatica  no tiene terminales");
+            }
         }
     }
 }

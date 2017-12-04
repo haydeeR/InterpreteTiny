@@ -31,10 +31,10 @@ namespace Compi
                 this.acciones = string.Empty;
                 desplazamientos.ForEach(desp =>
                 {
-                    //if (desplazamientos.IndexOf(desp) < desplazamientos.Count - 1)
-                    //{
-                    this.acciones += (desp.Token + desp.EstadoActual.getId().ToString());
-                    //}
+                    if (desplazamientos.IndexOf(desp) < desplazamientos.Count - 1)
+                    {
+                        this.acciones += (desp.Token + desp.EstadoActual.getId().ToString());
+                    }
                 });
                 return this.acciones;
             }

@@ -31,7 +31,7 @@ namespace Tsimbolos
         }
 
         #region Tabla de Simbolos , 51
-        public void inicialista()
+        public void iniciaLista()
         {
             //string simb,string val,int nunlin,int tam,int ambit,int id_,string tip,string descrip
             MetaSimbolo ts = new MetaSimbolo("<</", "", -0, -0, -0, 0, "comentario", "inicio de un comentario de mas de una linea", "");
@@ -155,9 +155,23 @@ namespace Tsimbolos
             return metaSimbolos;
         }
 
-        public void añadir_obj(MetaSimbolo Ts)
+        public bool addMetaSimbolo(MetaSimbolo mS)
         {
-            metaSimbolos.Add(Ts);
+            bool resultado = false;
+            int newID = 0;
+            MetaSimbolo metaSimbolo = metaSimbolos.FirstOrDefault(ms => ms.Simbolo.Equals(mS.simbolo));
+
+            if (metaSimbolos.Count > 0)
+                newID = (int)metaSimbolos.Max(ms => ms.id);
+
+            if (metaSimbolo == null)
+            {
+                mS.id = newID + 1;
+                metaSimbolos.Add(mS);
+                resultado = true;
+            }
+
+            return resultado;
         }
 
         public bool compararAL(string argsplit)

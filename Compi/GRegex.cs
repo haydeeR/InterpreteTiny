@@ -11,7 +11,8 @@ namespace Compi
         public static readonly string id = @"_[a-zA-Z0-9]+";
         public static readonly string cadena = @"""([a-zA-Z0-9]|(:|;|,|\.|\[|\]|\*|\+|\?|¿|¡|!|#|%|&|/|~))+""";
         public static readonly string numero = @"\d+";
-        public static readonly string keywords = @"(if|else|endif|read|write|repeat|until|Var|var)";
+        public static readonly string tipoDato = @"(int)|(float)";
+        public static readonly string keywords = @"((if)|(else)|(endif)|(read)|(write)|(repeat)|(until)|(Var)|(var))";
         public static readonly string opAssign = @"(\s)*:=(\s)*";
         public static readonly string opComp = @"(==|<|>)";
         public static readonly string opSuma = @"(\+|-)";
@@ -27,7 +28,7 @@ namespace Compi
 
 
 
-        public static readonly string declarePattern = @"^(((Var)|(var))\{(int|float)(\s)*" + id + @"(\s)*(,(\s)*(" + id + @"))*\};?)$";
+        public static readonly string declarePattern = @"^(((Var)|(var))\{((int)|(float))(\s)*" + id + @"(\s)*(,(\s)*(" + id + @"))*\};?)$";
         public static readonly string readPattern = @"^(read\(" + id + @"\);?)$";
         public static readonly string printPattern = @"(" + cadena + @"," + identificadores + @")|(" + cadena + @")|(" + identificadores + @")";
         public static readonly string writePattern = @"^(((write)\()(" + printPattern + @")(\);?))$";

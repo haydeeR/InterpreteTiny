@@ -59,6 +59,8 @@ namespace Compi
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.Numero, @"^" + GRegex.numero));
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.KeyWord, @"^" + GRegex.keywords));
 
+            this.tokenDefinitions.Add(new TokenDefinition(TokenType.TipoDato, @"^" + GRegex.tipoDato));
+
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorAssign, @"^" + GRegex.opAssign));
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorComp, @"^" + GRegex.opComp));
             this.tokenDefinitions.Add(new TokenDefinition(TokenType.OperadorSuma, @"^" + GRegex.opSuma));
@@ -107,6 +109,31 @@ namespace Compi
         }
 
 
+        private List<DslSentence> clasificaSentencias(List<string> lineasTiny)
+        {
+            List<DslSentence> sentences = new List<DslSentence>();
+            string line;
+
+            try
+            {
+                lineasTiny.ForEach(linea =>
+                {
+                    if (linea.Trim() != string.Empty)
+                    {
+                        line = linea.Trim().Replace("\t", "").Replace("\r\n", "").Replace(" ", "");
+                        sentences.AddRange(getSentenceDefinitions(line));
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+
+            return sentences;
+        }
+
+
         /// <summary>
         /// Tokeniza cada línea que fue clasificada
         /// </summary>
@@ -116,6 +143,27 @@ namespace Compi
         {
             List<List<DslToken>> tokens = new List<List<DslToken>>();
             List<DslSentence> sentences = clasificaSentencias(fileName);
+
+            if (sentences != null && sentences.Count > 0)
+            {
+                foreach (DslSentence sentencia in sentences)
+                {
+                    List<DslToken> tokensXLine = new List<DslToken>();
+
+                    tokensXLine.AddRange(getTokens(sentencia.value.Replace(" ", "")));
+                    tokens.Add(tokensXLine);
+                }
+                this.sentences = sentences;
+                this.tokens = tokens;
+            }
+
+        }
+
+
+        public void tokeniza(List<string> codigoTiny)
+        {
+            List<List<DslToken>> tokens = new List<List<DslToken>>();
+            List<DslSentence> sentences = clasificaSentencias(codigoTiny);
 
             if (sentences != null && sentences.Count > 0)
             {

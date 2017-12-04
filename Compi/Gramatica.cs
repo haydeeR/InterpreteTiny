@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace Compi
 {
@@ -52,7 +53,7 @@ namespace Compi
         /// <summary>
         /// Form padre para poder modificar la interfaz
         /// </summary>
-        editorGramatica padre = null;
+        MainWinForm padre = null;
         /// <summary>
         /// Lista de cadenas para mostrar las producciones
         /// en pantalla
@@ -684,12 +685,12 @@ namespace Compi
             return nuevoConjunto;
         }
         
-        
+
         /// <summary>
         /// Constructor del entorno del LR1
         /// </summary>
         /// <param name="padre"></param>
-        public void constructorLR1(editorGramatica padre)
+        public void constructorLR1(MainWinForm padre)
         {
             this.padre = padre;
             this.prod = new List<string>();

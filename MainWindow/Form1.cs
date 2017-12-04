@@ -13,8 +13,13 @@ using System.Runtime.Serialization;
 
 namespace Compi
 {
-    public partial class editorGramatica : Form
+    public partial class MainWinForm : Form
     {
+        public MainWinForm()
+        {
+            InitializeComponent();
+        }
+
         /// <summary>
         /// Variable para la gramatica a agregar
         /// </summary>
@@ -46,7 +51,7 @@ namespace Compi
 
         private ArbolAS arbol = null;
 
-        public editorGramatica(ini i)
+        public MainWinForm(ini i)
         {
             this.formini = i;
             InitializeComponent();
@@ -283,16 +288,16 @@ namespace Compi
 
         private void lR1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //if (g != null && g.getNTerminal() != null)
-            //{
-            //    g.constructorLR1(this);
-            //    g.llenarTablaLR1();
-            //    this.dibujaAFD();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Esta gramatica  no tiene terminales");
-            //}
+            if (g != null && g.getNTerminal() != null)
+            {
+                g.constructorLR1(this);
+                g.llenarTablaLR1();
+                this.dibujaAFD();
+            }
+            else
+            {
+                MessageBox.Show("Esta gramatica  no tiene terminales");
+            }
         }
 
         /// <summary>

@@ -33,7 +33,19 @@ namespace Tsimbolos
 
         }
 
-        
+        public MetaSimbolo(string simb, string val, int nunlin, int tam, string tip, string tipvar)
+        {
+
+            simbolo = simb;
+            valor = val;
+            NumLinea = nunlin;
+            tamaño = tam;
+            tipo = tip;
+            tipovar = tipvar;
+
+        }
+
+
 
         public MetaSimbolo()
         {
