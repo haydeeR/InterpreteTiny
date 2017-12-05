@@ -350,11 +350,10 @@ namespace Compi
 
         public void llenarTablaLR1()
         {
+            List<AristaLR1> listAristaAux = null;
             List<EdoLR1> listEdos = g.getListaEdos();
             ListViewItem lvAux = null;
             ListViewItem.ListViewSubItem lvSubItem = null;
-            String[] arrayReduccion = null;
-            string tokenDeBusqueda = "";
 
             //TablaDesplazamientos tabDesp = new TablaDesplazamientos(listEdos);
             this.tablaDesplazamientos.Estados = listEdos;
@@ -368,21 +367,16 @@ namespace Compi
                     lvSubItem = lvAux.SubItems.Add(" -- ");
                     if (e.getListArista().Count > 0)
                     {
-                        AristaLR1 a = e.getListArista().FirstOrDefault(ar => ar.getEdoDestino().getTokenDeLlegada() == cabecera);
-
-                        if (a != null)
+                        listAristaAux = e.getListArista().Where(ar => ar.getEdoOrigen().getTokenDeLlegada() == cabecera).ToList();
+                        
+                        foreach (AristaLR1 a in listAristaAux)
                         {
-                            lvSubItem.Text = a.getAccion();
-                            this.tablaDesplazamientos.cambiaValor(listEdos.IndexOf(e), cabecera, a.getAccion());
+                            if (a != null)
+                            {
+                                lvSubItem.Text = a.getAccion();
+                                this.tablaDesplazamientos.cambiaValor(listEdos.IndexOf(e), cabecera, a.getAccion());
+                            }
                         }
-
-                        //foreach (AristaLR1 a in e.getListArista())
-                        //{
-                        //    if (a.getEdoDestino().getTokenDeLlegada() == cabecera)
-                        //    {
-                        //        lvSubItem.Text = a.getAccion();
-                        //    }
-                        //}
                     }
                     if (cabecera.Length - 1 == '\'')
                     {

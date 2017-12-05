@@ -104,7 +104,7 @@
             this.btnSalir});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1382, 55);
+            this.toolStrip1.Size = new System.Drawing.Size(1362, 55);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             this.toolStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStrip1_ItemClicked);
@@ -268,7 +268,7 @@
             this.label1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(448, 19);
+            this.label1.Size = new System.Drawing.Size(438, 19);
             this.label1.TabIndex = 12;
             this.label1.Text = "Tabla de analisis sintáctico LR1:";
             // 
@@ -284,7 +284,7 @@
             this.tabControl2.Location = new System.Drawing.Point(3, 63);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(914, 269);
+            this.tabControl2.Size = new System.Drawing.Size(894, 269);
             this.tabControl2.TabIndex = 13;
             // 
             // tabPage1
@@ -293,7 +293,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 27);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(906, 238);
+            this.tabPage1.Size = new System.Drawing.Size(886, 238);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "<#Codigo";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -380,14 +380,14 @@
             this.label2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(448, 19);
+            this.label2.Size = new System.Drawing.Size(438, 19);
             this.label2.TabIndex = 15;
             this.label2.Text = "Tabla de Acciones";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // buttonCadenaEntrada
             // 
-            this.buttonCadenaEntrada.Location = new System.Drawing.Point(460, 3);
+            this.buttonCadenaEntrada.Location = new System.Drawing.Point(450, 3);
             this.buttonCadenaEntrada.Name = "buttonCadenaEntrada";
             this.buttonCadenaEntrada.Size = new System.Drawing.Size(192, 33);
             this.buttonCadenaEntrada.TabIndex = 16;
@@ -437,7 +437,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 18.18182F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 81.81818F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(920, 335);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(900, 335);
             this.tableLayoutPanel1.TabIndex = 20;
             // 
             // tableLayoutPanel2
@@ -452,7 +452,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(914, 54);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(894, 54);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // tableLayoutPanel3
@@ -470,7 +470,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(926, 682);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(906, 682);
             this.tableLayoutPanel3.TabIndex = 21;
             // 
             // tableLayoutPanel4
@@ -486,7 +486,7 @@
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 335F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(920, 335);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(900, 335);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
             // tableLayoutPanel6
@@ -496,12 +496,12 @@
             this.tableLayoutPanel6.Controls.Add(this.label2, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.dataGridViewTablaAcciones, 0, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(463, 3);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(453, 3);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 2;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(454, 329);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(444, 329);
             this.tableLayoutPanel6.TabIndex = 1;
             // 
             // dataGridViewTablaAcciones
@@ -529,7 +529,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
             this.dataGridViewTablaAcciones.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewTablaAcciones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewTablaAcciones.Size = new System.Drawing.Size(448, 304);
+            this.dataGridViewTablaAcciones.Size = new System.Drawing.Size(438, 304);
             this.dataGridViewTablaAcciones.TabIndex = 16;
             // 
             // colPila
@@ -571,7 +571,7 @@
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(454, 329);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(444, 329);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // tablaLr1
@@ -583,7 +583,7 @@
             this.tablaLr1.GridLines = true;
             this.tablaLr1.Location = new System.Drawing.Point(3, 22);
             this.tablaLr1.Name = "tablaLr1";
-            this.tablaLr1.Size = new System.Drawing.Size(448, 304);
+            this.tablaLr1.Size = new System.Drawing.Size(438, 304);
             this.tablaLr1.TabIndex = 11;
             this.tablaLr1.UseCompatibleStateImageBehavior = false;
             this.tablaLr1.View = System.Windows.Forms.View.Details;
@@ -631,7 +631,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Thistle;
-            this.ClientSize = new System.Drawing.Size(1382, 741);
+            this.ClientSize = new System.Drawing.Size(1362, 741);
             this.Controls.Add(this.tableLayoutPanel7);
             this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.textBox2);
@@ -639,7 +639,7 @@
             this.Controls.Add(this.toolStrip1);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(1024, 768);
+            this.MinimumSize = new System.Drawing.Size(1024, 726);
             this.Name = "editorGramatica";
             this.Text = "Editor y Analizador de gramaticas";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
