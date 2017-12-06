@@ -44,6 +44,7 @@ namespace Compi
         private ListViewItem.ListViewSubItem lvSubItem = null;
 
         private string fullFileName = @"Gramatica\Tiny_Final.txt";
+//        private string fullFileName = @"Gramatica\gram_S.txt";
 
         private string fullFileNamePrograma = string.Empty;
 
@@ -332,20 +333,21 @@ namespace Compi
             tablaLr1.Columns.Add("Estados");
             foreach (string term in terminales)
             {
-                tablaLr1.Columns.Add(term);
+                //tablaLr1.Columns.Add(term);
                 this.cabeceras.Add(term);
-                this.tablaDesplazamientos.agregaColumna(term);
+                //this.tablaDesplazamientos.agregaColumna(term);
             }
-            tablaLr1.Columns.Add("$");
+            //tablaLr1.Columns.Add("$");
             this.cabeceras.Add("$");
-            this.tablaDesplazamientos.agregaColumna("$");
+            //this.tablaDesplazamientos.agregaColumna("$");
             foreach (string nterm in nTerminales)
             {
-                tablaLr1.Columns.Add(nterm);
+              //  tablaLr1.Columns.Add(nterm);
                 this.cabeceras.Add(nterm);
-                this.tablaDesplazamientos.agregaColumna(nterm);
+               // this.tablaDesplazamientos.agregaColumna(nterm);
             }
-            this.llenarTablaLR1();
+            //this.llenarTablaLR1();
+            this.llenartabla();
         }
 
         public void llenarTablaLR1()
@@ -353,9 +355,7 @@ namespace Compi
             List<EdoLR1> listEdos = g.getListaEdos();
             ListViewItem lvAux = null;
             ListViewItem.ListViewSubItem lvSubItem = null;
-            String[] arrayReduccion = null;
-            string tokenDeBusqueda = "";
-
+         
             //TablaDesplazamientos tabDesp = new TablaDesplazamientos(listEdos);
             this.tablaDesplazamientos.Estados = listEdos;
             foreach (EdoLR1 e in listEdos)
@@ -373,16 +373,8 @@ namespace Compi
                         if (a != null)
                         {
                             lvSubItem.Text = a.getAccion();
-                            this.tablaDesplazamientos.cambiaValor(listEdos.IndexOf(e), cabecera, a.getAccion());
+                            this.tablaDesplazamientos.cambiaValor(e.getId(), cabecera, a.getAccion());
                         }
-
-                        //foreach (AristaLR1 a in e.getListArista())
-                        //{
-                        //    if (a.getEdoDestino().getTokenDeLlegada() == cabecera)
-                        //    {
-                        //        lvSubItem.Text = a.getAccion();
-                        //    }
-                        //}
                     }
                     if (cabecera.Length - 1 == '\'')
                     {
@@ -397,23 +389,50 @@ namespace Compi
                             lvSubItem.Text = reduccion.Split('#')[1];
                             this.tablaDesplazamientos.cambiaValor(listEdos.IndexOf(e), cabecera, reduccion.Split('#')[1]);
                         }
-                        /*
-                        foreach (string reduccion in e.listReducciones)
-                        {
-                            arrayReduccion = reduccion.Split('#');
-                            tokenDeBusqueda = arrayReduccion[0];
-                            if (tokenDeBusqueda == ">" || tokenDeBusqueda == "<")
-                                tokenDeBusqueda = @"\" + tokenDeBusqueda;
-
-                            if (tokenDeBusqueda == cabecera)
-                            {
-                                lvSubItem.Text = arrayReduccion[1];
-                                this.tablaDesplazamientos.cambiaValor(listEdos.IndexOf(e), cabecera, arrayReduccion[1]);
-                            }
-                        }*/
                     }
                 }
             }
+        }
+
+        void llenartabla()
+        {
+            int counter = 0;
+            string line;
+            this.cabeceras = new List<string>();
+            int col = 0;
+            List<EdoLR1> listEdos = g.getListaEdos();
+            ListViewItem lvAux = null;
+            ListViewItem.ListViewSubItem lvSubItem = null;
+            
+            System.IO.StreamReader file =
+                new System.IO.StreamReader(@"Gramatica\Tiny_AnalizeTab.txt");
+            if ((line = file.ReadLine()) != null)
+            {
+                string[] array = line.Split('@');
+                foreach (string cab in array)
+                {
+                    tablaLr1.Columns.Add(cab);
+                    this.cabeceras.Add(cab);
+                    this.tablaDesplazamientos.agregaColumna(cab);
+                }
+            }
+            this.tablaDesplazamientos.Estados = listEdos;
+            while ((line = file.ReadLine()) != null)
+            {
+                string[] acciones = line.Split('@');
+                lvAux = tablaLr1.Items.Add(counter.ToString());
+                col = 0;
+                foreach (string cabecera in this.cabeceras)
+                {   
+                    this.tablaDesplazamientos.agregaValor(cabecera, " -- ");
+                    lvSubItem = lvAux.SubItems.Add(" -- ");
+                    lvSubItem.Text = acciones[col];
+                    this.tablaDesplazamientos.cambiaValor(col, cabecera, acciones[col]);
+                    col++;
+                }
+                counter++;
+            }
+            file.Close();
         }
 
         private void tablaAcciones_SelectedIndexChanged(object sender, EventArgs e)

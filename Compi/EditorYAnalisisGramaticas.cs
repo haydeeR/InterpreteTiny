@@ -347,11 +347,10 @@ namespace Compi
 
         public void llenarTablaLR1()
         {
+            List<AristaLR1> listAristasAux = null;
             List<EdoLR1> listEdos = g.getListaEdos();
             ListViewItem lvAux = null;
             ListViewItem.ListViewSubItem lvSubItem = null;
-            String[] arrayReduccion = null;
-            string tokenDeBusqueda = "";
 
             //TablaDesplazamientos tabDesp = new TablaDesplazamientos(listEdos);
             this.tablaDesplazamientos.Estados = listEdos;
@@ -365,21 +364,17 @@ namespace Compi
                     lvSubItem = lvAux.SubItems.Add(" -- ");
                     if (e.getListArista().Count > 0)
                     {
-                        AristaLR1 a = e.getListArista().FirstOrDefault(ar => ar.getEdoDestino().getTokenDeLlegada() == cabecera);
-
-                        if (a != null)
+                        //Deben de ser varias las aristas con las que se mueve
+                        listAristasAux = e.getListArista().Where(ar => ar.getEdoDestino().getTokenDeLlegada() == cabecera).ToList();
+                        
+                        foreach (AristaLR1 a in listAristasAux)
                         {
-                            lvSubItem.Text = a.getAccion();
-                            this.tablaDesplazamientos.cambiaValor(listEdos.IndexOf(e), cabecera, a.getAccion());
+                            if (a != null)
+                            {
+                                lvSubItem.Text = a.getAccion();
+                                this.tablaDesplazamientos.cambiaValor(listEdos.IndexOf(e), cabecera, a.getAccion());
+                            }
                         }
-
-                        //foreach (AristaLR1 a in e.getListArista())
-                        //{
-                        //    if (a.getEdoDestino().getTokenDeLlegada() == cabecera)
-                        //    {
-                        //        lvSubItem.Text = a.getAccion();
-                        //    }
-                        //}
                     }
                     if (cabecera.Length - 1 == '\'')
                     {

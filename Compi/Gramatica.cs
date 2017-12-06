@@ -431,10 +431,10 @@ namespace Compi
                 {
                     case '<':
                         cont++;
-                        break;
+                    break;
                     case '>':
                         cont--;
-                        break;
+                    break;
                 }
             }
             if (cont == 0) //Todo salio bien
@@ -448,7 +448,7 @@ namespace Compi
         {
             bool res = false;
             int valAscci = 0;
-
+            
             for (int i = 0; i < prod.Length && !res; i++)
             {
                 valAscci = (int)prod[i];
@@ -457,7 +457,7 @@ namespace Compi
                     case '<':
                         if (i + 1 >= prod.Length || prod[i + 1] == '>')
                             res = true; //Parentesis vacios
-                        break;
+                    break;
                 }
             }
             return res;
@@ -642,7 +642,7 @@ namespace Compi
             this.conjuntoPrimero = null;
             this.creaConjuntoPrimero();
             this.evaluaConjuntoPrimero();
-
+            
             List<string> nuevoConjunto = new List<string>();
             int ind = 0;
             string conjuntoConcat = "";
@@ -684,7 +684,7 @@ namespace Compi
             }
             return nuevoConjunto;
         }
-
+        
 
         /// <summary>
         /// Constructor del entorno del LR1
@@ -695,6 +695,8 @@ namespace Compi
             this.padre = padre;
             this.prod = new List<string>();
             wholeSetFirst = this.dameConjuntoPrimero();
+            //Aumenta la produccion inicial, todas las producciones
+            //les antecede el punto
             this.prodAumentada();
             this.enumeraProducciones();
             // Metodo LR1 analisis sintactico ascendente
@@ -719,7 +721,7 @@ namespace Compi
             this.tokensXProd[indProd].setTokenBusqueda("$");
             this.inicializa();
         }
-
+        
         /// <summary>
         /// Este metodo inserta el contador de secuencia de la produccion
         /// como un punto . Antes de empezar cualquier recorrido esto convierte 
@@ -759,7 +761,7 @@ namespace Compi
             string primera = this.getPrimera(p, gamma, a);
             p.setTokenBusqueda(primera);
         }
-
+        
         /// <summary>
         /// Metodo para obtener el conjunto primero de un token 
         /// El conjunto primero del token de busqueda hacia adelante es el 
@@ -793,6 +795,7 @@ namespace Compi
                         {
                             for (int j = 0; j < this.wholeSetFirst[indiceNTerm].Count(); j++)
                                 conjuntoPrimero += this.wholeSetFirst[indiceNTerm][j] + ",";
+                       //     conjuntoPrimero += tokenBusqueda;
                         }
                     }
                 }
@@ -818,7 +821,7 @@ namespace Compi
         }
 
         /// <summary>
-        /// Metodo que genera el AFD del LR1
+        /// Metodo que genera el AID del LR1
         /// </summary>
         public void genLR1()
         {
@@ -840,13 +843,14 @@ namespace Compi
                     while (indToken < p.getTokens().Count)
                     {
                         t = p.getTokens()[indToken];
-
+                      
                         if (t == ".")
                         {
                             punto = true;
-                            if (indToken + 1 == p.getTokens().Count()) //Estado terminado
+                            //Estado terminado
+                            if (indToken + 1 == p.getTokens().Count()) 
                             {
-                                edo.setAccion("R" + edo.getProducciones().IndexOf(p));
+                                edo.setAccion("R" + p.getId());
                             }
                         }
                         else
@@ -856,7 +860,7 @@ namespace Compi
                                 produccionesDetransicion = edo.getProduccionesDeTransicion(t);
                                 indicesDeProduccionesDeTransicion = edo.getIndicesDeTokenDeTransicion(t);
                                 nuevo = this.irA(produccionesDetransicion, t, indicesDeProduccionesDeTransicion);
-                                aux = this.existe(nuevo);
+                                aux = this.existe(nuevo, produccionesDetransicion);
                                 if (aux != null)
                                 {
                                     edo.setArista(aux, p);
@@ -885,19 +889,22 @@ namespace Compi
         }
 
         /// <summary>
-        /// Avnza el indicador de la entrada en un simbolo ya que lo he
+        /// Avanza el indicador de la entrada en un simbolo ya que lo hq
         /// procesado y llama al metodo cerradura con un nuevo indicador 
-        /// de la entrada.
+        /// de la entrada, si es que este es un no terminal.
         /// </summary>
-        /// <param name="edo">Estado a evaluar</param>
+        /// <param name="producciones">Listado de producciones con los 
+        /// que se hace la transicion</param>
         /// <param name="token">token con el que hace el avance</param>
+        /// <param name="indtoken">Posiciones de los tokens en las producciones
+        /// con los que se hacen la transicion</param>
         /// <returns>Un nuevo estado con el que se hizo la transicion</returns>
         public EdoLR1 irA(List<Produccion> producciones, string token, List<int> indtoken)
         {
             EdoLR1 nEdo = new EdoLR1();
             nEdo.setTokenDeLlegada(token);
             Produccion pAvanzada = null;
-            foreach (Produccion p in producciones)
+            foreach(Produccion p in producciones)
             {
                 pAvanzada = new Produccion(p);
                 pAvanzada.avanzaIndicadorDeProceso(indtoken[producciones.IndexOf(p)]);
@@ -940,26 +947,26 @@ namespace Compi
         /// </summary>
         /// <param name="nuevo"></param>
         /// <returns>Estado LR1 si es que existe si no existe regresa null</returns>
-        public EdoLR1 existe(EdoLR1 nuevo)
+        public EdoLR1 existe(EdoLR1 nuevo, List<Produccion> listasDeTransicion = null)
         {
             EdoLR1 res = null;
-            List<string> prods = null;
-            List<string> prodsNuevo = nuevo.getProduccionesLikeStrings();
-
-            List<EdoLR1> edosTokenIgual = listaEdos.Where(edo =>
-                                                            edo.getTokenDeLlegada() == nuevo.getTokenDeLlegada()
-                                                         ).ToList();
-            foreach (EdoLR1 edoAux in edosTokenIgual)
-            {
-                //if (prods.Count == prodsNuevo.Count)
-                //{
-                if (this.produccionesIguales(nuevo.getProducciones()[0], edoAux.getProducciones()[0]))
-                    return edoAux;
-                //}
+            foreach (EdoLR1 e in listaEdos)
+            {/*
+                if (nuevo.getTokenDeLlegada() == e.getTokenDeLlegada())
+                {
+                    if (listasDeTransicion != null)
+                        if (e.getProducciones().Count == listasDeTransicion.Count)
+                            for (int i = 0; i < listasDeTransicion.Count; i++)
+                            {
+                                if (this.produccionesIguales(nuevo.getProducciones()[i], e.getProducciones()[i]))
+                                    return e;
+                            }
+                } else */
+                if (this.produccionesIguales(nuevo.getProducciones()[0], e.getProducciones()[0]))
+                    return e;
             }
             return res;
         }
-
         /// <summary>
         /// Sobrecarga del metodo existe para tipo de dato Produccion
         /// </summary>
@@ -978,6 +985,7 @@ namespace Compi
                         return true;
                     }
                 }
+
             }
             return res;
         }
@@ -1022,7 +1030,7 @@ namespace Compi
         public bool produccionesIguales(Produccion a, Produccion b)
         {
             bool res = false;
-            if (atributosIguales(a, b) && tokensIguales(a.getTokens(), b.getTokens()) && a.getTokenBusqueda() == b.getTokenBusqueda())
+            if (atributosIguales(a, b) && tokensIguales(a.getTokens(), b.getTokens()) )
                 res = true;
             return res;
         }
@@ -1041,18 +1049,12 @@ namespace Compi
         {
             bool res = true;
             int i = 0;
-
-            if (a.Count != b.Count)
-                return false;
-
             while (res && i < a.Count)
             {
-                //if (!a[i].Equals(b[i]))
-                //    res = false;
-                res = (a[i] == b[i]);
+                if (a[i] != b[i])
+                    res = false;
                 i++;
             }
-
             return res;
         }
 
@@ -1091,7 +1093,7 @@ namespace Compi
             if ((indiceIndicador + 1) < p.getTokens().Count())
             {
                 token = p.getTokens()[(indiceIndicador + 1)];
-
+                
                 listaProduccionesDelTerminal = this.tokensXProd.Where(x => x.getNTerminal() == token).ToList();
 
                 foreach (Produccion pIni in listaProduccionesDelTerminal)
@@ -1104,17 +1106,17 @@ namespace Compi
                 }
             }
         }
-
+        
         public int clasificaAccion(EdoLR1 edo)
         {
             int res = -1;
             Produccion p = null;
             p = edo.getProducciones()[0];
             res = p.despORedu(this);
-
+            
             return res;
         }
-
+        
         public void llenarTablaLR1()
         {
             EdoLR1 edoAux;
@@ -1143,7 +1145,7 @@ namespace Compi
                         {
                             foreach (char tokenDeBusqueda in p.getTokenBusqueda())
                             {
-                                e.listReducciones.Add(tokenDeBusqueda.ToString() + "# R" + e.getProducciones()[0].getId().ToString());
+                                e.listReducciones.Add(tokenDeBusqueda.ToString() +"# R" + e.getProducciones()[0].getId().ToString());
                             }
                         }
                     }
@@ -1151,5 +1153,7 @@ namespace Compi
             }
             padre.muestraTermYNTerm();
         }
+
+        
     }
 }
