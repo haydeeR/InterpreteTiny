@@ -695,6 +695,8 @@ namespace Compi
             this.padre = padre;
             this.prod = new List<string>();
             wholeSetFirst = this.dameConjuntoPrimero();
+            //Aumenta la produccion inicial, todas las producciones
+            //les antecede el punto
             this.prodAumentada();
             this.enumeraProducciones();
             // Metodo LR1 analisis sintactico ascendente
@@ -793,6 +795,7 @@ namespace Compi
                         {
                             for (int j = 0; j < this.wholeSetFirst[indiceNTerm].Count(); j++)
                                 conjuntoPrimero += this.wholeSetFirst[indiceNTerm][j] + ",";
+                       //     conjuntoPrimero += tokenBusqueda;
                         }
                     }
                 }
@@ -818,7 +821,7 @@ namespace Compi
         }
 
         /// <summary>
-        /// Metodo que genera el AFD del LR1
+        /// Metodo que genera el AID del LR1
         /// </summary>
         public void genLR1()
         {
@@ -844,9 +847,10 @@ namespace Compi
                         if (t == ".")
                         {
                             punto = true;
-                            if (indToken + 1 == p.getTokens().Count()) //Estado terminado
+                            //Estado terminado
+                            if (indToken + 1 == p.getTokens().Count()) 
                             {
-                                edo.setAccion("R" + edo.getProducciones().IndexOf(p));
+                                edo.setAccion("R" + p.getId());
                             }
                         }
                         else
@@ -856,7 +860,7 @@ namespace Compi
                                 produccionesDetransicion = edo.getProduccionesDeTransicion(t);
                                 indicesDeProduccionesDeTransicion = edo.getIndicesDeTokenDeTransicion(t);
                                 nuevo = this.irA(produccionesDetransicion, t, indicesDeProduccionesDeTransicion);
-                                aux = this.existe(nuevo);
+                                aux = this.existe(nuevo, produccionesDetransicion);
                                 if (aux != null)
                                 {
                                     edo.setArista(aux, p);
@@ -885,12 +889,15 @@ namespace Compi
         }
 
         /// <summary>
-        /// Avnza el indicador de la entrada en un simbolo ya que lo he
+        /// Avanza el indicador de la entrada en un simbolo ya que lo hq
         /// procesado y llama al metodo cerradura con un nuevo indicador 
-        /// de la entrada.
+        /// de la entrada, si es que este es un no terminal.
         /// </summary>
-        /// <param name="edo">Estado a evaluar</param>
+        /// <param name="producciones">Listado de producciones con los 
+        /// que se hace la transicion</param>
         /// <param name="token">token con el que hace el avance</param>
+        /// <param name="indtoken">Posiciones de los tokens en las producciones
+        /// con los que se hacen la transicion</param>
         /// <returns>Un nuevo estado con el que se hizo la transicion</returns>
         public EdoLR1 irA(List<Produccion> producciones, string token, List<int> indtoken)
         {
@@ -940,14 +947,23 @@ namespace Compi
         /// </summary>
         /// <param name="nuevo"></param>
         /// <returns>Estado LR1 si es que existe si no existe regresa null</returns>
-        public EdoLR1 existe(EdoLR1 nuevo)
+        public EdoLR1 existe(EdoLR1 nuevo, List<Produccion> listasDeTransicion = null)
         {
             EdoLR1 res = null;
             foreach (EdoLR1 e in listaEdos)
-            {
+            {/*
                 if (nuevo.getTokenDeLlegada() == e.getTokenDeLlegada())
-                    if (this.produccionesIguales(nuevo.getProducciones()[0], e.getProducciones()[0]))
-                        return e;
+                {
+                    if (listasDeTransicion != null)
+                        if (e.getProducciones().Count == listasDeTransicion.Count)
+                            for (int i = 0; i < listasDeTransicion.Count; i++)
+                            {
+                                if (this.produccionesIguales(nuevo.getProducciones()[i], e.getProducciones()[i]))
+                                    return e;
+                            }
+                } else */
+                if (this.produccionesIguales(nuevo.getProducciones()[0], e.getProducciones()[0]))
+                    return e;
             }
             return res;
         }
@@ -1014,7 +1030,7 @@ namespace Compi
         public bool produccionesIguales(Produccion a, Produccion b)
         {
             bool res = false;
-            if (atributosIguales(a, b) && tokensIguales(a.getTokens(), b.getTokens()) && a.getTokenBusqueda() == b.getTokenBusqueda())
+            if (atributosIguales(a, b) && tokensIguales(a.getTokens(), b.getTokens()) )
                 res = true;
             return res;
         }
@@ -1137,5 +1153,7 @@ namespace Compi
             }
             padre.muestraTermYNTerm();
         }
+
+        
     }
 }

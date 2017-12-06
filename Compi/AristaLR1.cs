@@ -30,7 +30,6 @@ namespace Compi
         {
             this.edoOrigen = eOrigen;
             this.edoDestino = eDestino;
-            this.indiceDeProduccion = p.getId();
             this.accion = "S" + eDestino.getId();
         }
 

@@ -202,6 +202,26 @@ namespace Compi
             this.setTokenBusqueda(vieja.getTokenBusqueda());
         }
 
+        /// <summary>
+        /// Copia los datos de la produccion vieja a la nueva
+        /// pero con el indice de avance en cero
+        /// </summary>
+        /// <param name="vieja">Produccion antigua</param>
+        public void copiaPInicial(Produccion vieja)
+        {
+            string gamma = "";
+            this.setNTerminal(vieja.getNTerminal());
+            this.setId(vieja.getId());
+            foreach (string g in vieja.getGamma())
+                gamma += g;
+            this.setGamma(gamma);
+            this.setNuevoToken(".");
+            foreach (string t in vieja.getTokens())
+                if(t != ".")
+                    this.setNuevoToken(t);
+            this.setTokenBusqueda(vieja.getTokenBusqueda());
+        }
+
         /// Volver a penasar este metodo buen metodo mala implementacion
         /// <summary>
         /// Dice si la produccion indica una accion de desplazamiento 
