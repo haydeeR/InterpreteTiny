@@ -14,10 +14,26 @@ namespace Compi
         Stack<int> pValores;
         Stack<string> pIdents;
         Stack<NodoArblAS> pAA;
+        List<string> listaIDs;
 
         int comparador;
         int operador;
         string tipo = string.Empty;
+
+        public List<string> ListaIds { get { return this.listaIDs; } set { this.listaIDs = value; } }
+        public int Comparador { get { return comparador; } set { comparador = value; } }
+        public int Operador { get { return operador; } set { operador = value; } }
+        public string TipoDato { get { return tipo; } set { tipo = value; } }
+
+        private Pilas()
+        {
+            pSimbolos = new Stack<string>();
+            pValores = new Stack<int>();
+            pIdents = new Stack<string>();
+            pAA = new Stack<NodoArblAS>();
+            listaIDs = new List<string>();
+        }
+
 
         public static Pilas Stacks
         {
@@ -31,17 +47,34 @@ namespace Compi
             }
         }
 
-        public int Comparador { get { return comparador; } set { comparador = value; } }
-        public int Operador { get { return operador; } set { operador = value; } }
-        public string TipoDato { get { return tipo; } set { tipo = value; } }
 
-        private Pilas()
+        #region Operaciones para trabajar con la lista de Ids
+        public void addId(string id)
         {
-            pSimbolos = new Stack<string>();
-            pValores = new Stack<int>();
-            pIdents = new Stack<string>();
-            pAA = new Stack<NodoArblAS>();
+            if (this.listaIDs == null)
+                this.listaIDs = new List<string>();
+
+            this.listaIDs.Add(id);
         }
+
+        public void limpiaListaIds(string id)
+        {
+            if (this.listaIDs != null)
+                this.listaIDs.Clear();
+            else
+                this.listaIDs = new List<string>();
+        }
+
+
+        public string getListaIdsLikeString()
+        {
+            return string.Join(",", this.listaIDs);
+        }
+
+
+        #endregion
+
+
 
         #region Operaciones para trabajar con la pila del Arbol abstracto
 

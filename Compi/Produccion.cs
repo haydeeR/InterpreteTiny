@@ -106,14 +106,14 @@ namespace Compi
         public string getTokensAsString()
         {
             string aux = "";
-            foreach(string s in this.tokens)
+            foreach (string s in this.tokens)
             {
-                if(s != ".")
+                if (s != ".")
                     aux += s;
             }
             return aux;
         }
-        
+
         public string getTokenBusqueda()
         {
             return this.tokenBusqueda;
@@ -132,13 +132,13 @@ namespace Compi
         /// como tokenes de busqueda hacia adelante </summary>
         public string produccionLR()
         {
-            List<string> listaAux = this.tokens; 
+            List<string> listaAux = this.tokens;
             bool punto = false;
             int indicePunto = -1, indiceT = 0;
             int indiceBetta = -1;
             this.gamma.Clear();
             string x = "";
-            
+
             foreach (string t in this.tokens)    //Si es de la forma A->alpha . X gamma ,tokenBusqueda
             {
                 if (t.CompareTo(".") == 0)
@@ -151,15 +151,17 @@ namespace Compi
                         x = listaAux[indiceBetta];
                     }
                 }
-                else {
-                    if (punto) {
-                        if (indicePunto + 2 < this.tokens.Count()  && indiceBetta < indiceT && indiceBetta != -1)
+                else
+                {
+                    if (punto)
+                    {
+                        if (indicePunto + 2 < this.tokens.Count() && indiceBetta < indiceT && indiceBetta != -1)
                         {
                             if (indiceBetta < indicePunto + 2)
                                 this.gamma.Add(t);
                         }
                     }
-                } 
+                }
                 indiceT++;
             }
             return x;
@@ -173,18 +175,18 @@ namespace Compi
         public Produccion avanzaIndicadorDeProceso(int indiceIndicador)
         {
             if (this.getTokens()[0] != "." && indiceIndicador > 0)
-            {   
+            {
                 this.tokens.RemoveAt(indiceIndicador - 1);
                 this.tokens.Insert(indiceIndicador, ".");
             }
-            else if(this.getTokens()[0] == ".")
+            else if (this.getTokens()[0] == ".")
             {
                 this.tokens.RemoveAt(0);
                 this.tokens.Insert(indiceIndicador, ".");
             }
             return this;
         }
-        
+
         /// <summary>
         /// Copia los datos de la produccion vieja a la nueva
         /// </summary>
@@ -217,7 +219,7 @@ namespace Compi
             string token = "";
 
             indiceP = this.tokens.IndexOf(".");
-            indiceX = indiceP+1;
+            indiceX = indiceP + 1;
             if (indiceX < this.tokens.Count)
             {
                 token = this.tokens[indiceX];
@@ -235,6 +237,11 @@ namespace Compi
                     res = 2;
             }
             return res;
+        }
+
+        public string likeString()
+        {
+            return string.Join("",this.tokens);
         }
 
     }

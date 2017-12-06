@@ -431,10 +431,10 @@ namespace Compi
                 {
                     case '<':
                         cont++;
-                    break;
+                        break;
                     case '>':
                         cont--;
-                    break;
+                        break;
                 }
             }
             if (cont == 0) //Todo salio bien
@@ -448,7 +448,7 @@ namespace Compi
         {
             bool res = false;
             int valAscci = 0;
-            
+
             for (int i = 0; i < prod.Length && !res; i++)
             {
                 valAscci = (int)prod[i];
@@ -457,7 +457,7 @@ namespace Compi
                     case '<':
                         if (i + 1 >= prod.Length || prod[i + 1] == '>')
                             res = true; //Parentesis vacios
-                    break;
+                        break;
                 }
             }
             return res;
@@ -642,7 +642,7 @@ namespace Compi
             this.conjuntoPrimero = null;
             this.creaConjuntoPrimero();
             this.evaluaConjuntoPrimero();
-            
+
             List<string> nuevoConjunto = new List<string>();
             int ind = 0;
             string conjuntoConcat = "";
@@ -684,7 +684,7 @@ namespace Compi
             }
             return nuevoConjunto;
         }
-        
+
 
         /// <summary>
         /// Constructor del entorno del LR1
@@ -719,7 +719,7 @@ namespace Compi
             this.tokensXProd[indProd].setTokenBusqueda("$");
             this.inicializa();
         }
-        
+
         /// <summary>
         /// Este metodo inserta el contador de secuencia de la produccion
         /// como un punto . Antes de empezar cualquier recorrido esto convierte 
@@ -759,7 +759,7 @@ namespace Compi
             string primera = this.getPrimera(p, gamma, a);
             p.setTokenBusqueda(primera);
         }
-        
+
         /// <summary>
         /// Metodo para obtener el conjunto primero de un token 
         /// El conjunto primero del token de busqueda hacia adelante es el 
@@ -840,7 +840,7 @@ namespace Compi
                     while (indToken < p.getTokens().Count)
                     {
                         t = p.getTokens()[indToken];
-                      
+
                         if (t == ".")
                         {
                             punto = true;
@@ -897,7 +897,7 @@ namespace Compi
             EdoLR1 nEdo = new EdoLR1();
             nEdo.setTokenDeLlegada(token);
             Produccion pAvanzada = null;
-            foreach(Produccion p in producciones)
+            foreach (Produccion p in producciones)
             {
                 pAvanzada = new Produccion(p);
                 pAvanzada.avanzaIndicadorDeProceso(indtoken[producciones.IndexOf(p)]);
@@ -943,14 +943,23 @@ namespace Compi
         public EdoLR1 existe(EdoLR1 nuevo)
         {
             EdoLR1 res = null;
-            foreach (EdoLR1 e in listaEdos)
+            List<string> prods = null;
+            List<string> prodsNuevo = nuevo.getProduccionesLikeStrings();
+
+            List<EdoLR1> edosTokenIgual = listaEdos.Where(edo =>
+                                                            edo.getTokenDeLlegada() == nuevo.getTokenDeLlegada()
+                                                         ).ToList();
+            foreach (EdoLR1 edoAux in edosTokenIgual)
             {
-                if (nuevo.getTokenDeLlegada() == e.getTokenDeLlegada())
-                    if (this.produccionesIguales(nuevo.getProducciones()[0], e.getProducciones()[0]))
-                        return e;
+                //if (prods.Count == prodsNuevo.Count)
+                //{
+                if (this.produccionesIguales(nuevo.getProducciones()[0], edoAux.getProducciones()[0]))
+                    return edoAux;
+                //}
             }
             return res;
         }
+
         /// <summary>
         /// Sobrecarga del metodo existe para tipo de dato Produccion
         /// </summary>
@@ -969,7 +978,6 @@ namespace Compi
                         return true;
                     }
                 }
-
             }
             return res;
         }
@@ -1033,12 +1041,18 @@ namespace Compi
         {
             bool res = true;
             int i = 0;
+
+            if (a.Count != b.Count)
+                return false;
+
             while (res && i < a.Count)
             {
-                if (a[i] != b[i])
-                    res = false;
+                //if (!a[i].Equals(b[i]))
+                //    res = false;
+                res = (a[i] == b[i]);
                 i++;
             }
+
             return res;
         }
 
@@ -1077,7 +1091,7 @@ namespace Compi
             if ((indiceIndicador + 1) < p.getTokens().Count())
             {
                 token = p.getTokens()[(indiceIndicador + 1)];
-                
+
                 listaProduccionesDelTerminal = this.tokensXProd.Where(x => x.getNTerminal() == token).ToList();
 
                 foreach (Produccion pIni in listaProduccionesDelTerminal)
@@ -1090,17 +1104,17 @@ namespace Compi
                 }
             }
         }
-        
+
         public int clasificaAccion(EdoLR1 edo)
         {
             int res = -1;
             Produccion p = null;
             p = edo.getProducciones()[0];
             res = p.despORedu(this);
-            
+
             return res;
         }
-        
+
         public void llenarTablaLR1()
         {
             EdoLR1 edoAux;
@@ -1129,7 +1143,7 @@ namespace Compi
                         {
                             foreach (char tokenDeBusqueda in p.getTokenBusqueda())
                             {
-                                e.listReducciones.Add(tokenDeBusqueda.ToString() +"# R" + e.getProducciones()[0].getId().ToString());
+                                e.listReducciones.Add(tokenDeBusqueda.ToString() + "# R" + e.getProducciones()[0].getId().ToString());
                             }
                         }
                     }

@@ -121,7 +121,7 @@ namespace Compi
         {
             List<Produccion> produccionesDeTransicion = new List<Produccion>();
             int indiceAux = 0;
-            foreach(Produccion p in this.getProducciones())
+            foreach (Produccion p in this.getProducciones())
             {
                 indiceAux = p.getTokens().IndexOf(".") + 1;
                 if (indiceAux < p.getTokens().Count && p.getTokens()[indiceAux] == token)
@@ -145,6 +145,16 @@ namespace Compi
                 }
             }
             return indicesDeTransicion;
+        }
+
+        public List<string> getProduccionesLikeStrings()
+        {
+            List<string> produccioneStrs = new List<string>();
+
+            foreach (Produccion prod in this.producciones)
+                produccioneStrs.Add(prod.likeString());
+
+            return produccioneStrs;
         }
     }
 }
