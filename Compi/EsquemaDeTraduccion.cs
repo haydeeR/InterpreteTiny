@@ -77,22 +77,22 @@ namespace Compi
                     valueToReturn = "print";
                     break;
                 case 18://print-><identificadores>
-                    NodoArblAS nodo18a = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
+                    //NodoArblAS nodo18a = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
                     //Pilas.Stacks.pushPAA(nodo18a);
                     numTokenReducir = 1;
                     valueToReturn = "print";
                     break;
                 case 19://cadena-><letra><cadena>
-                    string cad19a = Pilas.Stacks.popPI();
-                    string cad19b = Pilas.Stacks.popPS();
-                    Pilas.Stacks.pushPS((cad19a + cad19b));
+                    //string cad19a = Pilas.Stacks.popPI();
+                    //string cad19b = Pilas.Stacks.popPS();
+                    //Pilas.Stacks.pushPS((cad19a + cad19b));
                     numTokenReducir = 2;
                     valueToReturn = "cadena";
                     break;
                 case 20://cadena-><otro><cadena>
-                    string cad20a = Pilas.Stacks.popPS();
-                    string cad20b = Pilas.Stacks.popPS();
-                    Pilas.Stacks.pushPS((cad20b + cad20a));
+                    //string cad20a = Pilas.Stacks.popPS();
+                    //string cad20b = Pilas.Stacks.popPS();
+                    //Pilas.Stacks.pushPS((cad20b + cad20a));
                     numTokenReducir = 2;
                     valueToReturn = "cadena";
                     break;
@@ -196,14 +196,14 @@ namespace Compi
                     valueToReturn = "identificadores";
                     break;
                 case 42://identificadores-><id>
-                    if(Pilas.Stacks.TipoDato != "nodeclara")
-                    {
-                        string id = Pilas.Stacks.popPI();
-                    }
-                    else
-                    {
+                    //if(Pilas.Stacks.TipoDato != "nodeclara")
+                    //{
+                    //    string id = Pilas.Stacks.popPI();
+                    //}
+                    //else
+                    //{
 
-                    }
+                    //}
 
                     numTokenReducir = 1;
                     valueToReturn = "identificadores";
@@ -219,12 +219,12 @@ namespace Compi
                     valueToReturn = "Tipo";
                     break;
                 case 45://exp-><exp-simple><op-comparacion><exp-simple>
-                    NodoArblAS nodo45a = Pilas.Stacks.popPAA();
-                    NodoArblAS nodo45b = Pilas.Stacks.popPAA();
-                    NodoArblAS nodo45c = new NodoArblAS(new DslToken(TokenType.OperadorComp, getOperadorComparacion()));
-                    nodo45c.setNodoIzquierdo(nodo45b);
-                    nodo45c.setNodoDerecho(nodo45a);
-                    Pilas.Stacks.pushPAA(nodo45c);
+                    //NodoArblAS nodo45a = Pilas.Stacks.popPAA();
+                    //NodoArblAS nodo45b = Pilas.Stacks.popPAA();
+                    //NodoArblAS nodo45c = new NodoArblAS(new DslToken(TokenType.OperadorComp, getOperadorComparacion()));
+                    //nodo45c.setNodoIzquierdo(nodo45b);
+                    //nodo45c.setNodoDerecho(nodo45a);
+                    //Pilas.Stacks.pushPAA(nodo45c);
                     numTokenReducir = 3;
                     valueToReturn = "exp";
                     break;
@@ -239,12 +239,12 @@ namespace Compi
                     valueToReturn = "op-comparacion";
                     break;
                 case 50://exp-simple-><exp-simple><opsuma><term>
-                    NodoArblAS nodo50a = Pilas.Stacks.popPAA();
-                    NodoArblAS nodo50b = Pilas.Stacks.popPAA();
-                    NodoArblAS nodo50c = new NodoArblAS(new DslToken(TokenType.OperadorSuma, getOperador()));
-                    nodo50c.setNodoIzquierdo(nodo50b);
-                    nodo50c.setNodoDerecho(nodo50a);
-                    Pilas.Stacks.pushPAA(nodo50c);
+                    //NodoArblAS nodo50a = Pilas.Stacks.popPAA();
+                    //NodoArblAS nodo50b = Pilas.Stacks.popPAA();
+                    //NodoArblAS nodo50c = new NodoArblAS(new DslToken(TokenType.OperadorSuma, getOperador()));
+                    //nodo50c.setNodoIzquierdo(nodo50b);
+                    //nodo50c.setNodoDerecho(nodo50a);
+                    //Pilas.Stacks.pushPAA(nodo50c);
                     numTokenReducir = 3;
                     valueToReturn = "exp-simple";
                     break;
@@ -263,12 +263,12 @@ namespace Compi
                     valueToReturn = "opsuma";
                     break;
                 case 54://term-><term><opmult><potencia>
-                    NodoArblAS nodo54a = Pilas.Stacks.popPAA();
-                    NodoArblAS nodo54b = Pilas.Stacks.popPAA();
-                    NodoArblAS nodo54c = new NodoArblAS(new DslToken(TokenType.OperadorMult, getOperador()));
-                    nodo54c.setNodoIzquierdo(nodo54b);
-                    nodo54c.setNodoDerecho(nodo54a);
-                    Pilas.Stacks.pushPAA(nodo54c);
+                    //NodoArblAS nodo54a = Pilas.Stacks.popPAA();
+                    //NodoArblAS nodo54b = Pilas.Stacks.popPAA();
+                    //NodoArblAS nodo54c = new NodoArblAS(new DslToken(TokenType.OperadorMult, getOperador()));
+                    //nodo54c.setNodoIzquierdo(nodo54b);
+                    //nodo54c.setNodoDerecho(nodo54a);
+                    //Pilas.Stacks.pushPAA(nodo54c);
                     numTokenReducir = 3;
                     valueToReturn = "term";
                     break;
@@ -277,12 +277,12 @@ namespace Compi
                     valueToReturn = "term";
                     break;
                 case 56://potencia-><potencia>^<factor>
-                    NodoArblAS fact = Pilas.Stacks.popPAA();
-                    NodoArblAS poten = Pilas.Stacks.popPAA();
-                    NodoArblAS nodo = new NodoArblAS(new DslToken(TokenType.OperadorPote, "^"));
-                    nodo.setNodoIzquierdo(poten);
-                    nodo.setNodoDerecho(fact);
-                    Pilas.Stacks.pushPAA(nodo);
+                    //NodoArblAS fact = Pilas.Stacks.popPAA();
+                    //NodoArblAS poten = Pilas.Stacks.popPAA();
+                    //NodoArblAS nodo = new NodoArblAS(new DslToken(TokenType.OperadorPote, "^"));
+                    //nodo.setNodoIzquierdo(poten);
+                    //nodo.setNodoDerecho(fact);
+                    //Pilas.Stacks.pushPAA(nodo);
                     numTokenReducir = 3;
                     valueToReturn = "potencia";
                     break;
@@ -306,38 +306,38 @@ namespace Compi
                     valueToReturn = "factor";
                     break;
                 case 61://factor-><num>
-                    string id61a = Pilas.Stacks.popPV().ToString();
-                    NodoArblAS nodo61a = new NodoArblAS(new DslToken(TokenType.Numero, id61a));
-                    Pilas.Stacks.pushPAA(nodo61a);
+                    //string id61a = Pilas.Stacks.popPV().ToString();
+                    //NodoArblAS nodo61a = new NodoArblAS(new DslToken(TokenType.Numero, id61a));
+                    //Pilas.Stacks.pushPAA(nodo61a);
                     numTokenReducir = 1;
                     valueToReturn = "factor";
                     break;
                 case 62://factor-><id>
-                    string id62a = Pilas.Stacks.popPI();
-                    NodoArblAS nodo62a = new NodoArblAS(new DslToken(TokenType.Id, id62a));
-                    Pilas.Stacks.pushPAA(nodo62a);
+                    //string id62a = Pilas.Stacks.popPI();
+                    //NodoArblAS nodo62a = new NodoArblAS(new DslToken(TokenType.Id, id62a));
+                    //Pilas.Stacks.pushPAA(nodo62a);
                     numTokenReducir = 1;
                     valueToReturn = "factor";
                     break;
                 // ##### ================================== Generación de identificadores
                 case 63://id->_<id1>
-                    string id63a = Pilas.Stacks.popPI();
-                    id63a = "_" + id63a;
-                    Pilas.Stacks.pushPI(id63a);
+                    //string id63a = Pilas.Stacks.popPI();
+                    //id63a = "_" + id63a;
+                    //Pilas.Stacks.pushPI(id63a);
                     numTokenReducir = 2;
                     valueToReturn = "id";
                     break;
                 case 64://id1-><id1><letra>
-                    string idStr1 = Pilas.Stacks.popPI();
-                    string idStr2 = Pilas.Stacks.popPI();
-                    Pilas.Stacks.pushPI((idStr1 + idStr2));
+                    //string idStr1 = Pilas.Stacks.popPI();
+                    //string idStr2 = Pilas.Stacks.popPI();
+                    //Pilas.Stacks.pushPI((idStr1 + idStr2));
                     numTokenReducir = 2;
                     valueToReturn = "id1";
                     break;
                 case 65://id1-><id1><digito>
-                    string id1 = Pilas.Stacks.popPI();
-                    id1 += (Pilas.Stacks.popPV().ToString());
-                    Pilas.Stacks.pushPI(id1);
+                    //string id1 = Pilas.Stacks.popPI();
+                    //id1 += (Pilas.Stacks.popPV().ToString());
+                    //Pilas.Stacks.pushPI(id1);
                     numTokenReducir = 2;
                     valueToReturn = "id1";
                     break;
@@ -386,286 +386,291 @@ namespace Compi
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("h");
                     break;
-                case 75://j
+                case 75://h
+                    numTokenReducir = 1;
+                    valueToReturn = "letra";
+                    Pilas.Stacks.pushPI("i");
+                    break;
+                case 76://j
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("j");
                     break;
-                case 76://k
+                case 77://k
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("k");
                     break;
-                case 77://l
+                case 78://l
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("l");
                     break;
-                case 78://m
+                case 79://m
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("m");
                     break;
-                case 79://n
+                case 80://n
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("n");
                     break;
-                case 80://o
+                case 81://o
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("o");
                     break;
-                case 81://p
+                case 82://p
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("p");
                     break;
-                case 82://q
+                case 83://q
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("q");
                     break;
-                case 83://r
+                case 84://r
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("r");
                     break;
-                case 84://s
+                case 85://s
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("s");
                     break;
-                case 85://t
+                case 86://t
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("t");
                     break;
-                case 86://u
+                case 87://u
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("u");
                     break;
-                case 87://v
+                case 88://v
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("v");
                     break;
-                case 88://w
+                case 89://w
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("w");
                     break;
-                case 89://x
+                case 90://x
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("x");
                     break;
-                case 90://y
+                case 91://y
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("y");
                     break;
-                case 91://z
+                case 92://z
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("z");
                     break;
-                case 92://A
+                case 93://A
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("A");
                     break;
-                case 93://B
+                case 94://B
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("B");
                     break;
-                case 94://C
+                case 95://C
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("C");
                     break;
-                case 95://D
+                case 96://D
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("D");
                     break;
-                case 96://E
+                case 97://E
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("E");
                     break;
-                case 97://F
+                case 98://F
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("F");
                     break;
-                case 98://G
+                case 99://G
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("G");
                     break;
-                case 99://H
+                case 100://H
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("H");
                     break;
-                case 100://I
+                case 101://I
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("I");
                     break;
-                case 101://J
+                case 102://J
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("J");
                     break;
-                case 102://K
+                case 103://K
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("K");
                     break;
-                case 103://L
+                case 104://L
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("L");
                     break;
-                case 104://M
+                case 105://M
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("M");
                     break;
-                case 105://N
+                case 106://N
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("N");
                     break;
-                case 106://O
+                case 107://O
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("O");
                     break;
-                case 107://P
+                case 108://P
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("P");
                     break;
-                case 108://Q
+                case 109://Q
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("Q");
                     break;
-                case 109://R
+                case 110://R
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("R");
                     break;
-                case 110://S
+                case 111://S
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("S");
                     break;
-                case 111://T
+                case 112://T
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("T");
                     break;
-                case 112://U
+                case 113://U
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("U");
                     break;
-                case 113://V
+                case 114://V
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("V");
                     break;
-                case 114://W
+                case 115://W
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("W");
                     break;
-                case 115://X
+                case 116://X
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("X");
                     break;
-                case 116://Y
+                case 117://Y
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("Y");
                     break;
-                case 117://Z
+                case 118://Z
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("Z");
                     break;
-                case 118://_
+                case 119://_
                     numTokenReducir = 1;
                     valueToReturn = "letra";
                     Pilas.Stacks.pushPI("_");
                     break;
                 // ##### ================================== De Digito a Número
-                case 119://num-><num><digito>
-                    int numA = Pilas.Stacks.popPV();
-                    int numB = Pilas.Stacks.popPV();
-                    int numC = (numA * 10) + numB;
-                    Pilas.Stacks.pushPV(numC.ToString());
+                case 120://num-><num><digito>
+                    //int numA = Pilas.Stacks.popPV();
+                    //int numB = Pilas.Stacks.popPV();
+                    //int numC = (numA * 10) + numB;
+                    //Pilas.Stacks.pushPV(numC.ToString());
                     numTokenReducir = 2;
                     valueToReturn = "num";
                     break;
-                case 120://num-><digito>
+                case 121://num-><digito>
                     numTokenReducir = 1;
                     valueToReturn = "num";
                     break;
                 // ##### ================================== Digitos del 0 al 9
-                case 121://0 
+                case 122://0 
                     numTokenReducir = 1;
                     valueToReturn = "digito";
                     Pilas.Stacks.pushPV("0");
                     break;
-                case 122://1
+                case 123://1
                     numTokenReducir = 1;
                     valueToReturn = "digito";
                     Pilas.Stacks.pushPV("1");
                     break;
-                case 123://2
+                case 124://2
                     numTokenReducir = 1;
                     valueToReturn = "digito";
                     Pilas.Stacks.pushPV("2");
                     break;
-                case 124://3
+                case 125://3
                     numTokenReducir = 1;
                     valueToReturn = "digito";
                     Pilas.Stacks.pushPV("3");
                     break;
-                case 125://4
+                case 126://4
                     numTokenReducir = 1;
                     valueToReturn = "digito";
                     Pilas.Stacks.pushPV("4");
                     break;
-                case 126://5
+                case 127://5
                     numTokenReducir = 1;
                     valueToReturn = "digito";
                     Pilas.Stacks.pushPV("5");
                     break;
-                case 127://6
+                case 128://6
                     numTokenReducir = 1;
                     valueToReturn = "digito";
                     Pilas.Stacks.pushPV("6");
                     break;
-                case 128://7
+                case 129://7
                     numTokenReducir = 1;
                     valueToReturn = "digito";
                     Pilas.Stacks.pushPV("7");
                     break;
-                case 129://8
+                case 130://8
                     numTokenReducir = 1;
                     valueToReturn = "digito";
                     Pilas.Stacks.pushPV("8");
                     break;
-                case 130://9
+                case 131://9
                     numTokenReducir = 1;
                     valueToReturn = "digito";
                     Pilas.Stacks.pushPV("9");

@@ -137,6 +137,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Gramatica\gram_S.txt" />
+    <Content Include="Gramatica\Tiny_AnalizeTab.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Gramatica\Tiny_Final.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

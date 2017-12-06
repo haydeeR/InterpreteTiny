@@ -31,10 +31,10 @@ namespace Compi
                 this.acciones = string.Empty;
                 desplazamientos.ForEach(desp =>
                 {
-                    if (desplazamientos.IndexOf(desp) < desplazamientos.Count - 1)
-                    {
-                        this.acciones += (desp.Token + desp.EstadoActual.getId().ToString());
-                    }
+                    //if (desplazamientos.IndexOf(desp) < desplazamientos.Count - 1)
+                    //{
+                        this.acciones += (desp.Token + desp.EstadoActual.ToString());
+                    //}
                 });
                 return this.acciones;
             }
@@ -72,7 +72,7 @@ namespace Compi
                 despEliminar.Add(this.desplazamientos[(this.desplazamientos.Count - canTokens)]);
             //Eliminamos de la lista los desplazamientos
             despEliminar.ForEach(accionaux => this.desplazamientos.Remove(accionaux));
-            produccion = despEliminar[0].EstadoActual.getTokenDeLlegada();
+            produccion = despEliminar[0].Token;
 
             return despEliminar[(despEliminar.Count - 1)];
         }
@@ -86,7 +86,7 @@ namespace Compi
 
             if (int.TryParse(nuevoEdoCadena, out indEdoDestino))
             {
-                nuevoDesplazamiento = new Desplazamiento(primerDesplazamiento.EstadoOrigen, null, valCadReducido);
+                nuevoDesplazamiento = new Desplazamiento(primerDesplazamiento.EstadoOrigen, -1, valCadReducido);
             }
         }
 
@@ -97,11 +97,11 @@ namespace Compi
         /// <param name="ultDesplazamiento">Último desplazamiento eliminado de la lista</param>
         /// <param name="edoDestino">Estado al que se realizara el desplazamiento</param>
         /// <param name="valCadReducido">Nombre del token que representa la reducción</param>
-        public void agregaDespReducido(Desplazamiento ultDesplazamiento, EdoLR1 edoDestino, string valCadReducido)
+        public void agregaDespReducido(Desplazamiento ultDesplazamiento, int edoDestino, string valCadReducido)
         {
             Desplazamiento nuevoDesplazamiento = null;
 
-            if (ultDesplazamiento != null && edoDestino != null)
+            if (ultDesplazamiento != null && edoDestino >= 0)
             {
                 nuevoDesplazamiento = new Desplazamiento(ultDesplazamiento.EstadoOrigen, edoDestino, valCadReducido);
                 this.desplazamientos.Add(nuevoDesplazamiento);
@@ -136,13 +136,13 @@ namespace Compi
         {
             int res = -1;
             if (this.desplazamientos != null && this.desplazamientos.Count > 0)
-                res = this.desplazamientos[this.desplazamientos.Count - 1].EstadoActual.getId();
+                res = this.desplazamientos[this.desplazamientos.Count - 1].EstadoActual;
             return res;
         }
 
 
 
-        public EdoLR1 getEdoActual()
+        public int getEdoActual()
         {
             if (this.desplazamientos != null && this.desplazamientos.Count > 0)
             {
@@ -150,10 +150,10 @@ namespace Compi
                 return ultDesp.EstadoActual;
             }
 
-            return null;
+            return -1;
         }
 
-        public EdoLR1 getEdoAnterior()
+        public int getEdoAnterior()
         {
             if (this.desplazamientos != null && this.desplazamientos.Count > 0)
             {
@@ -161,7 +161,7 @@ namespace Compi
                 return ultDesp.EstadoActual;
             }
 
-            return null;
+            return -1;
         }
     }
 }

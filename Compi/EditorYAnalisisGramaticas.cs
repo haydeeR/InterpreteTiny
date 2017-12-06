@@ -353,7 +353,7 @@ namespace Compi
             ListViewItem.ListViewSubItem lvSubItem = null;
 
             //TablaDesplazamientos tabDesp = new TablaDesplazamientos(listEdos);
-            this.tablaDesplazamientos.Estados = listEdos;
+            //this.tablaDesplazamientos.Estados = listEdos;
             foreach (EdoLR1 e in listEdos)
             {
                 lvAux = tablaLr1.Items.Add(e.getId().ToString());
@@ -366,7 +366,7 @@ namespace Compi
                     {
                         //Deben de ser varias las aristas con las que se mueve
                         listAristasAux = e.getListArista().Where(ar => ar.getEdoDestino().getTokenDeLlegada() == cabecera).ToList();
-                        
+
                         foreach (AristaLR1 a in listAristasAux)
                         {
                             if (a != null)
@@ -456,7 +456,7 @@ namespace Compi
 
             if (estadosAux != null && estadosAux.Count > 0)
             {
-                TablaDeAcciones tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g.getListaEdos()[0]);
+                TablaDeAcciones tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, 0);
 
                 try
                 {
@@ -478,7 +478,7 @@ namespace Compi
 
                 for (int ind = 0; ind < cadenaDeEntrada.Length; ind++)
                 {
-                    operaExitosa = tablaDeAcciones.agregaCaracter(cadenaDeEntrada[ind].ToString(), estadosAux, cadenaDeEntrada.Substring(ind), out desplazo);
+                    operaExitosa = tablaDeAcciones.agregaCaracter(cadenaDeEntrada[ind].ToString(), cadenaDeEntrada.Substring(ind), out desplazo);
                     if (!operaExitosa)
                         break;
                     ind = !desplazo ? (ind - 1) : ind;

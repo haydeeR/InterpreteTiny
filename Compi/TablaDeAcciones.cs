@@ -15,7 +15,7 @@ namespace Compi
         public List<Accion> Acciones { get { return this.acciones; } }
 
 
-        public TablaDeAcciones(TablaDesplazamientos tabDes, EdoLR1 estado0)
+        public TablaDeAcciones(TablaDesplazamientos tabDes, int estado0)
         {
             this.acciones = new List<Accion>();
             this.tablaDesplazamientos = tabDes;
@@ -40,7 +40,7 @@ namespace Compi
             return index;
         }
 
-        public bool agregaCaracter(string caracter, List<EdoLR1> estados, string cadenaEntrada, out bool desplazo)
+        public bool agregaCaracter(string caracter, string cadenaEntrada, out bool desplazo)
         {
             Accion ultimaAccion = this.acciones.Count > 0 ? this.acciones[this.acciones.Count - 1] : null;
             string nuevStrAccion, copiaStrAccion;
@@ -62,7 +62,7 @@ namespace Compi
                     nuevStrAccion = nuevStrAccion.Replace("S", "");
                     if (int.TryParse(nuevStrAccion, out indEdo))
                     {
-                        ultimoIndAccion = this.agregaAccion(this.creaAccion(ultimaAccion, estados[indEdo], caracter, cadenaEntrada, copiaStrAccion));
+                        ultimoIndAccion = this.agregaAccion(this.creaAccion(ultimaAccion, indEdo, caracter, cadenaEntrada, copiaStrAccion));
 
                         desplazo = true;
                         resultado = true;
@@ -73,7 +73,7 @@ namespace Compi
                     nuevStrAccion = nuevStrAccion.Replace("R", "");
                     if (int.TryParse(nuevStrAccion, out indRed))
                     {
-                        Accion nuevObjAccion = this.reduce(ultimaAccion, estados, caracter, cadenaEntrada, indRed, copiaStrAccion);
+                        Accion nuevObjAccion = this.reduce(ultimaAccion, caracter, cadenaEntrada, indRed, copiaStrAccion);
                         if (nuevObjAccion != null)
                         {
                             this.acciones.Add(nuevObjAccion);
@@ -88,11 +88,11 @@ namespace Compi
         }
 
 
-        private Accion reduce(Accion accionOrigen, List<EdoLR1> estados, string token, string cadenaEntrada, int indRed, string cadStrDesReduc)
+        private Accion reduce(Accion accionOrigen, string token, string cadenaEntrada, int indRed, string cadStrDesReduc)
         {
             Desplazamiento ultimoDespEliminado = null;
             Accion accion = null;
-            EdoLR1 edoLR1Aux = null;
+            int edoLR1Aux = -1;
             string valReduccion = string.Empty, tokenOriginal;
             int cantTokensReduc = 0;
 
@@ -102,10 +102,10 @@ namespace Compi
                 //Creamos la nueva acción con el nuevo desplazamiento reducido
                 accion = new Accion(accionOrigen, cadenaEntrada, cadStrDesReduc, token);
                 ultimoDespEliminado = accion.reducirDesplazamientos(cantTokensReduc, out tokenOriginal);
-                edoLR1Aux = this.dameNuevoEdoDestReduc(ultimoDespEliminado, estados, valReduccion);
-                if (edoLR1Aux != null)
+                edoLR1Aux = this.dameNuevoEdoDestReduc(ultimoDespEliminado, valReduccion);
+                if (edoLR1Aux >= 0)
                 {
-                    cadStrDesReduc += ("\t " + edoLR1Aux.getTokenDeLlegada() + " -> " + tokenOriginal);
+                    cadStrDesReduc += ("\t " + edoLR1Aux.ToString() + " -> " + tokenOriginal);
                     accion.agregaDespReducido(ultimoDespEliminado, edoLR1Aux, valReduccion);
                     accion.AccionDespOReduc = cadStrDesReduc;
                 }
@@ -126,24 +126,24 @@ namespace Compi
         /// <param name="estados">Estados de la gramatica</param>
         /// <param name="valReduccion">Etiqueta de la reduccion "Productor".</param>
         /// <returns></returns>
-        private EdoLR1 dameNuevoEdoDestReduc(Desplazamiento primerDesplazamiento, List<EdoLR1> estados, string valReduccion)
+        private int dameNuevoEdoDestReduc(Desplazamiento primerDesplazamiento, string valReduccion)
         {
-            EdoLR1 sigEdoLR1 = null;
+            int sigEdoLR1 = -1;
             string valorBuscado = string.Empty;
             int indEdoSig = -1;
 
             if (primerDesplazamiento != null)
             {
-                valorBuscado = tablaDesplazamientos.dameValor(primerDesplazamiento.EstadoOrigen.getId(), valReduccion);
+                valorBuscado = tablaDesplazamientos.dameValor(primerDesplazamiento.EstadoOrigen, valReduccion);
                 if (int.TryParse(valorBuscado, out indEdoSig))
-                    sigEdoLR1 = estados[indEdoSig];
+                    sigEdoLR1 = indEdoSig;
             }
 
             return sigEdoLR1;
         }
 
 
-        private Accion creaAccion(Accion accionOrigen, EdoLR1 edoDestino, string token, string cadenaEntrada, string newActionToStack)
+        private Accion creaAccion(Accion accionOrigen, int edoDestino, string token, string cadenaEntrada, string newActionToStack)
         {
             Accion accion = new Accion(accionOrigen, cadenaEntrada, newActionToStack, token);
             accion.agregaDesplazamiento(new Desplazamiento(accion.getEdoActual(), edoDestino, token));
@@ -151,10 +151,10 @@ namespace Compi
         }
 
 
-        private Accion creaAccion(EdoLR1 edo0, string cadenaEntrada, string token)
+        private Accion creaAccion(int edo0, string cadenaEntrada, string token)
         {
             Accion accionInicial = new Accion(null, cadenaEntrada, "", token);
-            accionInicial.agregaDesplazamiento(new Desplazamiento(null, edo0, "$"));
+            accionInicial.agregaDesplazamiento(new Desplazamiento(-1, edo0, "$"));
             return accionInicial;
         }
     }

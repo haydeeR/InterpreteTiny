@@ -12,23 +12,23 @@ namespace Compi
     /// </summary>
     class TablaDesplazamientos
     {
-        List<EdoLR1> estados;
+        //List<EdoLR1> estados;
         List<TokenColumn> despXToken;
 
-        public List<EdoLR1> Estados { get { return this.estados; } set { this.estados = value; } }
+        //public List<EdoLR1> Estados { get { return this.estados; } set { this.estados = value; } }
         public List<TokenColumn> DespXToken { get { return this.despXToken; } set { this.despXToken = value; } }
 
 
         public TablaDesplazamientos()
         {
-            this.estados = new List<EdoLR1>();
+            //this.estados = new List<EdoLR1>();
             this.despXToken = new List<TokenColumn>();
         }
 
 
         public TablaDesplazamientos(List<EdoLR1> estados = null)
         {
-            this.estados = estados;
+            //this.estados = estados;
             despXToken = new List<TokenColumn>();
         }
 
