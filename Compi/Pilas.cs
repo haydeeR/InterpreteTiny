@@ -18,7 +18,7 @@ namespace Compi
 
         int comparador;
         int operador;
-        string tipo = string.Empty;
+        string tipo = "nodeclara";
 
         public List<string> ListaIds { get { return this.listaIDs; } set { this.listaIDs = value; } }
         public int Comparador { get { return comparador; } set { comparador = value; } }
@@ -57,7 +57,7 @@ namespace Compi
             this.listaIDs.Add(id);
         }
 
-        public void limpiaListaIds(string id)
+        private void limpiaListaIds()
         {
             if (this.listaIDs != null)
                 this.listaIDs.Clear();
@@ -68,7 +68,10 @@ namespace Compi
 
         public string getListaIdsLikeString()
         {
-            return string.Join(",", this.listaIDs);
+            string theIds = string.Join(",", this.listaIDs);
+            this.limpiaListaIds();
+
+            return theIds;
         }
 
 
@@ -97,12 +100,22 @@ namespace Compi
 
         public string popPS()
         {
-            return pSimbolos.Pop();
+            if (pSimbolos.Count > 0)
+                return pSimbolos.Pop();
+
+            return string.Empty;
         }
 
         public string peekPS()
         {
             return pSimbolos.Peek();
+        }
+
+        public string popAllPS()
+        {
+            string cadPS = string.Join("", this.pSimbolos);
+            this.pSimbolos.Clear();
+            return cadPS;
         }
 
         #endregion
@@ -120,7 +133,10 @@ namespace Compi
 
         public int popPV()
         {
-            return pValores.Pop();
+            if (pValores.Count > 0)
+                return pValores.Pop();
+
+            return 0;
         }
 
         public int peekPV()
@@ -141,13 +157,17 @@ namespace Compi
 
         public string popPI()
         {
-            return pIdents.Pop();
+            if (pIdents.Count > 0)
+                return pIdents.Pop();
+
+            return string.Empty;
         }
 
         public string peekPI()
         {
             return pIdents.Peek();
         }
+
 
         #endregion
     }

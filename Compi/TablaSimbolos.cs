@@ -11,13 +11,79 @@ namespace Tsimbolos
 
         public List<MetaSimbolo> metaSimbolos;
         TE tablaErrorres;
+        static TablaSimbolos instance = null;
 
+        public static TablaSimbolos TS
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new TablaSimbolos();
 
-        public TablaSimbolos()
+                return instance;
+            }
+        }
+
+        private TablaSimbolos()
         {
             this.metaSimbolos = new List<MetaSimbolo>();
             tablaErrorres = new TE();
         }
+
+        public bool existeSimbolo(string simbolo)
+        {
+            MetaSimbolo metaSimbolo = this.metaSimbolos.FirstOrDefault(mS => mS.Simbolo == simbolo);
+
+            if (metaSimbolo == null)
+                return false;
+
+            return true;
+        }
+
+
+        public MetaSimbolo getMetaSimbolo(string simbolo)
+        {
+            MetaSimbolo metaSimbolo = this.metaSimbolos.FirstOrDefault(mS => mS.Simbolo == simbolo);
+
+            return metaSimbolo;
+        }
+
+
+        public MetaSimbolo getMetaSimbolo(int id)
+        {
+            MetaSimbolo metaSimbolo = this.metaSimbolos.FirstOrDefault(mS => mS.ID == id);
+
+            return metaSimbolo;
+        }
+
+
+        public bool eliminaMetaSimbolo(MetaSimbolo metaSimbolo)
+        {
+            return metaSimbolos.Remove(metaSimbolo);
+        }
+
+
+        public MetaSimbolo eliminaMetaSimbolo(int idMS)
+        {
+            MetaSimbolo metaSimbolo = this.metaSimbolos.FirstOrDefault(mS => mS.ID == idMS);
+
+            if (metaSimbolo != null && this.metaSimbolos.Remove(metaSimbolo))
+                return metaSimbolo;
+
+            return null;
+        }
+
+
+        public MetaSimbolo eliminaMetaSimbolo(string simbolo)
+        {
+            MetaSimbolo metaSimbolo = this.metaSimbolos.FirstOrDefault(mS => mS.Simbolo == simbolo);
+
+            if (metaSimbolo != null && this.metaSimbolos.Remove(metaSimbolo))
+                return metaSimbolo;
+
+            return null;
+        }
+
 
         public List<MetaSimbolo> TablaMetaSimbolos
         {
