@@ -412,9 +412,9 @@ namespace Compi
                 string[] array = line.Split('@');
                 foreach (string cab in array)
                 {
-                    tablaLr1.Columns.Add(cab);
-                    this.cabeceras.Add(cab);
-                    this.tablaDesplazamientos.agregaColumna(cab);
+                    tablaLr1.Columns.Add((cab == "" ? "$" : cab));
+                    this.cabeceras.Add((cab == "" ? "$" : cab));
+                    this.tablaDesplazamientos.agregaColumna((cab == "" ? "$" : cab));
                 }
             }
             //this.tablaDesplazamientos.Estados = listEdos;
@@ -484,6 +484,7 @@ namespace Compi
         private void llenaTablaDeSimbolos(List<DslSentence> sentencias, List<List<DslToken>> tokens)
         {
             List<DslSentence> sentenciasDeclarativas = null;
+            this.tablaSimbolos = new TablaSimbolos();
 
             if (sentencias != null && sentencias.Count > 0)
             {
@@ -495,7 +496,6 @@ namespace Compi
                     if (sentenciasDeclarativas != null && sentenciasDeclarativas.Count > 0)
                     {
                         //Inicializamos la tabla de simbolos
-                        this.tablaSimbolos = new TablaSimbolos();
                         sentenciasDeclarativas.ForEach(sentenciasDeclarativa =>
                         {
                             int index = sentencias.IndexOf(sentenciasDeclarativa);
@@ -553,28 +553,45 @@ namespace Compi
         {
             List<EdoLR1> estadosAux = g != null ? g.getListaEdos() : null;
             string cadenaDeEntrada = string.Empty;
+            string caracter = string.Empty;
             bool desplazo = false;
             bool operaExitosa = false;
 
 
             if (estadosAux != null && estadosAux.Count > 0)
             {
-                TablaDeAcciones tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, 0);
+                TablaDeAcciones tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g, 0);
 
                 lineasTiny.ForEach(linea =>
                 {
                     if (linea.Trim() != string.Empty)
                         cadenaDeEntrada += linea.Trim();
                 });
-
+                cadenaDeEntrada += "$";
                 for (int ind = 0; ind < cadenaDeEntrada.Length; ind++)
                 {
-                    operaExitosa = tablaDeAcciones.agregaCaracter(cadenaDeEntrada[ind].ToString(), cadenaDeEntrada.Substring(ind), out desplazo);
+                    if (cadenaDeEntrada[ind] == '\\')
+                    {
+                        caracter = "\\";
+                        continue;
+                    }
+                    else
+                    {
+                        caracter += cadenaDeEntrada[ind];
+                    }
+                    operaExitosa = tablaDeAcciones.agregaCaracter(caracter, cadenaDeEntrada.Substring(ind), out desplazo);
                     if (!operaExitosa)
                         break;
                     ind = !desplazo ? (ind - 1) : ind;
+                    caracter = string.Empty;
                 }
 
+                Accion ultAccion = tablaDeAcciones.Acciones.Last();
+
+                if (ultAccion.Acciones.Contains("$0Programa1"))
+                {
+                    tablaDeAcciones.Acciones.Add(new Accion(ultAccion, "$", "ACEPTAR", "ACEPTAR"));
+                }
 
                 this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
                 this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;

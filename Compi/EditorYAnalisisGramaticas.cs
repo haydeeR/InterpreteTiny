@@ -456,7 +456,7 @@ namespace Compi
 
             if (estadosAux != null && estadosAux.Count > 0)
             {
-                TablaDeAcciones tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, 0);
+                TablaDeAcciones tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g, 0);
 
                 try
                 {

@@ -182,7 +182,7 @@ namespace Compi
                     valueToReturn = "otro";
                     break;
                 case 39://otro->\e
-                    numTokenReducir = 1;
+                    numTokenReducir = 2;
                     Pilas.Stacks.pushPS(@"\e");
                     valueToReturn = "otro";
                     break;
@@ -232,9 +232,12 @@ namespace Compi
                     valueToReturn = "exp";
                     break;
                 case 47://==
-                case 48://\>
-                case 49://\<
                     numTokenReducir = 2;
+                    valueToReturn = "op-comparacion";
+                    break;
+                case 48://>
+                case 49://<
+                    numTokenReducir = 1;
                     valueToReturn = "op-comparacion";
                     break;
                 case 50://exp-simple-><exp-simple><opsuma><term>
