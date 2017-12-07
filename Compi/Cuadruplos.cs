@@ -28,7 +28,11 @@ namespace Compi
 
             return listsArboles;
         }
-
+        /// <summary>
+        /// Metodo que recorreArbol  
+        /// </summary>
+        /// <param name="raiz"></param>
+        /// <returns></returns>
         public List<Cuadruplo> recorreArbol(NodoArblAS raiz)
         {
             cuadruplos = new List<Cuadruplo>();
@@ -43,7 +47,11 @@ namespace Compi
         }
 
 
-
+        /// <summary>
+        /// Generacion de cuadruplos
+        /// </summary>
+        /// <param name="nodo">Recibe el arbol</param>
+        /// <returns></returns>
         private Cuadruplo generaCuadruplo(NodoArblAS nodo)
         {
             Cuadruplo cuadruploGeneroIzq = null;
@@ -61,7 +69,8 @@ namespace Compi
             if (nodoDerecho != null)
                 cuadruploGeneroDer = generaCuadruplo(nodoDerecho);
 
-            // Primer caso, es un operador, y como nodos hijos solo tiene números sin nietos
+            // Primer caso, es un operador, y
+            // como nodos hijos son hojas
             if (cuadruploGeneroIzq == null && cuadruploGeneroDer == null)
             {
                 Cuadruplo aux = new Cuadruplo(operador: nodo.getToken(),
@@ -98,7 +107,7 @@ namespace Compi
 
             return null;
         }
-
+         
 
         private Cuadruplo generaCuadruplo(NodoArblAS nodo, Cuadruplo cuadruploGeneroIzq, Cuadruplo cuadruploGeneroDer)
         {
@@ -155,5 +164,59 @@ namespace Compi
 
             return null;
         }
+
+        public void ejecuta(int keyExecute)
+        {
+            //Ejecucion completa
+            if (keyExecute == 0)
+                this.allExecute();
+            
+        }
+
+        public void allExecute()
+        {
+            TokenType op;
+            foreach(Cuadruplo cuadruplo in this.cuadruplos)
+            {
+                op = cuadruplo.Operador.TokenType;
+                switch (op)
+                {
+                    case TokenType.Id://0:
+
+                    break;
+                    case TokenType.Cadena://1:
+                    break;
+                    case TokenType.Numero://2:
+                    break;
+                    case TokenType.KeyWord://3:
+                    break;
+                    case TokenType.TipoDato://4:
+                    break;
+                    case TokenType.OperadorAssign://5:
+                    break;
+                    case TokenType.OperadorComp://6
+                    break;
+                    case TokenType.OperadorSuma://7
+                    break;
+                    case TokenType.OperadorMult://8:
+                    break;
+                    case TokenType.OperadorPote://9:
+                    break;
+                    case TokenType.AbreParent://10:
+                    break;
+                    case TokenType.CierraParent://11:
+                    break;
+                    case TokenType.AbreLlaves://12:
+                    break;
+                    case TokenType.CierraLlaves://13:
+                    break;
+                    case TokenType.FinInstruccion://14:
+                    break;
+                    case TokenType.SeparadorComa://15:
+                    break;
+                }
+            }
+        }
+
     }
 }
