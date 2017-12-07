@@ -10,16 +10,18 @@ namespace Compi
     {
         List<Accion> acciones;
         TablaDesplazamientos tablaDesplazamientos;
+        Gramatica g;
 
 
         public List<Accion> Acciones { get { return this.acciones; } }
 
 
-        public TablaDeAcciones(TablaDesplazamientos tabDes, int estado0)
+        public TablaDeAcciones(TablaDesplazamientos tabDes, Gramatica gra, int estado0)
         {
             this.acciones = new List<Accion>();
             this.tablaDesplazamientos = tabDes;
             this.acciones.Add(this.creaAccion(estado0, string.Empty, "$"));
+            this.g = gra;
         }
 
         public int agregaAccion(Accion accion)
@@ -105,7 +107,8 @@ namespace Compi
                 edoLR1Aux = this.dameNuevoEdoDestReduc(ultimoDespEliminado, valReduccion);
                 if (edoLR1Aux >= 0)
                 {
-                    cadStrDesReduc += ("\t " + edoLR1Aux.ToString() + " -> " + tokenOriginal);
+                    string generador = this.g.getProducciones()[indRed];
+                    cadStrDesReduc += ("    " + generador);
                     accion.agregaDespReducido(ultimoDespEliminado, edoLR1Aux, valReduccion);
                     accion.AccionDespOReduc = cadStrDesReduc;
                 }
