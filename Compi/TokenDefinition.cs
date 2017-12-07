@@ -166,5 +166,6 @@ namespace Compi
         CierraLlaves,//13
         FinInstruccion,//14
         SeparadorComa,//15
+        Identificadores,//16
     }
 }

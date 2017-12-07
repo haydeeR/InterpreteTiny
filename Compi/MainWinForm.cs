@@ -484,7 +484,7 @@ namespace Compi
         private void llenaTablaDeSimbolos(List<DslSentence> sentencias, List<List<DslToken>> tokens)
         {
             List<DslSentence> sentenciasDeclarativas = null;
-            this.tablaSimbolos = new TablaSimbolos();
+            this.tablaSimbolos = TablaSimbolos.TS;
 
             if (sentencias != null && sentencias.Count > 0)
             {
@@ -583,7 +583,11 @@ namespace Compi
                     if (!operaExitosa)
                         break;
                     ind = !desplazo ? (ind - 1) : ind;
-                    caracter = string.Empty;
+
+                    if (!desplazo && caracter.Contains("\\e"))
+                        caracter = caracter.Replace("e", "");
+                    else
+                        caracter = string.Empty;
                 }
 
                 Accion ultAccion = tablaDeAcciones.Acciones.Last();

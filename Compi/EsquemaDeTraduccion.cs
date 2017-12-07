@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tsimbolos;
 
 namespace Compi
 {
@@ -24,6 +25,12 @@ namespace Compi
                     valueToReturn = "Programa";
                     break;
                 case 2://secuencia-sent-><secuencia-sent>;<sentencia>
+                    NodoArblAS nodo2a = Pilas.Stacks.popPAA();
+                    NodoArblAS nodo2b = Pilas.Stacks.popPAA();
+                    NodoArblAS nodo2c = new NodoArblAS(new DslToken(TokenType.FinInstruccion, ";"));
+                    nodo2c.setNodo(nodo2b);
+                    nodo2c.setNodo(nodo2a);
+                    Pilas.Stacks.pushPAA(nodo2c);
                     numTokenReducir = 3;
                     valueToReturn = "secuencia-sent";
                     break;
@@ -41,22 +48,66 @@ namespace Compi
                     valueToReturn = "sentencia";
                     break;
                 case 10://sent-if->if(<exp>){<secuencia-sent>}endif
+                    NodoArblAS nodoSent10a = Pilas.Stacks.popPAA();
+                    NodoArblAS nodoExpV10a = Pilas.Stacks.popPAA();
+                    NodoArblAS nodoIf10a = new NodoArblAS(new DslToken(TokenType.KeyWord, "if"));
+                    nodoIf10a.setNodo(nodoExpV10a);
+                    nodoIf10a.setNodo(nodoSent10a);
+                    Pilas.Stacks.pushPAA(nodoIf10a);
                     numTokenReducir = 13;
                     valueToReturn = "sent-if";
                     break;
                 case 11://sent-if->if(<exp>){<secuencia-sent>}else{<secuencia-sent>}endif
+                    NodoArblAS nodoSentIF11a = Pilas.Stacks.popPAA();
+                    NodoArblAS nodoSentV11a = Pilas.Stacks.popPAA();
+                    NodoArblAS nodoExpV11a = Pilas.Stacks.popPAA();
+                    NodoArblAS nodoElse11a = new NodoArblAS(new DslToken(TokenType.KeyWord, "else"));
+                    nodoElse11a.setNodo(nodoSentV11a);
+                    nodoElse11a.setNodo(nodoSentIF11a);
+                    NodoArblAS nodoIf11a = new NodoArblAS(new DslToken(TokenType.KeyWord, "if"));
+                    nodoIf11a.setNodo(nodoExpV11a);
+                    nodoIf11a.setNodo(nodoElse11a);
+                    Pilas.Stacks.pushPAA(nodoIf11a);
                     numTokenReducir = 20;
                     valueToReturn = "sent-if";
                     break;
                 case 12://sent-repeat->repeat{<secuencia-sent>}until(<exp>)
+                    NodoArblAS nodoExp12a = Pilas.Stacks.popPAA();
+                    NodoArblAS nodoSent12b = Pilas.Stacks.popPAA();
+                    NodoArblAS nodosentRep12c = new NodoArblAS(new DslToken(TokenType.KeyWord, "repeat-until"));
+                    nodosentRep12c.setNodo(nodoSent12b);
+                    nodosentRep12c.setNodo(nodoExp12a);
+                    Pilas.Stacks.pushPAA(nodosentRep12c);
                     numTokenReducir = 17;
                     valueToReturn = "sent-repeat";
                     break;
                 case 13://sent-assign-><id>:=<exp>
+                    string id13a = Pilas.Stacks.popPI();
+                    if (TablaSimbolos.TS.existeSimbolo(id13a))
+                    {
+                        NodoArblAS nodo13a = new NodoArblAS(new DslToken(TokenType.Id, id13a));
+                        NodoArblAS nodo13b = Pilas.Stacks.popPAA();
+                        NodoArblAS nodo13c = new NodoArblAS(new DslToken(TokenType.OperadorAssign, ":="));
+                        nodo13c.setNodo(nodo13a);
+                        nodo13c.setNodo(nodo13b);
+                        Pilas.Stacks.pushPAA(nodo13c);
+                    }
+                    else
+                    {
+                        //error
+                    }
                     numTokenReducir = 4;
                     valueToReturn = "sent-assign";
                     break;
                 case 14://sent-read->read(<id>)
+                    string id14a = Pilas.Stacks.popPI();
+                    if (TablaSimbolos.TS.existeSimbolo(id14a))
+                    {
+                        NodoArblAS nodo14a = new NodoArblAS(new DslToken(TokenType.KeyWord, "read"));
+                        NodoArblAS nodo14b = new NodoArblAS(new DslToken(TokenType.Id, id14a));
+                        nodo14a.setNodo(nodo14b);
+                        Pilas.Stacks.pushPAA(nodo14a);
+                    }
                     numTokenReducir = 7;
                     valueToReturn = "sent-read";
                     break;
@@ -65,19 +116,34 @@ namespace Compi
                     valueToReturn = "sent-write";
                     break;
                 case 16://print->"<cadena>",<identificadores>
+                    string cad16a = Pilas.Stacks.popPS();
+                    string cad16b = "\"" + cad16a + "\"";
+                    NodoArblAS nodo16a = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
+                    NodoArblAS nodo16b = new NodoArblAS(new DslToken(TokenType.Cadena, cad16b));
+                    NodoArblAS nodo16c = new NodoArblAS(new DslToken(TokenType.Identificadores,
+                                                                     Pilas.Stacks.getListaIdsLikeString()));
+                    nodo16a.setNodo(nodo16b);
+                    nodo16a.setNodo(nodo16c);
+                    Pilas.Stacks.pushPAA(nodo16a);
                     numTokenReducir = 5;
                     valueToReturn = "print";
                     break;
                 case 17://print->"<cadena>"
-                    string cad17a = Pilas.Stacks.popPS();
+                    string cad17a = Pilas.Stacks.popAllPS();
                     string cad17b = "\"" + cad17a + "\"";
-                    NodoArblAS nodo17a = new NodoArblAS(new DslToken(TokenType.KeyWord));
-                    //Pilas.Stacks.pushPS();
+                    NodoArblAS nodo17a = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
+                    NodoArblAS nodo17b = new NodoArblAS(new DslToken(TokenType.Cadena, cad17b));
+                    nodo17a.setNodoIzquierdo(nodo17b);
+                    Pilas.Stacks.pushPAA(nodo17a);
                     numTokenReducir = 3;
                     valueToReturn = "print";
                     break;
                 case 18://print-><identificadores>
                     NodoArblAS nodo18a = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
+                    DslToken newToken18a = new DslToken(TokenType.Identificadores,
+                                                        Pilas.Stacks.getListaIdsLikeString());
+                    NodoArblAS nodo18b = new NodoArblAS(newToken18a);
+                    nodo18a.setNodo(nodo18b);
                     Pilas.Stacks.pushPAA(nodo18a);
                     numTokenReducir = 1;
                     valueToReturn = "print";
@@ -183,7 +249,7 @@ namespace Compi
                     break;
                 case 39://otro->\e
                     numTokenReducir = 2;
-                    Pilas.Stacks.pushPS(@"\e");
+                    Pilas.Stacks.pushPS(" ");
                     valueToReturn = "otro";
                     break;
                 case 40://sent-declara->Var{<Tipo><identificadores>}
@@ -192,18 +258,22 @@ namespace Compi
                     valueToReturn = "sent-declara";
                     break;
                 case 41://identificadores-><identificadores>,<id>
+                    string id41a = Pilas.Stacks.popPI();
+                    if (Pilas.Stacks.TipoDato == "nodeclara")
+                    {
+                        if (TablaSimbolos.TS.existeSimbolo(id41a))
+                            Pilas.Stacks.addId(id41a);
+                    }
                     numTokenReducir = 3;
                     valueToReturn = "identificadores";
                     break;
                 case 42://identificadores-><id>
-                    if (Pilas.Stacks.TipoDato != "nodeclara")
+                    string id42a = Pilas.Stacks.popPI();
+                    if (Pilas.Stacks.TipoDato == "nodeclara")
                     {
-                        string id = Pilas.Stacks.popPI();
+                        if (TablaSimbolos.TS.existeSimbolo(id42a))
+                            Pilas.Stacks.addId(id42a);
                     }
-                    else
-                    {
-                    }
-
                     numTokenReducir = 1;
                     valueToReturn = "identificadores";
                     break;
