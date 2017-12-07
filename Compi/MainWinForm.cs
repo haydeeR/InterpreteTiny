@@ -823,5 +823,14 @@ namespace Compi
                 MessageBox.Show("Esta gramatica  no tiene terminales");
             }
         }
+
+        private void btnEjecutar_Click(object sender, EventArgs e)
+        {
+            int selectedIndex = comBoxTipoEjecucion.SelectedIndex;
+            Object selectedItem = comBoxTipoEjecucion.SelectedItem;
+
+            Cuadruplos c = new Cuadruplos();
+            c.ejecuta(int keyExecution);
+        }
     }
 }

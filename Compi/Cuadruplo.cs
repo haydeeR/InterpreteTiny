@@ -58,6 +58,24 @@ namespace Compi
             get { return this._resultado.Value; }
             set { this._resultado.Value = value; }
         }
+
+        public DslToken Operando1
+        {
+            get { return this.operando1; }
+            set { this.operando1 = value; }
+        }
+   
+        public DslToken Operando2
+        {
+            get { return this.operando2; }
+            set { this.operando2 = value; }
+        }
+
+        public DslToken Operador
+        {
+            get { return this.operador; }
+            set { this.operador = value; }
+        }
     }
 
     public class Resultado
