@@ -83,7 +83,13 @@ namespace Compi
 
         public void pushPAA(NodoArblAS nuevoNodo) { pAA.Push(nuevoNodo); }
 
-        public NodoArblAS popPAA() { return pAA.Pop(); }
+        public NodoArblAS popPAA()
+        {
+            if (this.pAA.Count > 0)
+                return pAA.Pop();
+
+            return null;
+        }
 
 
         public NodoArblAS peekPAA() { return pAA.Peek(); }
