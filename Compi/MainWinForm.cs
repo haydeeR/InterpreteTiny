@@ -844,9 +844,7 @@ namespace Compi
         {
             int selectedIndex = comBoxTipoEjecucion.SelectedIndex;
             Object selectedItem = comBoxTipoEjecucion.SelectedItem;
-
-            //Cuadruplos c = new Cuadruplos();
-            //c.ejecuta(selectedIndex);
+            Cuadruplos.Instance.ejecuta(selectedIndex);
         }
     }
 }
