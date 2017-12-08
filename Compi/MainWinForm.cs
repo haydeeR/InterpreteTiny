@@ -50,6 +50,8 @@ namespace Compi
 
         private TablaDesplazamientos tablaDesplazamientos = null;
 
+        private TablaDeAcciones tablaDeAcciones = null;
+
         private ArbolAS arbol = null;
 
         public MainWinForm(ini i)
@@ -470,13 +472,14 @@ namespace Compi
                 listasDeTokens = analizer.TokenDefinitions;
                 listaDeSentencias = analizer.SentenceDefinitions;
 
-                //Llenamos la tabal de simbolos
+                //Llenamos la tabla de simbolos
                 this.llenaTablaDeSimbolos(listaDeSentencias, listasDeTokens);
                 //Mostramos en el grid la tabla de simbolos
                 this.muestraTablaDeSimbolos();
                 //Llena la tabla de acciones en base a las sentencias
                 this.llenarTablaAcciones(lineasTiny);
-
+                //Llena la tabla de cuadruplos
+                this.generaCuadruplos();
             }
         }
 
@@ -554,7 +557,7 @@ namespace Compi
 
             if (estadosAux != null && estadosAux.Count > 0)
             {
-                TablaDeAcciones tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g, 0);
+                this.tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g, 0);
                 Pilas.Stacks.limpiarInstancia();
                 lineasTiny.ForEach(linea =>
                 {
@@ -577,7 +580,7 @@ namespace Compi
                     else
                         caracter += cadenaDeEntrada[ind];
 
-                    operaExitosa = tablaDeAcciones.agregaCaracter(caracter, cadenaDeEntrada.Substring(ind).Replace("@", ""), out desplazo);
+                    operaExitosa = this.tablaDeAcciones.agregaCaracter(caracter, cadenaDeEntrada.Substring(ind).Replace("@", ""), out desplazo);
 
                     if (!operaExitosa) break;
                     ind = !desplazo ? (ind - 1) : ind;
@@ -587,7 +590,7 @@ namespace Compi
                     else
                         caracter = string.Empty;
                 }
-                this.muestraTablaAcciones(tablaDeAcciones);
+                this.muestraTablaAcciones(this.tablaDeAcciones);
             }
         }
 
@@ -596,10 +599,8 @@ namespace Compi
         {
             Accion ultAccion = tablaDeAcciones.Acciones.Last();
             if (ultAccion.Acciones.Contains("$0Programa1"))
-            {
                 tablaDeAcciones.Acciones.Add(new Accion(ultAccion, "$", "ACEPTAR", "ACEPTAR"));
-                this.generaCuadruplos();
-            }
+
             this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
             this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;
             this.dataGridViewTablaAcciones.Columns[0].DataPropertyName = "Acciones";
@@ -610,15 +611,24 @@ namespace Compi
 
         private void generaCuadruplos()
         {
-            Cuadruplos.Instance.recorreArbol(Pilas.Stacks.peekPAA());
-            this.muestraCuadruplos();
+            if (this.tablaDeAcciones.Acciones.Last().AccionDespOReduc == "ACEPTAR" &&
+                this.tablaDeAcciones.Acciones.Last().CadenaEntrada == "$")
+            {
+                Cuadruplos.Instance.recorreArbol(Pilas.Stacks.peekPAA());
+                this.muestraCuadruplos();
+            }
         }
+
 
         private void muestraCuadruplos()
         {
-
+            this.dataGridViewCuadruplos.AutoGenerateColumns = false;
+            this.dataGridViewCuadruplos.DataSource = Cuadruplos.Instance.LstCuadruplos;
+            this.dataGridViewCuadruplos.Columns[0].DataPropertyName = "strOperando1";
+            this.dataGridViewCuadruplos.Columns[1].DataPropertyName = "strOperando2";
+            this.dataGridViewCuadruplos.Columns[2].DataPropertyName = "strOperador";
+            this.dataGridViewCuadruplos.Columns[3].DataPropertyName = "strTempVar";
         }
-
 
 
         public void insertaRegistro(string pila, string cadena)

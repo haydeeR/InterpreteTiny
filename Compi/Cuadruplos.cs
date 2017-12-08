@@ -30,6 +30,8 @@ namespace Compi
 
         private List<Cuadruplo> cuadruplos;
 
+        public List<Cuadruplo> LstCuadruplos { get { return this.cuadruplos; } }
+
         public List<List<Cuadruplo>> recorreArboles(List<NodoArblAS> arboles)
         {
             List<List<Cuadruplo>> listsArboles = new List<List<Cuadruplo>>();

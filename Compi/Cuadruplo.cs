@@ -81,6 +81,50 @@ namespace Compi
             get { return this.operador; }
             set { this.operador = value; }
         }
+
+        public string strOperando1
+        {
+            get
+            {
+                if (this.Operando1 != null)
+                    return this.operando1.Value;
+                else
+                    return string.Empty;
+            }
+        }
+
+        public string strOperando2
+        {
+            get
+            {
+                if (this.Operando2 != null)
+                    return this.operando2.Value;
+                else
+                    return string.Empty;
+            }
+        }
+
+        public string strOperador
+        {
+            get
+            {
+                if (this.Operador != null)
+                    return this.operador.Value;
+                else
+                    return string.Empty;
+            }
+        }
+
+        public string strTempVar
+        {
+            get
+            {
+                if (this.resultado != null)
+                    return this.resultado.NameVar;
+                else
+                    return string.Empty;
+            }
+        }
     }
 
     public class Resultado
