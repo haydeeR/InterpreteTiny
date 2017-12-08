@@ -598,6 +598,7 @@ namespace Compi
             if (ultAccion.Acciones.Contains("$0Programa1"))
             {
                 tablaDeAcciones.Acciones.Add(new Accion(ultAccion, "$", "ACEPTAR", "ACEPTAR"));
+                this.generaCuadruplos();
             }
             this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
             this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;
@@ -607,6 +608,16 @@ namespace Compi
         }
 
 
+        private void generaCuadruplos()
+        {
+            Cuadruplos.Instance.recorreArbol(Pilas.Stacks.peekPAA());
+            this.muestraCuadruplos();
+        }
+
+        private void muestraCuadruplos()
+        {
+
+        }
 
 
 
@@ -834,8 +845,8 @@ namespace Compi
             int selectedIndex = comBoxTipoEjecucion.SelectedIndex;
             Object selectedItem = comBoxTipoEjecucion.SelectedItem;
 
-            Cuadruplos c = new Cuadruplos();
-            c.ejecuta(selectedIndex);
+            //Cuadruplos c = new Cuadruplos();
+            //c.ejecuta(selectedIndex);
         }
     }
 }

@@ -63,9 +63,10 @@ namespace Compi
                     valueToReturn = "sent-if";
                     break;
                 case 11://sent-if->if(<exp>){<secuencia-sent>}else{<secuencia-sent>}endif
-                    NodoArblAS nodoSentIF11a = Pilas.Stacks.popPAA();
-                    NodoArblAS nodoSentV11a = Pilas.Stacks.popPAA();
+                    NodoArblAS nodoSentIF11a = Pilas.Stacks.popPAA();//Nodo Else
                     NodoArblAS nodoExpV11a = Pilas.Stacks.popPAA();
+                    NodoArblAS nodoSentV11a = Pilas.Stacks.popPAA();
+                    
 
                     NodoArblAS nodoElse11a = new NodoArblAS(new DslToken(TokenType.KeyWord, "else"));
                     nodoElse11a.setNodo(nodoSentV11a);
@@ -83,9 +84,12 @@ namespace Compi
                     NodoArblAS nodoExp12a = Pilas.Stacks.popPAA();
                     NodoArblAS nodoSent12b = Pilas.Stacks.popPAA();
                     NodoArblAS nodosentRep12c = new NodoArblAS(new DslToken(TokenType.KeyWord, "repeat-until"));
+
                     nodosentRep12c.setNodo(nodoSent12b);
                     nodosentRep12c.setNodo(nodoExp12a);
+
                     Pilas.Stacks.pushPAA(nodosentRep12c);
+
                     numTokenReducir = 17;
                     valueToReturn = "sent-repeat";
                     break;

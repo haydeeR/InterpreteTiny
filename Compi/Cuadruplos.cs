@@ -11,6 +11,22 @@ namespace Compi
     // ##################################################################################
     class Cuadruplos
     {
+        private static Cuadruplos _instance;
+        public static Cuadruplos Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new Cuadruplos();
+
+                return _instance;
+            }
+        }
+
+        private Cuadruplos()
+        {
+            this.cuadruplos = new List<Cuadruplo>();
+        }
 
         private List<Cuadruplo> cuadruplos;
 
@@ -38,10 +54,10 @@ namespace Compi
             cuadruplos = new List<Cuadruplo>();
 
             if (raiz.getNodoIzquierdo() != null)
-                generaCuadruplo(raiz.getNodoIzquierdo());
+                generaCuadruplo(raiz.getNodoIzquierdo(), raiz);
 
             if (raiz.getNodoDerecho() != null)
-                generaCuadruplo(raiz.getNodoDerecho());
+                generaCuadruplo(raiz.getNodoDerecho(), raiz);
 
             return cuadruplos;
         }
@@ -52,7 +68,7 @@ namespace Compi
         /// </summary>
         /// <param name="nodo">Recibe el arbol</param>
         /// <returns></returns>
-        private Cuadruplo generaCuadruplo(NodoArblAS nodo)
+        private Cuadruplo generaCuadruplo(NodoArblAS nodo, NodoArblAS nodoPadre)
         {
             Cuadruplo cuadruploGeneroIzq = null;
             Cuadruplo cuadruploGeneroDer = null;
@@ -64,10 +80,10 @@ namespace Compi
 
             //Navegamos en profundidad primero por la izquierda
             if (nodoIzquierdo != null)
-                cuadruploGeneroIzq = generaCuadruplo(nodoIzquierdo);
+                cuadruploGeneroIzq = generaCuadruplo(nodoIzquierdo, nodo);
             //Navegamos en profunidad por la derecha
             if (nodoDerecho != null)
-                cuadruploGeneroDer = generaCuadruplo(nodoDerecho);
+                cuadruploGeneroDer = generaCuadruplo(nodoDerecho, nodo);
 
             // Primer caso, es un operador, y
             // como nodos hijos son hojas
@@ -106,6 +122,11 @@ namespace Compi
                                                 numLinea: nodo.Linea);
                 cuadruplos.Add(aux);
                 return aux;
+            }
+            else if (cuadruploGeneroIzq != null && cuadruploGeneroDer == null && nodoDerecho == null)
+            {
+                if (nodo.getToken().TokenType == TokenType.FinInstruccion && !cuadruplos.Contains(cuadruploGeneroIzq))
+                    cuadruplos.Add(cuadruploGeneroIzq);
             }
 
             return null;
