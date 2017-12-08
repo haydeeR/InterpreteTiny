@@ -70,7 +70,6 @@ namespace Compi
         {
             string theIds = string.Join(",", this.listaIDs);
             this.limpiaListaIds();
-
             return theIds;
         }
 
@@ -119,7 +118,8 @@ namespace Compi
 
         public string popAllPS()
         {
-            string cadPS = string.Join("", this.pSimbolos);
+            List<string> listAux = this.pSimbolos.Reverse().ToList();
+            string cadPS = string.Join("", listAux);
             this.pSimbolos.Clear();
             return cadPS;
         }
@@ -134,7 +134,7 @@ namespace Compi
             int nValor;
 
             if (int.TryParse(valor, out nValor))
-                pSimbolos.Push(valor);
+                pValores.Push(nValor);
         }
 
         public int popPV()
@@ -165,6 +165,21 @@ namespace Compi
         {
             if (pIdents.Count > 0)
                 return pIdents.Pop();
+
+            return string.Empty;
+        }
+
+
+        public string popAllPI()
+        {
+            if (this.pIdents.Count > 0)
+            {
+                List<String> listAux = this.pIdents.Reverse().ToList();
+                string cadAux = string.Join("", listAux);
+                this.pIdents.Clear();
+
+                return cadAux;
+            }
 
             return string.Empty;
         }

@@ -27,10 +27,13 @@ namespace Compi
                 case 2://secuencia-sent-><secuencia-sent>;<sentencia>
                     NodoArblAS nodo2a = Pilas.Stacks.popPAA();
                     NodoArblAS nodo2b = Pilas.Stacks.popPAA();
+
                     NodoArblAS nodo2c = new NodoArblAS(new DslToken(TokenType.FinInstruccion, ";"));
                     nodo2c.setNodo(nodo2b);
                     nodo2c.setNodo(nodo2a);
+
                     Pilas.Stacks.pushPAA(nodo2c);
+
                     numTokenReducir = 3;
                     valueToReturn = "secuencia-sent";
                     break;
@@ -49,11 +52,13 @@ namespace Compi
                     break;
                 case 10://sent-if->if(<exp>){<secuencia-sent>}endif
                     NodoArblAS nodoSent10a = Pilas.Stacks.popPAA();
-                    NodoArblAS nodoExpV10a = Pilas.Stacks.popPAA();
+                    NodoArblAS nodoExp10a = Pilas.Stacks.popPAA();
+
                     NodoArblAS nodoIf10a = new NodoArblAS(new DslToken(TokenType.KeyWord, "if"));
-                    nodoIf10a.setNodo(nodoExpV10a);
+                    nodoIf10a.setNodo(nodoExp10a);
                     nodoIf10a.setNodo(nodoSent10a);
                     Pilas.Stacks.pushPAA(nodoIf10a);
+
                     numTokenReducir = 13;
                     valueToReturn = "sent-if";
                     break;
@@ -61,12 +66,15 @@ namespace Compi
                     NodoArblAS nodoSentIF11a = Pilas.Stacks.popPAA();
                     NodoArblAS nodoSentV11a = Pilas.Stacks.popPAA();
                     NodoArblAS nodoExpV11a = Pilas.Stacks.popPAA();
+
                     NodoArblAS nodoElse11a = new NodoArblAS(new DslToken(TokenType.KeyWord, "else"));
                     nodoElse11a.setNodo(nodoSentV11a);
                     nodoElse11a.setNodo(nodoSentIF11a);
+
                     NodoArblAS nodoIf11a = new NodoArblAS(new DslToken(TokenType.KeyWord, "if"));
                     nodoIf11a.setNodo(nodoExpV11a);
                     nodoIf11a.setNodo(nodoElse11a);
+
                     Pilas.Stacks.pushPAA(nodoIf11a);
                     numTokenReducir = 20;
                     valueToReturn = "sent-if";
@@ -116,8 +124,9 @@ namespace Compi
                     valueToReturn = "sent-write";
                     break;
                 case 16://print->"<cadena>",<identificadores>
-                    string cad16a = Pilas.Stacks.popPS();
+                    string cad16a = Pilas.Stacks.popAllPS();
                     string cad16b = "\"" + cad16a + "\"";
+
                     NodoArblAS nodo16a = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
                     NodoArblAS nodo16b = new NodoArblAS(new DslToken(TokenType.Cadena, cad16b));
                     NodoArblAS nodo16c = new NodoArblAS(new DslToken(TokenType.Identificadores,
@@ -129,8 +138,9 @@ namespace Compi
                     valueToReturn = "print";
                     break;
                 case 17://print->"<cadena>"
+                    string cad17Aux = Pilas.Stacks.popAllPI();
                     string cad17a = Pilas.Stacks.popAllPS();
-                    string cad17b = "\"" + cad17a + "\"";
+                    string cad17b = "\"" + cad17Aux + cad17a + "\"";
                     NodoArblAS nodo17a = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
                     NodoArblAS nodo17b = new NodoArblAS(new DslToken(TokenType.Cadena, cad17b));
                     nodo17a.setNodoIzquierdo(nodo17b);
@@ -139,12 +149,12 @@ namespace Compi
                     valueToReturn = "print";
                     break;
                 case 18://print-><identificadores>
-                    NodoArblAS nodo18a = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
-                    DslToken newToken18a = new DslToken(TokenType.Identificadores,
+                    NodoArblAS nodoWrite18a = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
+                    DslToken newTokenType18a = new DslToken(TokenType.Identificadores,
                                                         Pilas.Stacks.getListaIdsLikeString());
-                    NodoArblAS nodo18b = new NodoArblAS(newToken18a);
-                    nodo18a.setNodo(nodo18b);
-                    Pilas.Stacks.pushPAA(nodo18a);
+                    NodoArblAS nodoListaIDs18b = new NodoArblAS(newTokenType18a);
+                    nodoWrite18a.setNodo(nodoListaIDs18b);
+                    Pilas.Stacks.pushPAA(nodoWrite18a);
                     numTokenReducir = 1;
                     valueToReturn = "print";
                     break;
@@ -163,7 +173,12 @@ namespace Compi
                     valueToReturn = "cadena";
                     break;
                 case 21://cadena-><letra>
+                    Pilas.Stacks.pushPS(Pilas.Stacks.popPI());
+                    numTokenReducir = 1;
+                    valueToReturn = "cadena";
+                    break;
                 case 22://cadena-><otro>
+                    //Pilas.Stacks.pushPS(Pilas.Stacks.popPI());
                     numTokenReducir = 1;
                     valueToReturn = "cadena";
                     break;
@@ -304,11 +319,17 @@ namespace Compi
                 case 47://==
                     numTokenReducir = 2;
                     valueToReturn = "op-comparacion";
+                    Pilas.Stacks.Comparador = 5;
                     break;
                 case 48://>
+                    numTokenReducir = 1;
+                    valueToReturn = "op-comparacion";
+                    Pilas.Stacks.Comparador = 6;
+                    break;
                 case 49://<
                     numTokenReducir = 1;
                     valueToReturn = "op-comparacion";
+                    Pilas.Stacks.Comparador = 7;
                     break;
                 case 50://exp-simple-><exp-simple><opsuma><term>
                     NodoArblAS nodo50a = Pilas.Stacks.popPAA();
@@ -402,14 +423,14 @@ namespace Compi
                 case 64://id1-><id1><letra>
                     string idStr1 = Pilas.Stacks.popPI();
                     string idStr2 = Pilas.Stacks.popPI();
-                    Pilas.Stacks.pushPI((idStr1 + idStr2));
+                    Pilas.Stacks.pushPI((idStr2 + idStr1));
                     numTokenReducir = 2;
                     valueToReturn = "id1";
                     break;
                 case 65://id1-><id1><digito>
                     string id1 = Pilas.Stacks.popPI();
-                    id1 += (Pilas.Stacks.popPV().ToString());
-                    Pilas.Stacks.pushPI(id1);
+                    string id2 = Pilas.Stacks.popPV().ToString();
+                    Pilas.Stacks.pushPI((id1 + id2));
                     numTokenReducir = 2;
                     valueToReturn = "id1";
                     break;
@@ -687,7 +708,7 @@ namespace Compi
                 case 120://num-><num><digito>
                     int numA = Pilas.Stacks.popPV();
                     int numB = Pilas.Stacks.popPV();
-                    int numC = (numA * 10) + numB;
+                    int numC = (numB * 10) + numA;
                     Pilas.Stacks.pushPV(numC.ToString());
                     numTokenReducir = 2;
                     valueToReturn = "num";
