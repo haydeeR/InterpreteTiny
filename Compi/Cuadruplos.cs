@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tsimbolos;
 
 namespace Compi
 {
@@ -208,38 +209,27 @@ namespace Compi
                 op = cuadruplo.Operador.TokenType;
                 switch (op)
                 {
-                    case TokenType.Id://0:
-
-                        break;
-                    case TokenType.Cadena://1:
-                        break;
-                    case TokenType.Numero://2:
-                        break;
-                    case TokenType.KeyWord://3:
-                        break;
-                    case TokenType.TipoDato://4:
-                        break;
                     case TokenType.OperadorAssign://5:
+                        MetaSimbolo simbolo = TablaSimbolos.TS.getMetaSimbolo(cuadruplo.Operando1.Value);
+                        if(cuadruplo.Operando2.TokenType == TokenType.Id) { }
+                        //Buscar en la lista de cuadruplos el id del temporal
+                        else if(cuadruplo.Operando2.TokenType == TokenType.Numero){
+                            simbolo.Valor = cuadruplo.Operando2.Value;
+                        }
                         break;
                     case TokenType.OperadorComp://6
+                        //Si el operando 1 
+                        //Si es identificador buscar en la tabla de simbolos
+                       //Si es numero comparar directo
+                       //si es un simbolo temporal buscar en la lista de cuadruplos
                         break;
-                    case TokenType.OperadorSuma://7
+                    case TokenType.OperadorSuma://7 
                         break;
                     case TokenType.OperadorMult://8:
                         break;
                     case TokenType.OperadorPote://9:
                         break;
-                    case TokenType.AbreParent://10:
-                        break;
-                    case TokenType.CierraParent://11:
-                        break;
-                    case TokenType.AbreLlaves://12:
-                        break;
-                    case TokenType.CierraLlaves://13:
-                        break;
                     case TokenType.FinInstruccion://14:
-                        break;
-                    case TokenType.SeparadorComa://15:
                         break;
                 }
             }
