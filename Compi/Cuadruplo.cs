@@ -12,25 +12,30 @@ namespace Compi
         DslToken operando1;
         DslToken operando2;
         DslToken operador;
-        //DslToken
         Resultado _resultado;
 
-        public Cuadruplo(DslToken operador = null, DslToken op1 = null, DslToken op2 = null)
+        int linea;
+
+        public int Linea { get { return this.linea; } set { this.linea = value; } }
+
+        public Cuadruplo(DslToken operador = null, DslToken op1 = null, DslToken op2 = null, int numLinea = -1)
         {
             this.id = Guid.NewGuid();
             this.operando1 = op1;
             this.operando2 = op2;
             this.operador = operador;
             this._resultado = new Resultado(this.id.ToString(), new DslToken(TokenType.Id, this.id.ToString()));
+            this.linea = numLinea >= 0 ? numLinea : -1;
         }
 
-        public Cuadruplo(Resultado resultado, DslToken operador = null, DslToken op1 = null, DslToken op2 = null)
+        public Cuadruplo(Resultado resultado, DslToken operador = null, DslToken op1 = null, DslToken op2 = null, int numLinea = -1)
         {
             this.id = Guid.NewGuid();
             this.operando1 = op1;
             this.operando2 = op2;
             this.operador = operador;
             this._resultado = resultado;
+            this.linea = numLinea >= 0 ? numLinea : -1;
         }
 
 
@@ -64,7 +69,7 @@ namespace Compi
             get { return this.operando1; }
             set { this.operando1 = value; }
         }
-   
+
         public DslToken Operando2
         {
             get { return this.operando2; }

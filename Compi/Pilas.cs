@@ -16,14 +16,18 @@ namespace Compi
         Stack<NodoArblAS> pAA;
         List<string> listaIDs;
 
+        string tipo = "nodeclara";
         int comparador;
         int operador;
-        string tipo = "nodeclara";
+        int numLinea = 1;
 
         public List<string> ListaIds { get { return this.listaIDs; } set { this.listaIDs = value; } }
+        public string TipoDato { get { return tipo; } set { tipo = value; } }
+
         public int Comparador { get { return comparador; } set { comparador = value; } }
         public int Operador { get { return operador; } set { operador = value; } }
-        public string TipoDato { get { return tipo; } set { tipo = value; } }
+        public int NumeroLinea { get { return this.numLinea; } set { this.numLinea = value; } }
+
 
         private Pilas()
         {
@@ -45,6 +49,21 @@ namespace Compi
                 }
                 return instance;
             }
+        }
+
+
+        public void limpiarInstancia()
+        {
+            this.pSimbolos.Clear();
+            this.pValores.Clear();
+            this.pIdents.Clear();
+            this.pAA.Clear();
+            this.listaIDs.Clear();
+
+            this.tipo = "nodeclara";
+            this.comparador = 0;
+            this.operador = 0;
+            this.numLinea = 1;
         }
 
 
@@ -75,7 +94,6 @@ namespace Compi
 
 
         #endregion
-
 
 
         #region Operaciones para trabajar con la pila del Arbol abstracto
@@ -151,7 +169,6 @@ namespace Compi
         }
 
         #endregion
-
 
 
         #region Operaciones para trabajar con la pila de Identificadores

@@ -540,12 +540,6 @@ namespace Compi
             this.dataGridViewTablaSimbolos.Columns[1].DataPropertyName = "tipo";
             this.dataGridViewTablaSimbolos.Columns[2].DataPropertyName = "simbolo";
             this.dataGridViewTablaSimbolos.Columns[3].DataPropertyName = "valor";
-
-            //this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
-            //this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;
-            //this.dataGridViewTablaAcciones.Columns[0].DataPropertyName = "Acciones";
-            //this.dataGridViewTablaAcciones.Columns[1].DataPropertyName = "CadenaEntrada";
-            //this.dataGridViewTablaAcciones.Columns[2].DataPropertyName = "AccionDespOReduc";
         }
 
 
@@ -561,27 +555,31 @@ namespace Compi
             if (estadosAux != null && estadosAux.Count > 0)
             {
                 TablaDeAcciones tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g, 0);
-
+                Pilas.Stacks.limpiarInstancia();
                 lineasTiny.ForEach(linea =>
                 {
                     if (linea.Trim() != string.Empty)
-                        cadenaDeEntrada += linea.Trim();
+                        cadenaDeEntrada += ("@" + linea.Trim());
                 });
                 cadenaDeEntrada += "$";
                 for (int ind = 0; ind < cadenaDeEntrada.Length; ind++)
                 {
+                    if (cadenaDeEntrada[ind] == '@')
+                    {
+                        Pilas.Stacks.NumeroLinea += 1;
+                        continue;
+                    }
                     if (cadenaDeEntrada[ind] == '\\')
                     {
                         caracter = "\\";
                         continue;
                     }
                     else
-                    {
                         caracter += cadenaDeEntrada[ind];
-                    }
-                    operaExitosa = tablaDeAcciones.agregaCaracter(caracter, cadenaDeEntrada.Substring(ind), out desplazo);
-                    if (!operaExitosa)
-                        break;
+
+                    operaExitosa = tablaDeAcciones.agregaCaracter(caracter, cadenaDeEntrada.Substring(ind).Replace("@", ""), out desplazo);
+
+                    if (!operaExitosa) break;
                     ind = !desplazo ? (ind - 1) : ind;
 
                     if (!desplazo && caracter.Contains("\\e"))
@@ -589,20 +587,23 @@ namespace Compi
                     else
                         caracter = string.Empty;
                 }
-
-                Accion ultAccion = tablaDeAcciones.Acciones.Last();
-
-                if (ultAccion.Acciones.Contains("$0Programa1"))
-                {
-                    tablaDeAcciones.Acciones.Add(new Accion(ultAccion, "$", "ACEPTAR", "ACEPTAR"));
-                }
-
-                this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
-                this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;
-                this.dataGridViewTablaAcciones.Columns[0].DataPropertyName = "Acciones";
-                this.dataGridViewTablaAcciones.Columns[1].DataPropertyName = "CadenaEntrada";
-                this.dataGridViewTablaAcciones.Columns[2].DataPropertyName = "AccionDespOReduc";
+                this.muestraTablaAcciones(tablaDeAcciones);
             }
+        }
+
+
+        private void muestraTablaAcciones(TablaDeAcciones tablaDeAcciones)
+        {
+            Accion ultAccion = tablaDeAcciones.Acciones.Last();
+            if (ultAccion.Acciones.Contains("$0Programa1"))
+            {
+                tablaDeAcciones.Acciones.Add(new Accion(ultAccion, "$", "ACEPTAR", "ACEPTAR"));
+            }
+            this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
+            this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;
+            this.dataGridViewTablaAcciones.Columns[0].DataPropertyName = "Acciones";
+            this.dataGridViewTablaAcciones.Columns[1].DataPropertyName = "CadenaEntrada";
+            this.dataGridViewTablaAcciones.Columns[2].DataPropertyName = "AccionDespOReduc";
         }
 
 
@@ -700,79 +701,79 @@ namespace Compi
 
 
 
-        private List<NodoArblAS> arboles = new List<NodoArblAS>();
-        private NodoArblAS raiz;
+        //private List<NodoArblAS> arboles = new List<NodoArblAS>();
+        //private NodoArblAS raiz;
 
-        private void creaArbol()
-        {
-            arboles = new List<NodoArblAS>();
+        //private void creaArbol()
+        //{
+        //    arboles = new List<NodoArblAS>();
 
-            NodoArblAS label_002 = new NodoArblAS(new DslToken(TokenType.KeyWord, ":="));
-            NodoArblAS id_001 = new NodoArblAS(new DslToken(TokenType.Id, "_Id001"));
-            NodoArblAS opMult_001 = new NodoArblAS(new DslToken(TokenType.OperadorMult, "*"));
-            NodoArblAS opMult_001_iz = new NodoArblAS(new DslToken(TokenType.Numero, "3"));
-            NodoArblAS opMult_001_der = new NodoArblAS(new DslToken(TokenType.Numero, "4"));
-            opMult_001.setNodoIzquierdo(opMult_001_iz);
-            opMult_001.setNodoDerecho(opMult_001_der);
-            label_002.setNodoIzquierdo(id_001);
-            label_002.setNodoDerecho(opMult_001);
+        //    NodoArblAS label_002 = new NodoArblAS(new DslToken(TokenType.KeyWord, ":="));
+        //    NodoArblAS id_001 = new NodoArblAS(new DslToken(TokenType.Id, "_Id001"));
+        //    NodoArblAS opMult_001 = new NodoArblAS(new DslToken(TokenType.OperadorMult, "*"));
+        //    NodoArblAS opMult_001_iz = new NodoArblAS(new DslToken(TokenType.Numero, "3"));
+        //    NodoArblAS opMult_001_der = new NodoArblAS(new DslToken(TokenType.Numero, "4"));
+        //    opMult_001.setNodoIzquierdo(opMult_001_iz);
+        //    opMult_001.setNodoDerecho(opMult_001_der);
+        //    label_002.setNodoIzquierdo(id_001);
+        //    label_002.setNodoDerecho(opMult_001);
 
-            NodoArblAS label_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, ":="));
-            NodoArblAS id_002 = new NodoArblAS(new DslToken(TokenType.Id, "_Id001"));
-            NodoArblAS opMult_002 = new NodoArblAS(new DslToken(TokenType.OperadorMult, "*"));
-            NodoArblAS opMult_002_iz = new NodoArblAS(new DslToken(TokenType.Numero, "6"));
-            NodoArblAS opMult_002_der = new NodoArblAS(new DslToken(TokenType.Numero, "8"));
-            opMult_002.setNodoIzquierdo(opMult_002_iz);
-            opMult_002.setNodoDerecho(opMult_002_der);
-            label_001.setNodoIzquierdo(id_002);
-            label_001.setNodoDerecho(opMult_002);
+        //    NodoArblAS label_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, ":="));
+        //    NodoArblAS id_002 = new NodoArblAS(new DslToken(TokenType.Id, "_Id001"));
+        //    NodoArblAS opMult_002 = new NodoArblAS(new DslToken(TokenType.OperadorMult, "*"));
+        //    NodoArblAS opMult_002_iz = new NodoArblAS(new DslToken(TokenType.Numero, "6"));
+        //    NodoArblAS opMult_002_der = new NodoArblAS(new DslToken(TokenType.Numero, "8"));
+        //    opMult_002.setNodoIzquierdo(opMult_002_iz);
+        //    opMult_002.setNodoDerecho(opMult_002_der);
+        //    label_001.setNodoIzquierdo(id_002);
+        //    label_001.setNodoDerecho(opMult_002);
 
-            NodoArblAS else_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "else"));
-            else_001.setNodoIzquierdo(label_001);
-            else_001.setNodoDerecho(label_002);
+        //    NodoArblAS else_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "else"));
+        //    else_001.setNodoIzquierdo(label_001);
+        //    else_001.setNodoDerecho(label_002);
 
-            NodoArblAS exp_001 = new NodoArblAS(new DslToken(TokenType.OperadorComp, "<"));
-            NodoArblAS operandoComp_001_der = new NodoArblAS(new DslToken(TokenType.Numero, "10"));
-            NodoArblAS exp_002 = new NodoArblAS(new DslToken(TokenType.OperadorSuma, "+"));
-            NodoArblAS id_003 = new NodoArblAS(new DslToken(TokenType.Id, "_Id003"));
-            NodoArblAS opSum_001 = new NodoArblAS(new DslToken(TokenType.OperadorMult, "+"));
-            NodoArblAS opSum_001_iz = new NodoArblAS(new DslToken(TokenType.Numero, "6"));
-            NodoArblAS opSum_001_der = new NodoArblAS(new DslToken(TokenType.Numero, "8"));
-            opSum_001.setNodoIzquierdo(opSum_001_iz);
-            opSum_001.setNodoDerecho(opSum_001_der);
-            exp_002.setNodoIzquierdo(id_003);
-            exp_002.setNodoDerecho(opSum_001);
-            exp_001.setNodoDerecho(operandoComp_001_der);
-            exp_001.setNodoIzquierdo(exp_002);
+        //    NodoArblAS exp_001 = new NodoArblAS(new DslToken(TokenType.OperadorComp, "<"));
+        //    NodoArblAS operandoComp_001_der = new NodoArblAS(new DslToken(TokenType.Numero, "10"));
+        //    NodoArblAS exp_002 = new NodoArblAS(new DslToken(TokenType.OperadorSuma, "+"));
+        //    NodoArblAS id_003 = new NodoArblAS(new DslToken(TokenType.Id, "_Id003"));
+        //    NodoArblAS opSum_001 = new NodoArblAS(new DslToken(TokenType.OperadorMult, "+"));
+        //    NodoArblAS opSum_001_iz = new NodoArblAS(new DslToken(TokenType.Numero, "6"));
+        //    NodoArblAS opSum_001_der = new NodoArblAS(new DslToken(TokenType.Numero, "8"));
+        //    opSum_001.setNodoIzquierdo(opSum_001_iz);
+        //    opSum_001.setNodoDerecho(opSum_001_der);
+        //    exp_002.setNodoIzquierdo(id_003);
+        //    exp_002.setNodoDerecho(opSum_001);
+        //    exp_001.setNodoDerecho(operandoComp_001_der);
+        //    exp_001.setNodoIzquierdo(exp_002);
 
-            NodoArblAS if_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "if"));
-            if_001.setNodoIzquierdo(exp_001);
-            if_001.setNodoDerecho(else_001);
+        //    NodoArblAS if_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "if"));
+        //    if_001.setNodoIzquierdo(exp_001);
+        //    if_001.setNodoDerecho(else_001);
 
 
-            NodoArblAS id_004 = new NodoArblAS(new DslToken(TokenType.Id, "_Id004"));
-            NodoArblAS write_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
-            write_001.setNodoIzquierdo(id_004);
+        //    NodoArblAS id_004 = new NodoArblAS(new DslToken(TokenType.Id, "_Id004"));
+        //    NodoArblAS write_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
+        //    write_001.setNodoIzquierdo(id_004);
 
-            NodoArblAS id_005 = new NodoArblAS(new DslToken(TokenType.Id, "_Id004"));
-            NodoArblAS read_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "read"));
-            read_001.setNodoIzquierdo(id_005);
+        //    NodoArblAS id_005 = new NodoArblAS(new DslToken(TokenType.Id, "_Id004"));
+        //    NodoArblAS read_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "read"));
+        //    read_001.setNodoIzquierdo(id_005);
 
-            NodoArblAS num_001 = new NodoArblAS(new DslToken(TokenType.Numero, "7"));
-            NodoArblAS num_002 = new NodoArblAS(new DslToken(TokenType.Numero, "2"));
-            NodoArblAS opSum_002 = new NodoArblAS(new DslToken(TokenType.OperadorSuma, "+"));
-            opSum_002.setNodoIzquierdo(num_002);
-            opSum_002.setNodoDerecho(num_001);
-            NodoArblAS id_006 = new NodoArblAS(new DslToken(TokenType.Id, "_Id006"));
-            NodoArblAS assign_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, ":="));
-            assign_001.setNodoIzquierdo(id_006);
-            assign_001.setNodoDerecho(opSum_002);
+        //    NodoArblAS num_001 = new NodoArblAS(new DslToken(TokenType.Numero, "7"));
+        //    NodoArblAS num_002 = new NodoArblAS(new DslToken(TokenType.Numero, "2"));
+        //    NodoArblAS opSum_002 = new NodoArblAS(new DslToken(TokenType.OperadorSuma, "+"));
+        //    opSum_002.setNodoIzquierdo(num_002);
+        //    opSum_002.setNodoDerecho(num_001);
+        //    NodoArblAS id_006 = new NodoArblAS(new DslToken(TokenType.Id, "_Id006"));
+        //    NodoArblAS assign_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, ":="));
+        //    assign_001.setNodoIzquierdo(id_006);
+        //    assign_001.setNodoDerecho(opSum_002);
 
-            arboles.Add(assign_001);
-            arboles.Add(read_001);
-            arboles.Add(write_001);
-            arboles.Add(if_001);
-        }
+        //    arboles.Add(assign_001);
+        //    arboles.Add(read_001);
+        //    arboles.Add(write_001);
+        //    arboles.Add(if_001);
+        //}
 
         private void editorGramatica_FormClosed(object sender, FormClosedEventArgs e)
         {

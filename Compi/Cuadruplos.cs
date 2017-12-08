@@ -75,7 +75,8 @@ namespace Compi
             {
                 Cuadruplo aux = new Cuadruplo(operador: nodo.getToken(),
                                             op1: (nodoIzquierdo != null ? nodoIzquierdo.getToken() : null),
-                                            op2: (nodoDerecho != null ? nodoDerecho.getToken() : null));
+                                            op2: (nodoDerecho != null ? nodoDerecho.getToken() : null),
+                                            numLinea: nodo.Linea);
                 cuadruplos.Add(aux);
                 return aux;
             }
@@ -92,7 +93,8 @@ namespace Compi
             {
                 Cuadruplo aux = new Cuadruplo(operador: nodo.getToken(),
                                                 op1: nodoIzquierdo.getToken(),
-                                                op2: cuadruploGeneroDer.resultado.tokenType);
+                                                op2: cuadruploGeneroDer.resultado.tokenType,
+                                                numLinea: nodo.Linea);
                 cuadruplos.Add(aux);
                 return aux;
             }
@@ -100,14 +102,15 @@ namespace Compi
             {
                 Cuadruplo aux = new Cuadruplo(operador: nodo.getToken(),
                                                 op1: cuadruploGeneroIzq.resultado.tokenType,
-                                                op2: nodoDerecho.getToken());
+                                                op2: nodoDerecho.getToken(),
+                                                numLinea: nodo.Linea);
                 cuadruplos.Add(aux);
                 return aux;
             }
 
             return null;
         }
-         
+
 
         private Cuadruplo generaCuadruplo(NodoArblAS nodo, Cuadruplo cuadruploGeneroIzq, Cuadruplo cuadruploGeneroDer)
         {
@@ -118,7 +121,8 @@ namespace Compi
             {
                 aux = new Cuadruplo(operador: nodo.getToken(),
                                                 op1: cuadruploGeneroIzq.resultado.tokenType,
-                                                op2: cuadruploGeneroDer.resultado.tokenType);
+                                                op2: cuadruploGeneroDer.resultado.tokenType,
+                                                numLinea: nodo.Linea);
                 cuadruplos.Add(aux);
             }
             else if (dslToken.TokenType == TokenType.KeyWord &&
@@ -137,7 +141,7 @@ namespace Compi
             Cuadruplo aux = null;
 
             aux = new Cuadruplo(new Resultado("GoTo", new DslToken(TokenType.Id)), operador: nodo.getToken(),
-                                            op1: cuadruploGeneroIzq.resultado.tokenType, op2: (new DslToken(TokenType.Numero, "1")));
+                                            op1: cuadruploGeneroIzq.resultado.tokenType, op2: (new DslToken(TokenType.Numero, "1")), numLinea: nodo.Linea);
             // Se le asigna el id del cuadruplo a su correspondiente DslToken
             aux.resultado.tokenType.Value = aux.Id.ToString();
             // Se le asigna el id del cruaduplo que continuará si
@@ -170,50 +174,50 @@ namespace Compi
             //Ejecucion completa
             if (keyExecute == 0)
                 this.allExecute();
-            
+
         }
 
         public void allExecute()
         {
             TokenType op;
-            foreach(Cuadruplo cuadruplo in this.cuadruplos)
+            foreach (Cuadruplo cuadruplo in this.cuadruplos)
             {
                 op = cuadruplo.Operador.TokenType;
                 switch (op)
                 {
                     case TokenType.Id://0:
 
-                    break;
+                        break;
                     case TokenType.Cadena://1:
-                    break;
+                        break;
                     case TokenType.Numero://2:
-                    break;
+                        break;
                     case TokenType.KeyWord://3:
-                    break;
+                        break;
                     case TokenType.TipoDato://4:
-                    break;
+                        break;
                     case TokenType.OperadorAssign://5:
-                    break;
+                        break;
                     case TokenType.OperadorComp://6
-                    break;
+                        break;
                     case TokenType.OperadorSuma://7
-                    break;
+                        break;
                     case TokenType.OperadorMult://8:
-                    break;
+                        break;
                     case TokenType.OperadorPote://9:
-                    break;
+                        break;
                     case TokenType.AbreParent://10:
-                    break;
+                        break;
                     case TokenType.CierraParent://11:
-                    break;
+                        break;
                     case TokenType.AbreLlaves://12:
-                    break;
+                        break;
                     case TokenType.CierraLlaves://13:
-                    break;
+                        break;
                     case TokenType.FinInstruccion://14:
-                    break;
+                        break;
                     case TokenType.SeparadorComa://15:
-                    break;
+                        break;
                 }
             }
         }

@@ -11,7 +11,9 @@ namespace Compi
         DslToken token = null;
         NodoArblAS nodoDerecho = null;
         NodoArblAS nodoIzquierdo = null;
+        int linea;
 
+        public int Linea { get { return this.linea; } set { this.linea = value; } }
 
         private int Prioridad { get { return this.token.Prioridad; } }
 
@@ -20,6 +22,7 @@ namespace Compi
             this.token = token;
             this.nodoDerecho = null;
             this.nodoIzquierdo = null;
+            this.linea = Pilas.Stacks.NumeroLinea;
         }
 
         public NodoArblAS(DslToken token, DslToken tokenIz, DslToken tokenDer)
@@ -27,6 +30,7 @@ namespace Compi
             this.token = token;
             this.nodoIzquierdo = new NodoArblAS(tokenIz);
             this.nodoDerecho = new NodoArblAS(tokenDer);
+            this.linea = Pilas.Stacks.NumeroLinea;
         }
 
         public void setToken(DslToken token)
@@ -39,26 +43,26 @@ namespace Compi
             return this.token;
         }
 
-        public void setNodoIzquierdo(DslToken token)
-        {
-            if (this.token != null)
-                this.nodoIzquierdo.setToken(token);
-            else
-                this.nodoIzquierdo = new NodoArblAS(token);
-        }
+        //public void setNodoIzquierdo(DslToken token)
+        //{
+        //    if (this.token != null)
+        //        this.nodoIzquierdo.setToken(token);
+        //    else
+        //        this.nodoIzquierdo = new NodoArblAS(token);
+        //}
 
         public NodoArblAS getNodoIzquierdo()
         {
             return this.nodoIzquierdo;
         }
 
-        public void setNodoDerecho(DslToken token)
-        {
-            if (this.token != null)
-                this.nodoDerecho.setToken(token);
-            else
-                this.nodoDerecho = new NodoArblAS(token);
-        }
+        //public void setNodoDerecho(DslToken token)
+        //{
+        //    if (this.token != null)
+        //        this.nodoDerecho.setToken(token);
+        //    else
+        //        this.nodoDerecho = new NodoArblAS(token);
+        //}
 
         public NodoArblAS getNodoDerecho()
         {
