@@ -94,7 +94,7 @@
     <Compile Include="TablaDeAcciones.cs" />
     <Compile Include="TablaDesplazamientos.cs" />
     <Compile Include="MetaSimbolo.cs" />
-    <Compile Include="Tabla_Errores.cs" />
+    <Compile Include="TablaErrores.cs" />
     <Compile Include="TE.cs" />
     <Compile Include="TokenColumn.cs" />
     <Compile Include="TokenDefinition.cs" />
