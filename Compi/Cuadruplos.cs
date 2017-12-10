@@ -56,10 +56,10 @@ namespace Compi
             cuadruplos = new List<Cuadruplo>();
 
             if (raiz.getNodoIzquierdo() != null)
-                generaCuadruplo(raiz.getNodoIzquierdo(), raiz);
+                generaCuadruplo(raiz.getNodoIzquierdo());
 
             if (raiz.getNodoDerecho() != null)
-                generaCuadruplo(raiz.getNodoDerecho(), raiz);
+                generaCuadruplo(raiz.getNodoDerecho());
 
             return cuadruplos;
         }
@@ -70,26 +70,39 @@ namespace Compi
         /// </summary>
         /// <param name="nodo">Recibe el arbol</param>
         /// <returns></returns>
-        private Cuadruplo generaCuadruplo(NodoArblAS nodo, NodoArblAS nodoPadre)
+        private Cuadruplo generaCuadruplo(NodoArblAS nodo)
         {
             Cuadruplo cuadruploGeneroIzq = null;
             Cuadruplo cuadruploGeneroDer = null;
             NodoArblAS nodoIzquierdo = nodo.getNodoIzquierdo();
             NodoArblAS nodoDerecho = nodo.getNodoDerecho();
+            DslToken tokenNodo = nodo.getToken();
 
             if (nodoIzquierdo == null && nodoDerecho == null)
                 return null;
 
+            if (tokenNodo.TokenType == TokenType.KeyWord &&
+                (tokenNodo.Value == "if" ||
+                tokenNodo.Value == "else" ||
+                tokenNodo.Value == "repeat-until"))
+            {
+                Cuadruplo aux = new Cuadruplo(operador: tokenNodo, numLinea: nodo.Linea);
+                cuadruplos.Add(aux);
+            }
+
+
             //Navegamos en profundidad primero por la izquierda
             if (nodoIzquierdo != null)
-                cuadruploGeneroIzq = generaCuadruplo(nodoIzquierdo, nodo);
+                cuadruploGeneroIzq = generaCuadruplo(nodoIzquierdo);
             //Navegamos en profunidad por la derecha
             if (nodoDerecho != null)
-                cuadruploGeneroDer = generaCuadruplo(nodoDerecho, nodo);
+                cuadruploGeneroDer = generaCuadruplo(nodoDerecho);
 
             // Primer caso, es un operador, y
             // como nodos hijos son hojas
-            if (cuadruploGeneroIzq == null && cuadruploGeneroDer == null)
+            if (cuadruploGeneroIzq == null &&
+                cuadruploGeneroDer == null &&
+                tokenNodo.Value != ";")
             {
                 Cuadruplo aux = new Cuadruplo(operador: nodo.getToken(),
                                             op1: (nodoIzquierdo != null ? nodoIzquierdo.getToken() : null),
@@ -98,7 +111,9 @@ namespace Compi
                 cuadruplos.Add(aux);
                 return aux;
             }
-            else if (cuadruploGeneroIzq != null && cuadruploGeneroDer != null)
+            else if (cuadruploGeneroIzq != null &&
+                        cuadruploGeneroDer != null &&
+                        tokenNodo.Value != ";")
             {
                 //Cuadruplo aux = this.generaCuadruplo(nodo, cuadruploGeneroIzq, cuadruploGeneroDer);
                 Cuadruplo aux = null;
@@ -107,7 +122,10 @@ namespace Compi
 
                 return aux;
             }
-            else if (cuadruploGeneroIzq == null && nodoIzquierdo != null && cuadruploGeneroDer != null)
+            else if (cuadruploGeneroIzq == null &&
+                        nodoIzquierdo != null &&
+                        cuadruploGeneroDer != null &&
+                        tokenNodo.Value != ";")
             {
                 Cuadruplo aux = new Cuadruplo(operador: nodo.getToken(),
                                                 op1: nodoIzquierdo.getToken(),
@@ -116,7 +134,10 @@ namespace Compi
                 cuadruplos.Add(aux);
                 return aux;
             }
-            else if (cuadruploGeneroIzq != null && cuadruploGeneroDer == null && nodoDerecho != null)
+            else if (cuadruploGeneroIzq != null &&
+                    cuadruploGeneroDer == null &&
+                    nodoDerecho != null &&
+                    tokenNodo.Value != ";")
             {
                 Cuadruplo aux = new Cuadruplo(operador: nodo.getToken(),
                                                 op1: cuadruploGeneroIzq.resultado.tokenType,
@@ -125,7 +146,10 @@ namespace Compi
                 cuadruplos.Add(aux);
                 return aux;
             }
-            else if (cuadruploGeneroIzq != null && cuadruploGeneroDer == null && nodoDerecho == null)
+            else if (cuadruploGeneroIzq != null &&
+                    cuadruploGeneroDer == null &&
+                    nodoDerecho == null &&
+                    tokenNodo.Value != ";")
             {
                 if (nodo.getToken().TokenType == TokenType.FinInstruccion && !cuadruplos.Contains(cuadruploGeneroIzq))
                     cuadruplos.Add(cuadruploGeneroIzq);
