@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tsimbolos;
+using ManejoDeErrores;
 
 namespace Compi
 {
@@ -106,7 +107,8 @@ namespace Compi
                     }
                     else
                     {
-                        //error
+                        Error e = new Error("El simbolo " + id13a + " no esta definido", id13a, "Todos los simbolos deben estar previamente definidos");
+                        TablaErrores.InstanceTable.agregaError(e);
                     }
                     numTokenReducir = 4;
                     valueToReturn = "sent-assign";
@@ -119,6 +121,11 @@ namespace Compi
                         NodoArblAS nodo14b = new NodoArblAS(new DslToken(TokenType.Id, id14a));
                         nodo14a.setNodo(nodo14b);
                         Pilas.Stacks.pushPAA(nodo14a);
+                    }
+                    else
+                    {
+                        Error e = new Error("El simbolo " + id14a + " no esta definido", id14a, "Todos los simbolos deben estar previamente definidos");
+                        TablaErrores.InstanceTable.agregaError(e);
                     }
                     numTokenReducir = 7;
                     valueToReturn = "sent-read";
@@ -282,6 +289,11 @@ namespace Compi
                     {
                         if (TablaSimbolos.TS.existeSimbolo(id41a))
                             Pilas.Stacks.addId(id41a);
+                        else
+                        {
+                            Error e = new Error("El simbolo " + id41a + " no esta definido", id41a, "Todos los simbolos deben estar previamente definidos");
+                            TablaErrores.InstanceTable.agregaError(e);
+                        }
                     }
                     numTokenReducir = 3;
                     valueToReturn = "identificadores";
@@ -292,6 +304,11 @@ namespace Compi
                     {
                         if (TablaSimbolos.TS.existeSimbolo(id42a))
                             Pilas.Stacks.addId(id42a);
+                        else
+                        {
+                            Error e = new Error("El simbolo " + id42a + " no esta definido", id42a, "Todos los simbolos deben estar previamente definidos");
+                            TablaErrores.InstanceTable.agregaError(e);
+                        }
                     }
                     numTokenReducir = 1;
                     valueToReturn = "identificadores";

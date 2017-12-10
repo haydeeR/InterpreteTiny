@@ -11,6 +11,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using Tsimbolos;
+using ManejoDeErrores;
 
 namespace Compi
 {
@@ -597,9 +598,16 @@ namespace Compi
 
         private void muestraTablaAcciones(TablaDeAcciones tablaDeAcciones)
         {
+            string errores = "";
             Accion ultAccion = tablaDeAcciones.Acciones.Last();
             if (ultAccion.Acciones.Contains("$0Programa1"))
                 tablaDeAcciones.Acciones.Add(new Accion(ultAccion, "$", "ACEPTAR", "ACEPTAR"));
+            if (TablaErrores.InstanceTable.isEmpty() == false)
+            {
+                errores = TablaErrores.InstanceTable.allErrors();
+                MessageBox.Show(errores);
+                this.btnEjecutar.Enabled = false;
+            }
 
             this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
             this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;

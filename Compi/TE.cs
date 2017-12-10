@@ -7,7 +7,7 @@ namespace ManejoDeErrores
 {
    public class TE
     {
-
+        /*
         //tabla errores (numero de linea,error,como solucionarlo)
        public List<Tabla_Errores> TErrores = new List<Tabla_Errores>();
        public List<Tabla_Errores> TErroresed = new List<Tabla_Errores>();
@@ -106,6 +106,6 @@ namespace ManejoDeErrores
            }
 
        }
-
+       */
     }
 }
