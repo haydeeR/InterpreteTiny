@@ -65,9 +65,10 @@ namespace Compi
                     break;
                 case 11://sent-if->if(<exp>){<secuencia-sent>}else{<secuencia-sent>}endif
                     NodoArblAS nodoSentIF11a = Pilas.Stacks.popPAA();//Nodo Else
-                    NodoArblAS nodoExpV11a = Pilas.Stacks.popPAA();
                     NodoArblAS nodoSentV11a = Pilas.Stacks.popPAA();
+                    NodoArblAS nodoExpV11a = Pilas.Stacks.popPAA();
                     
+
 
                     NodoArblAS nodoElse11a = new NodoArblAS(new DslToken(TokenType.KeyWord, "else"));
                     nodoElse11a.setNodo(nodoSentV11a);
@@ -359,6 +360,7 @@ namespace Compi
                     nodo50c.setNodoIzquierdo(nodo50b);
                     nodo50c.setNodoDerecho(nodo50a);
                     Pilas.Stacks.pushPAA(nodo50c);
+                    Pilas.Stacks.pushPO("+");
                     numTokenReducir = 3;
                     valueToReturn = "exp-simple";
                     break;
@@ -367,12 +369,12 @@ namespace Compi
                     valueToReturn = "exp-simple";
                     break;
                 case 52://+
-                    Pilas.Stacks.Operador = 1;
+                    Pilas.Stacks.pushPO("+");
                     numTokenReducir = 1;
                     valueToReturn = "opsuma";
                     break;
                 case 53://-
-                    Pilas.Stacks.Operador = 2;
+                    Pilas.Stacks.pushPO("-");
                     numTokenReducir = 1;
                     valueToReturn = "opsuma";
                     break;
@@ -405,12 +407,12 @@ namespace Compi
                     valueToReturn = "potencia";
                     break;
                 case 58://*
-                    Pilas.Stacks.Operador = 3;
+                    Pilas.Stacks.pushPO("*");
                     numTokenReducir = 1;
                     valueToReturn = "opmult";
                     break;
                 case 59:///
-                    Pilas.Stacks.Operador = 4;
+                    Pilas.Stacks.pushPO("/");
                     numTokenReducir = 1;
                     valueToReturn = "opmult";
                     break;
@@ -798,24 +800,27 @@ namespace Compi
         private static string getOperador()
         {
             string valueToReturn = string.Empty;
-
-            switch (Pilas.Stacks.Operador)
-            {
-                case 1:
-                    valueToReturn = "+";
-                    break;
-                case 2:
-                    valueToReturn = "-";
-                    break;
-                case 3:
-                    valueToReturn = "*";
-                    break;
-                case 4:
-                    valueToReturn = "/";
-                    break;
-            }
-
+            valueToReturn = Pilas.Stacks.popPO();
             return valueToReturn;
+
+            //switch (Pilas.Stacks.Operador)
+            //{
+            //    case 1:
+            //        valueToReturn = "+";
+            //        break;
+            //    case 2:
+            //        valueToReturn = "-";
+            //        break;
+            //    case 3:
+            //        valueToReturn = "*";
+            //        break;
+            //    case 4:
+            //        valueToReturn = "/";
+            //        break;
+            //    default:
+            //        valueToReturn = string.Empty;
+            //        break;
+            //}
         }
 
 

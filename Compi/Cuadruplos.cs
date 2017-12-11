@@ -13,6 +13,7 @@ namespace Compi
     class Cuadruplos
     {
         private static Cuadruplos _instance;
+
         public static Cuadruplos Instance
         {
             get
@@ -24,14 +25,41 @@ namespace Compi
             }
         }
 
+
+
+        private List<Cuadruplo> cuadruplos;
+        private List<DslToken> tokensNoGeneranCuadruplos;
+        public List<Cuadruplo> LstCuadruplos { get { return this.cuadruplos; } }
+
+
         private Cuadruplos()
         {
             this.cuadruplos = new List<Cuadruplo>();
+            this.llenaLstTokensNGC();
         }
 
-        private List<Cuadruplo> cuadruplos;
 
-        public List<Cuadruplo> LstCuadruplos { get { return this.cuadruplos; } }
+        private void llenaLstTokensNGC()
+        {
+            this.tokensNoGeneranCuadruplos = new List<DslToken>();
+            //this.tokensNoGeneranCuadruplos.Add(new DslToken(TokenType.KeyWord, "if"));
+            //this.tokensNoGeneranCuadruplos.Add(new DslToken(TokenType.KeyWord, "else"));
+            //this.tokensNoGeneranCuadruplos.Add(new DslToken(TokenType.KeyWord, "repeat-until"));
+            this.tokensNoGeneranCuadruplos.Add(new DslToken(TokenType.FinInstruccion, ";"));
+        }
+
+
+        private bool existeEnTokensNGC(DslToken token)
+        {
+            bool result = false;
+            DslToken tokenBuscado = this.tokensNoGeneranCuadruplos.FirstOrDefault(t => t.TokenType == token.TokenType && t.Value == token.Value);
+
+            if (tokenBuscado != null)
+                result = true;
+
+            return result;
+        }
+
 
         public List<List<Cuadruplo>> recorreArboles(List<NodoArblAS> arboles)
         {
@@ -82,10 +110,9 @@ namespace Compi
             if (nodoIzquierdo == null && nodoDerecho == null)
                 return null;
 
+            //Con esto generamos el cuadruplo antes de navegar en sus hijos
             if (tokenNodo.TokenType == TokenType.KeyWord &&
-                (tokenNodo.Value == "if" ||
-                tokenNodo.Value == "else" ||
-                tokenNodo.Value == "repeat-until"))
+                (tokenNodo.Value == "if" || tokenNodo.Value == "repeat-until"))
             {
                 Cuadruplo aux = new Cuadruplo(operador: tokenNodo, numLinea: nodo.Linea);
                 cuadruplos.Add(aux);
@@ -94,16 +121,25 @@ namespace Compi
 
             //Navegamos en profundidad primero por la izquierda
             if (nodoIzquierdo != null)
+            {
                 cuadruploGeneroIzq = generaCuadruplo(nodoIzquierdo);
+                if (tokenNodo.TokenType == TokenType.KeyWord && tokenNodo.Value == "else")
+                {
+                    Cuadruplo aux = new Cuadruplo(operador: tokenNodo, numLinea: nodo.Linea);
+                    cuadruplos.Add(aux);
+                }
+            }
             //Navegamos en profunidad por la derecha
             if (nodoDerecho != null)
                 cuadruploGeneroDer = generaCuadruplo(nodoDerecho);
 
-            // Primer caso, es un operador, y
-            // como nodos hijos son hojas
+
+            if (this.existeEnTokensNGC(tokenNodo))
+                return null;
+
+            // Primer caso, es un operador y tiene como hijos nodos hojas
             if (cuadruploGeneroIzq == null &&
-                cuadruploGeneroDer == null &&
-                tokenNodo.Value != ";")
+                cuadruploGeneroDer == null)
             {
                 Cuadruplo aux = new Cuadruplo(operador: nodo.getToken(),
                                             op1: (nodoIzquierdo != null ? nodoIzquierdo.getToken() : null),
@@ -113,8 +149,7 @@ namespace Compi
                 return aux;
             }
             else if (cuadruploGeneroIzq != null &&
-                        cuadruploGeneroDer != null &&
-                        tokenNodo.Value != ";")
+                        cuadruploGeneroDer != null)
             {
                 //Cuadruplo aux = this.generaCuadruplo(nodo, cuadruploGeneroIzq, cuadruploGeneroDer);
                 Cuadruplo aux = null;
@@ -125,8 +160,7 @@ namespace Compi
             }
             else if (cuadruploGeneroIzq == null &&
                         nodoIzquierdo != null &&
-                        cuadruploGeneroDer != null &&
-                        tokenNodo.Value != ";")
+                        cuadruploGeneroDer != null)
             {
                 Cuadruplo aux = new Cuadruplo(operador: nodo.getToken(),
                                                 op1: nodoIzquierdo.getToken(),
@@ -137,8 +171,7 @@ namespace Compi
             }
             else if (cuadruploGeneroIzq != null &&
                     cuadruploGeneroDer == null &&
-                    nodoDerecho != null &&
-                    tokenNodo.Value != ";")
+                    nodoDerecho != null)
             {
                 Cuadruplo aux = new Cuadruplo(operador: nodo.getToken(),
                                                 op1: cuadruploGeneroIzq.resultado.tokenType,
@@ -149,8 +182,7 @@ namespace Compi
             }
             else if (cuadruploGeneroIzq != null &&
                     cuadruploGeneroDer == null &&
-                    nodoDerecho == null &&
-                    tokenNodo.Value != ";")
+                    nodoDerecho == null)
             {
                 if (nodo.getToken().TokenType == TokenType.FinInstruccion && !cuadruplos.Contains(cuadruploGeneroIzq))
                     cuadruplos.Add(cuadruploGeneroIzq);
@@ -235,17 +267,18 @@ namespace Compi
                 {
                     case TokenType.OperadorAssign://5:
                         MetaSimbolo simbolo = TablaSimbolos.TS.getMetaSimbolo(cuadruplo.Operando1.Value);
-                        if(cuadruplo.Operando2.TokenType == TokenType.Id) { }
+                        if (cuadruplo.Operando2.TokenType == TokenType.Id) { }
                         //Buscar en la lista de cuadruplos el id del temporal
-                        else if(cuadruplo.Operando2.TokenType == TokenType.Numero){
+                        else if (cuadruplo.Operando2.TokenType == TokenType.Numero)
+                        {
                             simbolo.Valor = cuadruplo.Operando2.Value;
                         }
                         break;
                     case TokenType.OperadorComp://6
-                        //Si el operando 1 
-                        //Si es identificador buscar en la tabla de simbolos
-                       //Si es numero comparar directo
-                       //si es un simbolo temporal buscar en la lista de cuadruplos
+                                                //Si el operando 1 
+                                                //Si es identificador buscar en la tabla de simbolos
+                                                //Si es numero comparar directo
+                                                //si es un simbolo temporal buscar en la lista de cuadruplos
                         break;
                     case TokenType.OperadorSuma://7 
                         break;

@@ -14,18 +14,20 @@ namespace Compi
         Stack<int> pValores;
         Stack<string> pIdents;
         Stack<NodoArblAS> pAA;
+        Stack<string> operadores;
         List<string> listaIDs;
+
 
         string tipo = "nodeclara";
         int comparador;
-        int operador;
+        //int operador;
         int numLinea = 1;
 
         public List<string> ListaIds { get { return this.listaIDs; } set { this.listaIDs = value; } }
         public string TipoDato { get { return tipo; } set { tipo = value; } }
 
         public int Comparador { get { return comparador; } set { comparador = value; } }
-        public int Operador { get { return operador; } set { operador = value; } }
+        //public int Operador { get { return operador; } set { operador = value; } }
         public int NumeroLinea { get { return this.numLinea; } set { this.numLinea = value; } }
 
 
@@ -36,6 +38,7 @@ namespace Compi
             pIdents = new Stack<string>();
             pAA = new Stack<NodoArblAS>();
             listaIDs = new List<string>();
+            operadores = new Stack<string>();
         }
 
 
@@ -59,12 +62,49 @@ namespace Compi
             this.pIdents.Clear();
             this.pAA.Clear();
             this.listaIDs.Clear();
+            this.operadores.Clear();
 
             this.tipo = "nodeclara";
             this.comparador = 0;
-            this.operador = 0;
+            //this.operador = 0;
             this.numLinea = 1;
         }
+
+
+        #region Operaciones para trabajar con la lista de Ids
+        public void addOperador(string operador)
+        {
+            if (this.operadores == null)
+                this.operadores = new Stack<string>();
+            this.operadores.Push(operador);
+        }
+
+
+        public void pushPO(string operador)
+        {
+            if (this.operadores == null)
+                this.operadores = new Stack<string>();
+            this.operadores.Push(operador);
+        }
+
+
+        public string popPO()
+        {
+            if (this.operadores.Count > 0)
+                return this.operadores.Pop();
+
+            return string.Empty;
+        }
+
+
+        public string peekPO()
+        {
+            if (this.operadores.Count > 0)
+                return this.operadores.Peek();
+
+            return string.Empty;
+        }
+        #endregion
 
 
         #region Operaciones para trabajar con la lista de Ids
