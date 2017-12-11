@@ -114,7 +114,17 @@ namespace Compi
             if (tokenNodo.TokenType == TokenType.KeyWord &&
                 (tokenNodo.Value == "if" || tokenNodo.Value == "repeat-until"))
             {
-                Cuadruplo aux = new Cuadruplo(operador: tokenNodo.Clone(), numLinea: nodo.Linea);
+                Cuadruplo aux = null;
+
+                if (tokenNodo.Value == "if")
+                    aux = new Cuadruplo(operador: tokenNodo.Clone(),
+                                        numLinea: nodo.Linea,
+                                        resultado: new Resultado(Guid.NewGuid().ToString(),
+                                                                    new DslToken(TokenType.KeyWord, "GoTo")
+                                                                )
+                                        );
+                else
+                    aux = new Cuadruplo(operador: tokenNodo.Clone(), numLinea: nodo.Linea);
                 cuadruplos.Add(aux);
             }
 
@@ -206,6 +216,40 @@ namespace Compi
                 aux.Operador.Value = "end-" + aux.Operador.Value;
 
             return aux;
+        }
+
+
+        private Resultado dameResultado(string resulName)
+        {
+            Resultado resultado = null;
+
+            Cuadruplo cuadruploAux = this.dameCuadruploPorId(resulName);
+            if (cuadruploAux != null)
+                resultado = cuadruploAux.resultado;
+
+            return resultado;
+        }
+
+
+        private Cuadruplo dameCuadruploPorIndice(int indice)
+        {
+            Cuadruplo cuadruploAux = null;
+
+            if (indice >= 0 && indice < this.cuadruplos.Count)
+                cuadruploAux = this.cuadruplos[indice];
+
+            return cuadruploAux;
+        }
+
+
+        private Cuadruplo dameCuadruploPorId(string id)
+        {
+            Cuadruplo cuadruploAux = null;
+
+            if (id.Trim() != string.Empty)
+                cuadruploAux = this.cuadruplos.FirstOrDefault(c => c.Id.ToString() == id);
+
+            return cuadruploAux;
         }
 
 
