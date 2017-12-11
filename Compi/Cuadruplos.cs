@@ -265,12 +265,16 @@ namespace Compi
                 op = cuadruplo.Operador.TokenType;
                 switch (op)
                 {
+                    case TokenType.KeyWord:
+
+                        break;
                     case TokenType.OperadorAssign://5:
                         MetaSimbolo simbolo = TablaSimbolos.TS.getMetaSimbolo(cuadruplo.Operando1.Value);
-                        if (cuadruplo.Operando2.TokenType == TokenType.Id) { }
-                        //Buscar en la lista de cuadruplos el id del temporal
-                        else if (cuadruplo.Operando2.TokenType == TokenType.Numero)
+                        if(cuadruplo.Operando2.TokenType == TokenType.Id)
                         {
+
+                        } //Buscar en la lista de cuadruplos el id del temporal
+                        else if(cuadruplo.Operando2.TokenType == TokenType.Numero){
                             simbolo.Valor = cuadruplo.Operando2.Value;
                         }
                         break;
