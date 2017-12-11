@@ -633,6 +633,7 @@ namespace Compi
             this.dataGridViewCuadruplos.AutoGenerateColumns = false;
             this.dataGridViewCuadruplos.DataSource =
                 (Cuadruplos.Instance.LstCuadruplos.Where(cua => cua.Operador.Value.Contains("end-") == false).ToList());
+            //this.dataGridViewCuadruplos.DataSource = Cuadruplos.Instance.LstCuadruplos;
             this.dataGridViewCuadruplos.Columns[0].DataPropertyName = "strOperando1";
             this.dataGridViewCuadruplos.Columns[1].DataPropertyName = "strOperando2";
             this.dataGridViewCuadruplos.Columns[2].DataPropertyName = "strOperador";

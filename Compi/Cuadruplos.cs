@@ -30,11 +30,13 @@ namespace Compi
         private List<Cuadruplo> cuadruplos;
         private List<DslToken> tokensNoGeneranCuadruplos;
         public List<Cuadruplo> LstCuadruplos { get { return this.cuadruplos; } }
+        private Stack<Cuadruplo> bloquesCuadruplos;
 
 
         private Cuadruplos()
         {
             this.cuadruplos = new List<Cuadruplo>();
+            this.bloquesCuadruplos = new Stack<Cuadruplo>();
             this.llenaLstTokensNGC();
         }
 
@@ -103,6 +105,7 @@ namespace Compi
         {
             Cuadruplo cuadruploGeneroIzq = null;
             Cuadruplo cuadruploGeneroDer = null;
+            Cuadruplo inicioBloqueCodigo = null;
             NodoArblAS nodoIzquierdo = nodo.getNodoIzquierdo();
             NodoArblAS nodoDerecho = nodo.getNodoDerecho();
             DslToken tokenNodo = nodo.getToken();
@@ -114,18 +117,16 @@ namespace Compi
             if (tokenNodo.TokenType == TokenType.KeyWord &&
                 (tokenNodo.Value == "if" || tokenNodo.Value == "repeat-until"))
             {
-                Cuadruplo aux = null;
-
                 if (tokenNodo.Value == "if")
-                    aux = new Cuadruplo(operador: tokenNodo.Clone(),
+                    inicioBloqueCodigo = new Cuadruplo(operador: tokenNodo.Clone(),
                                         numLinea: nodo.Linea,
                                         resultado: new Resultado(Guid.NewGuid().ToString(),
                                                                     new DslToken(TokenType.KeyWord, "GoTo")
                                                                 )
                                         );
                 else
-                    aux = new Cuadruplo(operador: tokenNodo.Clone(), numLinea: nodo.Linea);
-                cuadruplos.Add(aux);
+                    inicioBloqueCodigo = new Cuadruplo(operador: tokenNodo.Clone(), numLinea: nodo.Linea);
+                cuadruplos.Add(inicioBloqueCodigo);
             }
 
 
@@ -135,18 +136,20 @@ namespace Compi
                 cuadruploGeneroIzq = generaCuadruplo(nodoIzquierdo);
                 if (tokenNodo.TokenType == TokenType.KeyWord && tokenNodo.Value == "else")
                 {
-                    Cuadruplo aux = new Cuadruplo(operador: tokenNodo, numLinea: nodo.Linea);
-                    cuadruplos.Add(aux);
+                    inicioBloqueCodigo = new Cuadruplo(operador: tokenNodo, numLinea: nodo.Linea);
+                    cuadruplos.Add(inicioBloqueCodigo);
+                    bloquesCuadruplos.Push(inicioBloqueCodigo);
                 }
             }
             //Navegamos en profunidad por la derecha
             if (nodoDerecho != null)
                 cuadruploGeneroDer = generaCuadruplo(nodoDerecho);
 
-
-
+            //Si es ; no genera cuadruplo
             if (this.existeEnTokensNGC(tokenNodo))
                 return null;
+
+            this.finalizaBloqueIfElse(inicioBloqueCodigo, cuadruploGeneroDer);
 
             // Primer caso, es un operador y tiene como hijos nodos hojas
             if (cuadruploGeneroIzq == null &&
@@ -156,7 +159,7 @@ namespace Compi
                                             op1: (nodoIzquierdo != null ? nodoIzquierdo.getToken() : null),
                                             op2: (nodoDerecho != null ? nodoDerecho.getToken() : null),
                                             numLinea: nodo.Linea);
-                aux = this.esElMismoTokenDeRetorno(tokenNodo, aux);
+                aux = this.esElMismoTokenDeRetorno(inicioBloqueCodigo, aux);
                 cuadruplos.Add(aux);
                 return aux;
             }
@@ -164,7 +167,7 @@ namespace Compi
                         cuadruploGeneroDer != null)
             {
                 Cuadruplo aux = this.generaCuadruplo(nodo, cuadruploGeneroIzq, cuadruploGeneroDer);
-                aux = this.esElMismoTokenDeRetorno(tokenNodo, aux);
+                aux = this.esElMismoTokenDeRetorno(inicioBloqueCodigo, aux);
 
                 return aux;
             }
@@ -176,7 +179,7 @@ namespace Compi
                                                 op1: nodoIzquierdo.getToken(),
                                                 op2: cuadruploGeneroDer.resultado.tokenType,
                                                 numLinea: nodo.Linea);
-                aux = this.esElMismoTokenDeRetorno(tokenNodo, aux);
+                aux = this.esElMismoTokenDeRetorno(inicioBloqueCodigo, aux);
                 cuadruplos.Add(aux);
                 return aux;
             }
@@ -188,7 +191,7 @@ namespace Compi
                                                 op1: cuadruploGeneroIzq.resultado.tokenType,
                                                 op2: nodoDerecho.getToken(),
                                                 numLinea: nodo.Linea);
-                aux = this.esElMismoTokenDeRetorno(tokenNodo, aux);
+                aux = this.esElMismoTokenDeRetorno(inicioBloqueCodigo, aux);
                 cuadruplos.Add(aux);
                 return aux;
             }
@@ -198,7 +201,7 @@ namespace Compi
             {
                 if (nodo.getToken().TokenType == TokenType.FinInstruccion && !cuadruplos.Contains(cuadruploGeneroIzq))
                 {
-                    cuadruploGeneroIzq = this.esElMismoTokenDeRetorno(tokenNodo.Clone(), cuadruploGeneroIzq);
+                    cuadruploGeneroIzq = this.esElMismoTokenDeRetorno(inicioBloqueCodigo, cuadruploGeneroIzq);
                     cuadruplos.Add(cuadruploGeneroIzq);
                 }
             }
@@ -207,15 +210,41 @@ namespace Compi
         }
 
 
-        private Cuadruplo esElMismoTokenDeRetorno(DslToken tokenNodo, Cuadruplo aux)
+        private void finalizaBloqueIfElse(Cuadruplo inicioBloqueCodigo, Cuadruplo cuadruploGeneroDer)
         {
-            if (tokenNodo.TokenType == TokenType.KeyWord &&
-                tokenNodo.TokenType == aux.Operador.TokenType &&
-                tokenNodo.Value == aux.Operador.Value &&
-                (tokenNodo.Value == "if" || tokenNodo.Value == "else" || tokenNodo.Value == "repeat-until"))
-                aux.Operador.Value = "end-" + aux.Operador.Value;
+            if (inicioBloqueCodigo != null && cuadruploGeneroDer != null &&
+                inicioBloqueCodigo.Operador.TokenType == TokenType.KeyWord &&
+                inicioBloqueCodigo.Operador.Value == "if")
+            {
+                if (cuadruploGeneroDer.Operador.TokenType == TokenType.KeyWord &&
+                    cuadruploGeneroDer.Operador.Value.Contains("else") && this.bloquesCuadruplos.Count > 0)
+                {
+                    Cuadruplo auxElse = this.bloquesCuadruplos.Pop();
+                    inicioBloqueCodigo.resultado.Value = auxElse.Id.ToString();
+                }
+            }
+        }
 
-            return aux;
+
+        private Cuadruplo esElMismoTokenDeRetorno(Cuadruplo inicioBloqueCodigo, Cuadruplo finBloqueCodigo)
+        {
+            if (inicioBloqueCodigo != null &&
+                inicioBloqueCodigo.Operador.TokenType == TokenType.KeyWord &&
+                inicioBloqueCodigo.Operador.TokenType == finBloqueCodigo.Operador.TokenType &&
+                inicioBloqueCodigo.Operador.Value == finBloqueCodigo.Operador.Value &&
+                (inicioBloqueCodigo.Operador.Value == "if" ||
+                inicioBloqueCodigo.Operador.Value == "else" ||
+                inicioBloqueCodigo.Operador.Value == "repeat-until"))
+            {
+                finBloqueCodigo.Operador.Value = "end-" + finBloqueCodigo.Operador.Value;
+
+                if (inicioBloqueCodigo.resultado.Value == null || inicioBloqueCodigo.resultado.Value == string.Empty)
+                {
+                    inicioBloqueCodigo.resultado.Value = finBloqueCodigo.Id.ToString();
+                }
+
+            }
+            return finBloqueCodigo;
         }
 
 
