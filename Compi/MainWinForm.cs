@@ -676,6 +676,7 @@ namespace Compi
         {
             OpenFileDialog fnew = new OpenFileDialog();
             string cadAux = string.Empty;
+            TablaErrores.InstanceTable.limpiaError();
 
             fnew.CheckFileExists = true;
             fnew.CheckPathExists = true;
