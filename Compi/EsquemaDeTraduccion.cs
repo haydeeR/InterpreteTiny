@@ -67,7 +67,7 @@ namespace Compi
                     NodoArblAS nodoSentIF11a = Pilas.Stacks.popPAA();//Nodo Else
                     NodoArblAS nodoSentV11a = Pilas.Stacks.popPAA();
                     NodoArblAS nodoExpV11a = Pilas.Stacks.popPAA();
-                    
+
 
 
                     NodoArblAS nodoElse11a = new NodoArblAS(new DslToken(TokenType.KeyWord, "else"));
@@ -141,8 +141,8 @@ namespace Compi
 
                     NodoArblAS nodo16a = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
                     NodoArblAS nodo16b = new NodoArblAS(new DslToken(TokenType.Cadena, cad16b));
-                    NodoArblAS nodo16c = new NodoArblAS(new DslToken(TokenType.Identificadores,
-                                                                     Pilas.Stacks.getListaIdsLikeString()));
+                    NodoArblAS nodo16c = Pilas.Stacks.popPAA();
+
                     nodo16a.setNodo(nodo16b);
                     nodo16a.setNodo(nodo16c);
                     Pilas.Stacks.pushPAA(nodo16a);
@@ -285,17 +285,27 @@ namespace Compi
                     valueToReturn = "sent-declara";
                     break;
                 case 41://identificadores-><identificadores>,<id>
+                    //string id41a = Pilas.Stacks.popId();
                     string id41a = Pilas.Stacks.popPI();
+                    NodoArblAS nodo41a = Pilas.Stacks.popPAA();
+
                     if (Pilas.Stacks.TipoDato == "nodeclara")
                     {
                         if (TablaSimbolos.TS.existeSimbolo(id41a))
-                            Pilas.Stacks.addId(id41a);
+                        {
+                            NodoArblAS nodo41b = new NodoArblAS(new DslToken(TokenType.SeparadorComa, id41a));
+                            NodoArblAS nodo41c = new NodoArblAS(new DslToken(TokenType.SeparadorComa, ","));
+                            nodo41c.setNodo(nodo41a);
+                            nodo41c.setNodo(nodo41b);
+                            Pilas.Stacks.pushPAA(nodo41c);
+                        }
                         else
                         {
                             Error e = new Error("El simbolo " + id41a + " no esta definido", id41a, "Todos los simbolos deben estar previamente definidos");
                             TablaErrores.InstanceTable.agregaError(e);
                         }
                     }
+
                     numTokenReducir = 3;
                     valueToReturn = "identificadores";
                     break;
@@ -304,7 +314,11 @@ namespace Compi
                     if (Pilas.Stacks.TipoDato == "nodeclara")
                     {
                         if (TablaSimbolos.TS.existeSimbolo(id42a))
-                            Pilas.Stacks.addId(id42a);
+                        {
+                            //Pilas.Stacks.pushId(id42a);
+                            NodoArblAS nodo42a = new NodoArblAS(new DslToken(TokenType.Id, id42a));
+                            Pilas.Stacks.pushPAA(nodo42a);
+                        }
                         else
                         {
                             Error e = new Error("El simbolo " + id42a + " no esta definido", id42a, "Todos los simbolos deben estar previamente definidos");

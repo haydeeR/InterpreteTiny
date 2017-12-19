@@ -241,6 +241,7 @@ namespace Compi
                 if (inicioBloqueCodigo.resultado.Value == null || inicioBloqueCodigo.resultado.Value == string.Empty)
                 {
                     inicioBloqueCodigo.resultado.Value = finBloqueCodigo.Id.ToString();
+                    finBloqueCodigo.resultado.Value = inicioBloqueCodigo.Id.ToString();
                 }
 
             }
