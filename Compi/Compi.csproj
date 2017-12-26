@@ -99,6 +99,12 @@
     <Compile Include="TokenColumn.cs" />
     <Compile Include="TokenDefinition.cs" />
     <Compile Include="TablaSimbolos.cs" />
+    <Compile Include="VisorArbolAbstracto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VisorArbolAbstracto.Designer.cs">
+      <DependentUpon>VisorArbolAbstracto.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="EditorYAnalisisGramaticas.resx">
       <DependentUpon>EditorYAnalisisGramaticas.cs</DependentUpon>
     </EmbeddedResource>
@@ -123,6 +129,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="VisorArbolAbstracto.resx">
+      <DependentUpon>VisorArbolAbstracto.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

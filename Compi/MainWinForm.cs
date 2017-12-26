@@ -55,6 +55,8 @@ namespace Compi
 
         private ArbolAS arbol = null;
 
+        public VisorArbolAbstracto vAA = null;
+
         public MainWinForm(ini i)
         {
             InitializeComponent();
@@ -600,14 +602,25 @@ namespace Compi
         {
             string errores = "";
             Accion ultAccion = tablaDeAcciones.Acciones.Last();
+
             if (ultAccion.Acciones.Contains("$0Programa1"))
                 tablaDeAcciones.Acciones.Add(new Accion(ultAccion, "$", "ACEPTAR", "ACEPTAR"));
+
             if (TablaErrores.InstanceTable.isEmpty() == false)
             {
                 errores = TablaErrores.InstanceTable.allErrors();
                 MessageBox.Show(errores);
+                this.comBoxTipoEjecucion.Enabled = false;
                 this.btnEjecutar.Enabled = false;
+                this.btnVerArbolAbstracto.Enabled = false;
             }
+            else
+            {
+                this.comBoxTipoEjecucion.Enabled = true;
+                this.btnEjecutar.Enabled = true;
+                this.btnVerArbolAbstracto.Enabled = true;
+            }
+
 
             this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
             this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;
@@ -866,6 +879,19 @@ namespace Compi
             int selectedIndex = comBoxTipoEjecucion.SelectedIndex;
             Object selectedItem = comBoxTipoEjecucion.SelectedItem;
             Cuadruplos.Instance.ejecuta(selectedIndex);
+        }
+
+        private void btnVerArbolAbstracto_Click(object sender, EventArgs e)
+        {
+            if (vAA == null)
+            {
+                vAA = new VisorArbolAbstracto(this);
+                vAA.Show();
+            }
+            else
+            {
+                vAA.actualizaArbol();
+            }
         }
     }
 }
