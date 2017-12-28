@@ -64,6 +64,7 @@ namespace Compi
         public int Prioridad { get { return this.prioridad; } }
 
 
+
         public DslToken(TokenType tokenType)
         {
             TokenType = tokenType;

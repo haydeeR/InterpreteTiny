@@ -464,6 +464,13 @@ namespace Compi
             List<DslSentence> listaDeSentencias = null;
             List<string> lineasTiny = null;
             AnalizadorLexico analizer = new AnalizadorLexico();
+
+            TablaErrores.InstanceTable.Errores.Clear();
+            this.dataGridViewErrores.Refresh();
+
+            TablaSimbolos.TS.TablaMetaSimbolos.Clear();
+            this.dataGridViewTablaSimbolos.Refresh();
+
             string codigoTiny = string.Empty;
 
             codigoTiny = this.txtCtrlPrograma.Text.Replace("\t", "").Replace(" ", "");
@@ -522,7 +529,16 @@ namespace Compi
                                         MetaSimbolo ms = new MetaSimbolo(
                                             token.Value, "0", index, sizeof(int),
                                             tipoDato.Value, tipoDato.Value);
-                                        this.tablaSimbolos.addMetaSimbolo(ms);
+
+                                        if (!this.tablaSimbolos.existeMetaSimbolo(ms))
+                                            this.tablaSimbolos.addMetaSimbolo(ms);
+                                        else
+                                            TablaErrores.InstanceTable.agregaError(
+                                                                                    new Error(
+                                                                                       "Se duplicó la declaración del símbolo: " + token.Value,
+                                                                                       "Debe de cambiar el nombre del símbolo.",
+                                                                                       "No se pueden definir dos símbolos con el mismo nombre."
+                                                                                       ));
                                     });
                                 }
                             }
@@ -608,8 +624,6 @@ namespace Compi
 
             if (TablaErrores.InstanceTable.isEmpty() == false)
             {
-                errores = TablaErrores.InstanceTable.allErrors();
-                MessageBox.Show(errores);
                 this.comBoxTipoEjecucion.Enabled = false;
                 this.btnEjecutar.Enabled = false;
                 this.btnVerArbolAbstracto.Enabled = false;
@@ -621,12 +635,24 @@ namespace Compi
                 this.btnVerArbolAbstracto.Enabled = true;
             }
 
+            muestraErrores();
 
             this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
             this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;
             this.dataGridViewTablaAcciones.Columns[0].DataPropertyName = "Acciones";
             this.dataGridViewTablaAcciones.Columns[1].DataPropertyName = "CadenaEntrada";
             this.dataGridViewTablaAcciones.Columns[2].DataPropertyName = "AccionDespOReduc";
+        }
+
+        private void muestraErrores()
+        {
+            this.dataGridViewErrores.AutoGenerateColumns = false;
+            this.dataGridViewErrores.DataSource = TablaErrores.InstanceTable.Errores;
+
+            this.dataGridViewErrores.Columns[0].DataPropertyName = "Value";
+            this.dataGridViewErrores.Columns[1].DataPropertyName = "Solucion";
+            this.dataGridViewErrores.Columns[2].DataPropertyName = "NumerodeLinea";
+            this.dataGridViewErrores.Columns[3].DataPropertyName = "Descripcion";
         }
 
 
@@ -691,7 +717,6 @@ namespace Compi
         {
             OpenFileDialog fnew = new OpenFileDialog();
             string cadAux = string.Empty;
-            TablaErrores.InstanceTable.limpiaError();
 
             fnew.CheckFileExists = true;
             fnew.CheckPathExists = true;
