@@ -485,8 +485,12 @@ namespace Compi
                 this.muestraTablaDeSimbolos();
                 //Llena la tabla de acciones en base a las sentencias
                 this.llenarTablaAcciones(lineasTiny);
-                //Llena la tabla de cuadruplos
-                this.generaCuadruplos();
+
+                if (tablaDeAcciones.esCorrecta)
+                {
+                    //Llena la tabla de cuadruplos
+                    this.generaCuadruplos();
+                }
             }
         }
 
@@ -496,6 +500,7 @@ namespace Compi
             Pilas.Stacks.limpiarInstancia();
             TablaSimbolos.TS.TablaMetaSimbolos.Clear();
             TablaErrores.InstanceTable.Errores.Clear();
+            Cuadruplos.limpiaInstancia();
 
             this.limpiaDataGridViews();
         }
@@ -506,18 +511,22 @@ namespace Compi
         {
             //this.dataGridViewTablaAcciones.Rows.Clear();
             this.dataGridViewTablaAcciones.DataSource = null;
+            this.dataGridViewTablaAcciones.Rows.Clear();
             this.dataGridViewTablaAcciones.Refresh();
 
             //this.dataGridViewTablaSimbolos.Rows.Clear();
             this.dataGridViewTablaSimbolos.DataSource = null;
+            this.dataGridViewTablaSimbolos.Rows.Clear();
             this.dataGridViewTablaSimbolos.Refresh();
 
             //this.dataGridViewCuadruplos.Rows.Clear();
             this.dataGridViewCuadruplos.DataSource = null;
+            this.dataGridViewCuadruplos.Rows.Clear();
             this.dataGridViewCuadruplos.Refresh();
 
             //this.dataGridViewErrores.Rows.Clear();
             this.dataGridViewErrores.DataSource = null;
+            this.dataGridViewErrores.Rows.Clear();
             this.dataGridViewErrores.Refresh();
         }
 
@@ -602,10 +611,10 @@ namespace Compi
             bool operaExitosa = false, nuevaLinea = false;
 
 
+
             if (estadosAux != null && estadosAux.Count > 0)
             {
                 this.tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g, 0);
-                //Pilas.Stacks.limpiarInstancia();
                 lineasTiny.ForEach(linea =>
                 {
                     if (linea.Trim() != string.Empty)
@@ -618,7 +627,6 @@ namespace Compi
                 {
                     if (cadenaDeEntrada[ind] == '@')
                     {
-                        //Pilas.Stacks.incrementeNoLinea();
                         if (nuevaLinea)
                             Pilas.Stacks.incrementeNoLinea();
 
@@ -635,7 +643,16 @@ namespace Compi
 
                     operaExitosa = this.tablaDeAcciones.agregaCaracter(caracter, cadenaDeEntrada.Substring(ind).Replace("@", ""), out desplazo);
 
-                    if (!operaExitosa) break;
+                    if (!operaExitosa)
+                    {
+                        if (!tablaDeAcciones.esCorrecta)
+                            TablaErrores.InstanceTable.agregaError(new Error(Pilas.Stacks.NumeroLinea,
+                                                                             "La cadena de entrada no es válida, error de sintáxis.",
+                                                                             "Verifique la cadena de entrada cercas de: " + cadenaDeEntrada.Substring(ind).Replace("@", ""),
+                                                                             "Error de sintáxis."));
+                        break;
+                    }
+
                     ind = !desplazo ? (ind - 1) : ind;
 
                     if (desplazo && nuevaLinea)
@@ -656,11 +673,8 @@ namespace Compi
 
         private void muestraTablaAcciones(TablaDeAcciones tablaDeAcciones)
         {
-            string errores = "";
-            Accion ultAccion = tablaDeAcciones.Acciones.Last();
-
-            if (ultAccion.Acciones.Contains("$0Programa1"))
-                tablaDeAcciones.Acciones.Add(new Accion(ultAccion, "$", "ACEPTAR", "ACEPTAR"));
+            if (tablaDeAcciones.esCorrecta)
+                tablaDeAcciones.Acciones.Add(new Accion(tablaDeAcciones.Acciones.Last(), "$", "ACEPTAR", "ACEPTAR"));
 
             if (TablaErrores.InstanceTable.isEmpty() == false)
             {
@@ -775,6 +789,7 @@ namespace Compi
                 }
                 this.fullFileNamePrograma = fnew.FileName;
                 this.txtCtrlPrograma.Text = cadAux;
+                this.limpiaInstancias();
             }
         }
 

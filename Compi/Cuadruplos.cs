@@ -41,6 +41,12 @@ namespace Compi
         }
 
 
+        public static void limpiaInstancia()
+        {
+            _instance = null;
+        }
+
+
         private void llenaLstTokensNGC()
         {
             this.tokensNoGeneranCuadruplos = new List<DslToken>();
@@ -234,7 +240,7 @@ namespace Compi
 
         private Cuadruplo esElMismoTokenDeRetorno(Cuadruplo inicioBloqueCodigo, Cuadruplo finBloqueCodigo)
         {
-            if (inicioBloqueCodigo != null &&
+            if (inicioBloqueCodigo != null && finBloqueCodigo != null &&
                 inicioBloqueCodigo.Operador.TokenType == TokenType.KeyWord &&
                 inicioBloqueCodigo.Operador.TokenType == finBloqueCodigo.Operador.TokenType &&
                 inicioBloqueCodigo.Operador.Value == finBloqueCodigo.Operador.Value &&

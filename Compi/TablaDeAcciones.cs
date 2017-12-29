@@ -12,9 +12,14 @@ namespace Compi
         TablaDesplazamientos tablaDesplazamientos;
         Gramatica g;
 
-
         public List<Accion> Acciones { get { return this.acciones; } }
-
+        public bool esCorrecta
+        {
+            get
+            {
+                return this.Acciones.Last().Acciones.Contains("$0Programa1");
+            }
+        }
 
         public TablaDeAcciones(TablaDesplazamientos tabDes, Gramatica gra, int estado0)
         {
