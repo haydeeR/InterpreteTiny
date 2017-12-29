@@ -85,6 +85,7 @@ namespace Compi
         {
             List<DslSentence> sentences = new List<DslSentence>();
             string line;
+            int contLinea = 1;
 
             try
             {
@@ -95,7 +96,8 @@ namespace Compi
                         while (sr.Peek() >= 0)
                         {
                             line = sr.ReadLine().Trim().Replace(" ", "");
-                            sentences.AddRange(getSentenceDefinitions(line));
+                            sentences.AddRange(getSentenceDefinitions(line, contLinea));
+                            contLinea += 1;
                         }
                     }
                 }
@@ -113,6 +115,7 @@ namespace Compi
         {
             List<DslSentence> sentences = new List<DslSentence>();
             string line;
+            int contLinea = 1;
 
             try
             {
@@ -121,8 +124,9 @@ namespace Compi
                     if (linea.Trim() != string.Empty)
                     {
                         line = linea.Trim().Replace("\t", "").Replace("\r\n", "").Replace(" ", "");
-                        sentences.AddRange(getSentenceDefinitions(line));
+                        sentences.AddRange(getSentenceDefinitions(line, contLinea));
                     }
+                    contLinea++;
                 });
             }
             catch (Exception e)
@@ -237,7 +241,7 @@ namespace Compi
         // ##################################################################################
 
         #region "Match por lineas"
-        public List<DslSentence> getSentenceDefinitions(string line)
+        public List<DslSentence> getSentenceDefinitions(string line, int numLinea)
         {
             List<DslSentence> sentences = new List<DslSentence>();
             string remainingText = line.Trim();
@@ -247,7 +251,7 @@ namespace Compi
                 var match = FindMatchLine(remainingText);
                 if (match.isMatch)
                 {
-                    sentences.Add(new DslSentence(match.mSentenceType, match.Value));
+                    sentences.Add(new DslSentence(match.mSentenceType, match.Value, numLinea));
                     remainingText = match.RemainingText;
                 }
                 else

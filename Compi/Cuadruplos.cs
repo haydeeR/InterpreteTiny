@@ -84,13 +84,19 @@ namespace Compi
         /// <returns></returns>
         public List<Cuadruplo> recorreArbol(NodoArblAS raiz)
         {
-            cuadruplos = new List<Cuadruplo>();
+            if (cuadruplos == null)
+                cuadruplos = new List<Cuadruplo>();
+            else
+                cuadruplos.Clear();
 
-            if (raiz.getNodoIzquierdo() != null)
-                generaCuadruplo(raiz.getNodoIzquierdo());
+            if (raiz != null)
+            {
+                if (raiz.getNodoIzquierdo() != null)
+                    generaCuadruplo(raiz.getNodoIzquierdo());
 
-            if (raiz.getNodoDerecho() != null)
-                generaCuadruplo(raiz.getNodoDerecho());
+                if (raiz.getNodoDerecho() != null)
+                    generaCuadruplo(raiz.getNodoDerecho());
+            }
 
             return cuadruplos;
         }

@@ -465,13 +465,10 @@ namespace Compi
             List<string> lineasTiny = null;
             AnalizadorLexico analizer = new AnalizadorLexico();
 
-            TablaErrores.InstanceTable.Errores.Clear();
-            this.dataGridViewErrores.Refresh();
-
-            TablaSimbolos.TS.TablaMetaSimbolos.Clear();
-            this.dataGridViewTablaSimbolos.Refresh();
-
             string codigoTiny = string.Empty;
+
+            // Limpiamos las instancias y datagrids
+            this.limpiaInstancias();
 
             codigoTiny = this.txtCtrlPrograma.Text.Replace("\t", "").Replace(" ", "");
             lineasTiny = codigoTiny.Replace("\r\n", "@").Split('@').ToList();
@@ -494,6 +491,37 @@ namespace Compi
         }
 
 
+        private void limpiaInstancias()
+        {
+            Pilas.Stacks.limpiarInstancia();
+            TablaSimbolos.TS.TablaMetaSimbolos.Clear();
+            TablaErrores.InstanceTable.Errores.Clear();
+
+            this.limpiaDataGridViews();
+        }
+
+
+
+        private void limpiaDataGridViews()
+        {
+            //this.dataGridViewTablaAcciones.Rows.Clear();
+            this.dataGridViewTablaAcciones.DataSource = null;
+            this.dataGridViewTablaAcciones.Refresh();
+
+            //this.dataGridViewTablaSimbolos.Rows.Clear();
+            this.dataGridViewTablaSimbolos.DataSource = null;
+            this.dataGridViewTablaSimbolos.Refresh();
+
+            //this.dataGridViewCuadruplos.Rows.Clear();
+            this.dataGridViewCuadruplos.DataSource = null;
+            this.dataGridViewCuadruplos.Refresh();
+
+            //this.dataGridViewErrores.Rows.Clear();
+            this.dataGridViewErrores.DataSource = null;
+            this.dataGridViewErrores.Refresh();
+        }
+
+
         private void llenaTablaDeSimbolos(List<DslSentence> sentencias, List<List<DslToken>> tokens)
         {
             List<DslSentence> sentenciasDeclarativas = null;
@@ -509,9 +537,9 @@ namespace Compi
                     if (sentenciasDeclarativas != null && sentenciasDeclarativas.Count > 0)
                     {
                         //Inicializamos la tabla de simbolos
-                        sentenciasDeclarativas.ForEach(sentenciasDeclarativa =>
+                        sentenciasDeclarativas.ForEach(sentenciaDeclarativa =>
                         {
-                            int index = sentencias.IndexOf(sentenciasDeclarativa);
+                            int index = sentencias.IndexOf(sentenciaDeclarativa);
                             if (index >= 0 && index < tokens.Count)
                             {
                                 //Obtenemos el token que define el tipo de dato de los simbolos
@@ -534,7 +562,7 @@ namespace Compi
                                             this.tablaSimbolos.addMetaSimbolo(ms);
                                         else
                                             TablaErrores.InstanceTable.agregaError(
-                                                                                    new Error(
+                                                                                    new Error(sentenciaDeclarativa.noLinea,
                                                                                        "Se duplicó la declaración del símbolo: " + token.Value,
                                                                                        "Debe de cambiar el nombre del símbolo.",
                                                                                        "No se pueden definir dos símbolos con el mismo nombre."
@@ -577,7 +605,7 @@ namespace Compi
             if (estadosAux != null && estadosAux.Count > 0)
             {
                 this.tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g, 0);
-                Pilas.Stacks.limpiarInstancia();
+                //Pilas.Stacks.limpiarInstancia();
                 lineasTiny.ForEach(linea =>
                 {
                     if (linea.Trim() != string.Empty)
