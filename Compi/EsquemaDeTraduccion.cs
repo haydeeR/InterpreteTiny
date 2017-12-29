@@ -307,7 +307,11 @@ namespace Compi
                     }
 
                     numTokenReducir = 3;
-                    valueToReturn = "identificadores" + "@" + "If (tipo!=”nodeclara”) {id=popPI(); CrearTS(id,tipo); } else{ siExisteTS(id){ listaID = concat(listaID , ”,” , id }else{error()}}";
+                    valueToReturn = "identificadores" + "@" + "If (tipo!=”nodeclara”) { id=popPI(); CrearTS(id,tipo); } " +
+                                    "else{ id=popPI(); nodo1=popPAA(); " +
+                                        "if(ExisteTS(id)){ " +
+                                                "nodo2=CreaNodo(id); nodo3=CreaNodo(\",\", nodo1, nodo2); pushPAA(nodo3); }" +
+                                        "else{error()}}";
                     break;
                 case 42://identificadores-><id>
                     string id42a = Pilas.Stacks.popPI();
@@ -370,16 +374,16 @@ namespace Compi
                     Pilas.Stacks.Comparador = 7;
                     break;
                 case 50://exp-simple-><exp-simple><opsuma><term>
+                    string operador50a = getOperador();
                     NodoArblAS nodo50a = Pilas.Stacks.popPAA();
                     NodoArblAS nodo50b = Pilas.Stacks.popPAA();
-                    NodoArblAS nodo50c = new NodoArblAS(new DslToken(TokenType.OperadorSuma, getOperador()));
+                    NodoArblAS nodo50c = new NodoArblAS(new DslToken(TokenType.OperadorSuma, operador50a));
                     nodo50c.setNodoIzquierdo(nodo50b);
                     nodo50c.setNodoDerecho(nodo50a);
                     Pilas.Stacks.pushPAA(nodo50c);
-                    //Pilas.Stacks.pushPO("+");
                     numTokenReducir = 3;
                     valueToReturn = "exp-simple" + "@" + "nodo1=popPAA(); nodo2=popPAA(); " +
-                                                   "nodo3=new nodo(\"" + getOperador() + "\", nodo2, nodo1); " +
+                                                   "nodo3=new nodo(\"" + operador50a + "\", nodo2, nodo1); " +
                                                    "pushPAA(nodo3); pushPO(\"+\")";
                     break;
                 case 51://exp-simple-><term>
@@ -397,15 +401,16 @@ namespace Compi
                     valueToReturn = "opsuma" + "@" + "pushPO(\"-\")";
                     break;
                 case 54://term-><term><opmult><potencia>
+                    string operador54a = getOperador();
                     NodoArblAS nodo54a = Pilas.Stacks.popPAA();
                     NodoArblAS nodo54b = Pilas.Stacks.popPAA();
-                    NodoArblAS nodo54c = new NodoArblAS(new DslToken(TokenType.OperadorMult, getOperador()));
+                    NodoArblAS nodo54c = new NodoArblAS(new DslToken(TokenType.OperadorMult, operador54a));
                     nodo54c.setNodoIzquierdo(nodo54b);
                     nodo54c.setNodoDerecho(nodo54a);
                     Pilas.Stacks.pushPAA(nodo54c);
                     numTokenReducir = 3;
                     valueToReturn = "term" + "@" + "nodo1=popPAA(); nodo2=popPAA(); " +
-                                                   "nodo3=new nodo(\"" + getOperador() + "\", nodo2, nodo1); " +
+                                                   "nodo3=new nodo(\"" + operador54a + "\", nodo2, nodo1); " +
                                                    "pushPAA(nodo3)";
                     break;
                 case 55://term-><potencia>
@@ -455,7 +460,7 @@ namespace Compi
 
                     if (!TablaSimbolos.TS.existeSimbolo(id62a))
                     {
-                        Error e = new Error(Pilas.Stacks.NumeroLinea,"El simbolo " + id62a + " no esta definido", "El símbolo debe de ser declarado previamente.", "Todos los simbolos deben estar previamente definidos");
+                        Error e = new Error(Pilas.Stacks.NumeroLinea, "El simbolo " + id62a + " no esta definido", "El símbolo debe de ser declarado previamente.", "Todos los simbolos deben estar previamente definidos");
                         TablaErrores.InstanceTable.agregaError(e);
                     }
                     else
