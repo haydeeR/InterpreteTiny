@@ -599,7 +599,7 @@ namespace Compi
             string cadenaDeEntrada = string.Empty;
             string caracter = string.Empty;
             bool desplazo = false;
-            bool operaExitosa = false;
+            bool operaExitosa = false, nuevaLinea = false;
 
 
             if (estadosAux != null && estadosAux.Count > 0)
@@ -609,14 +609,20 @@ namespace Compi
                 lineasTiny.ForEach(linea =>
                 {
                     if (linea.Trim() != string.Empty)
-                        cadenaDeEntrada += ("@" + linea.Trim());
+                        cadenaDeEntrada += (linea.Trim() + "@");
+                    else
+                        cadenaDeEntrada += "@";
                 });
                 cadenaDeEntrada += "$";
                 for (int ind = 0; ind < cadenaDeEntrada.Length; ind++)
                 {
                     if (cadenaDeEntrada[ind] == '@')
                     {
-                        Pilas.Stacks.NumeroLinea += 1;
+                        //Pilas.Stacks.incrementeNoLinea();
+                        if (nuevaLinea)
+                            Pilas.Stacks.incrementeNoLinea();
+
+                        nuevaLinea = true;
                         continue;
                     }
                     if (cadenaDeEntrada[ind] == '\\')
@@ -631,6 +637,12 @@ namespace Compi
 
                     if (!operaExitosa) break;
                     ind = !desplazo ? (ind - 1) : ind;
+
+                    if (desplazo && nuevaLinea)
+                    {
+                        nuevaLinea = false;
+                        Pilas.Stacks.incrementeNoLinea();
+                    }
 
                     if (!desplazo && caracter.Contains("\\e"))
                         caracter = caracter.Replace("e", "");

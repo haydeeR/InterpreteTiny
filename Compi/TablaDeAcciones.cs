@@ -95,21 +95,35 @@ namespace Compi
             Desplazamiento ultimoDespEliminado = null;
             Accion accion = null;
             int edoLR1Aux = -1;
-            string valReduccion = string.Empty, tokenOriginal;
+            string valReduccion = string.Empty, tokenOriginal = string.Empty;
+            string valReduccionA = string.Empty, valReduccionB = string.Empty;
             int cantTokensReduc = 0;
 
             valReduccion = EsquemaDeTraduccion.dameProductor(indRed, out cantTokensReduc);
             if (valReduccion != string.Empty && cantTokensReduc > 0)
             {
+                if (valReduccion.Contains("@"))
+                {
+                    valReduccionA = valReduccion.Split('@')[0];
+                    valReduccionB = valReduccion.Split('@')[1];
+                }
+                else
+                    valReduccionA = new string(valReduccion.ToCharArray());
+
                 //Creamos la nueva acción con el nuevo desplazamiento reducido
                 accion = new Accion(accionOrigen, cadenaEntrada, cadStrDesReduc, token);
                 ultimoDespEliminado = accion.reducirDesplazamientos(cantTokensReduc, out tokenOriginal);
-                edoLR1Aux = this.dameNuevoEdoDestReduc(ultimoDespEliminado, valReduccion);
+                edoLR1Aux = this.dameNuevoEdoDestReduc(ultimoDespEliminado, valReduccionA);
                 if (edoLR1Aux >= 0)
                 {
                     string generador = this.g.getProducciones()[indRed];
-                    cadStrDesReduc += ("    " + generador);
-                    accion.agregaDespReducido(ultimoDespEliminado, edoLR1Aux, valReduccion);
+
+                    if (valReduccionB != string.Empty)
+                        cadStrDesReduc += ("    " + generador + " | Acción Semántica: " + valReduccionB);
+                    else
+                        cadStrDesReduc += ("    " + generador);
+
+                    accion.agregaDespReducido(ultimoDespEliminado, edoLR1Aux, valReduccionA);
                     accion.AccionDespOReduc = cadStrDesReduc;
                 }
                 else

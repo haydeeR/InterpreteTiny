@@ -30,6 +30,16 @@ namespace Compi
         //public int Operador { get { return operador; } set { operador = value; } }
         public int NumeroLinea { get { return this.numLinea; } set { this.numLinea = value; } }
 
+        public void incrementeNoLinea()
+        {
+            this.numLinea++;
+        }
+
+
+        public void decrementeNoLinea()
+        {
+            this.numLinea--;
+        }
 
         private Pilas()
         {
