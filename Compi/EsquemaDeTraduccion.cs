@@ -276,7 +276,7 @@ namespace Compi
                     break;
                 case 39://otro->\e
                     numTokenReducir = 2;
-                    Pilas.Stacks.pushPS(" ");
+                    Pilas.Stacks.pushPS(Pilas.Stacks.popAllPI() + " ");
                     valueToReturn = "otro" + "@" + "pushPS(\" \")";
                     break;
                 case 40://sent-declara->Var{<Tipo><identificadores>}
