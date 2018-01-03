@@ -345,6 +345,9 @@ namespace Compi
             return aux;
         }
 
+
+
+
         private Cuadruplo generaCuadruploElse(NodoArblAS nodo, Cuadruplo cuadruploGeneroIzq, Cuadruplo cuadruploGeneroDer)
         {
 
@@ -352,6 +355,13 @@ namespace Compi
             return null;
         }
 
+
+
+
+        /// <summary>
+        /// Ejecuta los cuadruplos dependiendo el tipo de ejecución.
+        /// </summary>
+        /// <param name="keyExecute"></param>
         public void ejecuta(int keyExecute)
         {
             //Ejecucion completa
@@ -359,6 +369,9 @@ namespace Compi
                 this.allExecute();
 
         }
+
+
+
 
         public void allExecute()
         {
@@ -399,6 +412,9 @@ namespace Compi
                 }
             }
         }
+
+
+
 
     }
 }
