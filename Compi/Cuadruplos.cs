@@ -97,6 +97,9 @@ namespace Compi
 
             if (raiz != null)
             {
+                if (raiz.getToken().TokenType != TokenType.FinInstruccion)
+                    generaCuadruplo(raiz);
+
                 if (raiz.getNodoIzquierdo() != null)
                     generaCuadruplo(raiz.getNodoIzquierdo());
 
