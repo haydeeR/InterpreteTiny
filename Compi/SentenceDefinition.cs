@@ -65,6 +65,7 @@ namespace Compi
     {
         public SentenceType sentenceType { get; set; }
         public string value { get; set; }
+        public int noLinea;
 
         public DslSentence(SentenceType sentenceType)
         {
@@ -77,6 +78,14 @@ namespace Compi
         {
             this.sentenceType = sentenceType;
             this.value = value;
+        }
+
+
+        public DslSentence(SentenceType sentenceType, string value, int linea)
+        {
+            this.sentenceType = sentenceType;
+            this.value = value;
+            this.noLinea = linea;
         }
 
 

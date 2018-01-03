@@ -55,6 +55,8 @@ namespace Compi
 
         private ArbolAS arbol = null;
 
+        public VisorArbolAbstracto vAA = null;
+
         public MainWinForm(ini i)
         {
             InitializeComponent();
@@ -462,7 +464,11 @@ namespace Compi
             List<DslSentence> listaDeSentencias = null;
             List<string> lineasTiny = null;
             AnalizadorLexico analizer = new AnalizadorLexico();
+
             string codigoTiny = string.Empty;
+
+            // Limpiamos las instancias y datagrids
+            this.limpiaInstancias();
 
             codigoTiny = this.txtCtrlPrograma.Text.Replace("\t", "").Replace(" ", "");
             lineasTiny = codigoTiny.Replace("\r\n", "@").Split('@').ToList();
@@ -479,9 +485,49 @@ namespace Compi
                 this.muestraTablaDeSimbolos();
                 //Llena la tabla de acciones en base a las sentencias
                 this.llenarTablaAcciones(lineasTiny);
-                //Llena la tabla de cuadruplos
-                this.generaCuadruplos();
+
+                if (tablaDeAcciones.esCorrecta)
+                {
+                    //Llena la tabla de cuadruplos
+                    this.generaCuadruplos();
+                }
             }
+        }
+
+
+        private void limpiaInstancias()
+        {
+            Pilas.Stacks.limpiarInstancia();
+            TablaSimbolos.TS.TablaMetaSimbolos.Clear();
+            TablaErrores.InstanceTable.Errores.Clear();
+            Cuadruplos.limpiaInstancia();
+
+            this.limpiaDataGridViews();
+        }
+
+
+
+        private void limpiaDataGridViews()
+        {
+            //this.dataGridViewTablaAcciones.Rows.Clear();
+            this.dataGridViewTablaAcciones.DataSource = null;
+            this.dataGridViewTablaAcciones.Rows.Clear();
+            this.dataGridViewTablaAcciones.Refresh();
+
+            //this.dataGridViewTablaSimbolos.Rows.Clear();
+            this.dataGridViewTablaSimbolos.DataSource = null;
+            this.dataGridViewTablaSimbolos.Rows.Clear();
+            this.dataGridViewTablaSimbolos.Refresh();
+
+            //this.dataGridViewCuadruplos.Rows.Clear();
+            this.dataGridViewCuadruplos.DataSource = null;
+            this.dataGridViewCuadruplos.Rows.Clear();
+            this.dataGridViewCuadruplos.Refresh();
+
+            //this.dataGridViewErrores.Rows.Clear();
+            this.dataGridViewErrores.DataSource = null;
+            this.dataGridViewErrores.Rows.Clear();
+            this.dataGridViewErrores.Refresh();
         }
 
 
@@ -500,9 +546,9 @@ namespace Compi
                     if (sentenciasDeclarativas != null && sentenciasDeclarativas.Count > 0)
                     {
                         //Inicializamos la tabla de simbolos
-                        sentenciasDeclarativas.ForEach(sentenciasDeclarativa =>
+                        sentenciasDeclarativas.ForEach(sentenciaDeclarativa =>
                         {
-                            int index = sentencias.IndexOf(sentenciasDeclarativa);
+                            int index = sentencias.IndexOf(sentenciaDeclarativa);
                             if (index >= 0 && index < tokens.Count)
                             {
                                 //Obtenemos el token que define el tipo de dato de los simbolos
@@ -520,7 +566,16 @@ namespace Compi
                                         MetaSimbolo ms = new MetaSimbolo(
                                             token.Value, "0", index, sizeof(int),
                                             tipoDato.Value, tipoDato.Value);
-                                        this.tablaSimbolos.addMetaSimbolo(ms);
+
+                                        if (!this.tablaSimbolos.existeMetaSimbolo(ms))
+                                            this.tablaSimbolos.addMetaSimbolo(ms);
+                                        else
+                                            TablaErrores.InstanceTable.agregaError(
+                                                                                    new Error(sentenciaDeclarativa.noLinea,
+                                                                                       "Se duplicó la declaración del símbolo: " + token.Value,
+                                                                                       "Debe de cambiar el nombre del símbolo.",
+                                                                                       "No se pueden definir dos símbolos con el mismo nombre."
+                                                                                       ));
                                     });
                                 }
                             }
@@ -553,24 +608,29 @@ namespace Compi
             string cadenaDeEntrada = string.Empty;
             string caracter = string.Empty;
             bool desplazo = false;
-            bool operaExitosa = false;
+            bool operaExitosa = false, nuevaLinea = false;
+
 
 
             if (estadosAux != null && estadosAux.Count > 0)
             {
                 this.tablaDeAcciones = new TablaDeAcciones(this.tablaDesplazamientos, g, 0);
-                Pilas.Stacks.limpiarInstancia();
                 lineasTiny.ForEach(linea =>
                 {
                     if (linea.Trim() != string.Empty)
-                        cadenaDeEntrada += ("@" + linea.Trim());
+                        cadenaDeEntrada += (linea.Trim() + "@");
+                    else
+                        cadenaDeEntrada += "@";
                 });
                 cadenaDeEntrada += "$";
                 for (int ind = 0; ind < cadenaDeEntrada.Length; ind++)
                 {
                     if (cadenaDeEntrada[ind] == '@')
                     {
-                        Pilas.Stacks.NumeroLinea += 1;
+                        if (nuevaLinea)
+                            Pilas.Stacks.incrementeNoLinea();
+
+                        nuevaLinea = true;
                         continue;
                     }
                     if (cadenaDeEntrada[ind] == '\\')
@@ -583,8 +643,23 @@ namespace Compi
 
                     operaExitosa = this.tablaDeAcciones.agregaCaracter(caracter, cadenaDeEntrada.Substring(ind).Replace("@", ""), out desplazo);
 
-                    if (!operaExitosa) break;
+                    if (!operaExitosa)
+                    {
+                        if (!tablaDeAcciones.esCorrecta)
+                            TablaErrores.InstanceTable.agregaError(new Error(Pilas.Stacks.NumeroLinea,
+                                                                             "La cadena de entrada no es válida, error de sintáxis.",
+                                                                             "Verifique la cadena de entrada cercas de: " + cadenaDeEntrada.Substring(ind).Replace("@", ""),
+                                                                             "Error de sintáxis."));
+                        break;
+                    }
+
                     ind = !desplazo ? (ind - 1) : ind;
+
+                    if (desplazo && nuevaLinea)
+                    {
+                        nuevaLinea = false;
+                        Pilas.Stacks.incrementeNoLinea();
+                    }
 
                     if (!desplazo && caracter.Contains("\\e"))
                         caracter = caracter.Replace("e", "");
@@ -598,22 +673,40 @@ namespace Compi
 
         private void muestraTablaAcciones(TablaDeAcciones tablaDeAcciones)
         {
-            string errores = "";
-            Accion ultAccion = tablaDeAcciones.Acciones.Last();
-            if (ultAccion.Acciones.Contains("$0Programa1"))
-                tablaDeAcciones.Acciones.Add(new Accion(ultAccion, "$", "ACEPTAR", "ACEPTAR"));
+            if (tablaDeAcciones.esCorrecta)
+                tablaDeAcciones.Acciones.Add(new Accion(tablaDeAcciones.Acciones.Last(), "$", "ACEPTAR", "ACEPTAR"));
+
             if (TablaErrores.InstanceTable.isEmpty() == false)
             {
-                errores = TablaErrores.InstanceTable.allErrors();
-                MessageBox.Show(errores);
+                this.comBoxTipoEjecucion.Enabled = false;
                 this.btnEjecutar.Enabled = false;
+                this.btnVerArbolAbstracto.Enabled = false;
             }
+            else
+            {
+                this.comBoxTipoEjecucion.Enabled = true;
+                this.btnEjecutar.Enabled = true;
+                this.btnVerArbolAbstracto.Enabled = true;
+            }
+
+            muestraErrores();
 
             this.dataGridViewTablaAcciones.AutoGenerateColumns = false;
             this.dataGridViewTablaAcciones.DataSource = tablaDeAcciones.Acciones;
             this.dataGridViewTablaAcciones.Columns[0].DataPropertyName = "Acciones";
             this.dataGridViewTablaAcciones.Columns[1].DataPropertyName = "CadenaEntrada";
             this.dataGridViewTablaAcciones.Columns[2].DataPropertyName = "AccionDespOReduc";
+        }
+
+        private void muestraErrores()
+        {
+            this.dataGridViewErrores.AutoGenerateColumns = false;
+            this.dataGridViewErrores.DataSource = TablaErrores.InstanceTable.Errores;
+
+            this.dataGridViewErrores.Columns[0].DataPropertyName = "Value";
+            this.dataGridViewErrores.Columns[1].DataPropertyName = "Solucion";
+            this.dataGridViewErrores.Columns[2].DataPropertyName = "NumerodeLinea";
+            this.dataGridViewErrores.Columns[3].DataPropertyName = "Descripcion";
         }
 
 
@@ -678,7 +771,6 @@ namespace Compi
         {
             OpenFileDialog fnew = new OpenFileDialog();
             string cadAux = string.Empty;
-            TablaErrores.InstanceTable.limpiaError();
 
             fnew.CheckFileExists = true;
             fnew.CheckPathExists = true;
@@ -697,6 +789,7 @@ namespace Compi
                 }
                 this.fullFileNamePrograma = fnew.FileName;
                 this.txtCtrlPrograma.Text = cadAux;
+                this.limpiaInstancias();
             }
         }
 
@@ -866,6 +959,19 @@ namespace Compi
             int selectedIndex = comBoxTipoEjecucion.SelectedIndex;
             Object selectedItem = comBoxTipoEjecucion.SelectedItem;
             Cuadruplos.Instance.ejecuta(selectedIndex);
+        }
+
+        private void btnVerArbolAbstracto_Click(object sender, EventArgs e)
+        {
+            if (vAA == null)
+            {
+                vAA = new VisorArbolAbstracto(this);
+                vAA.Show();
+            }
+            else
+            {
+                vAA.actualizaArbol();
+            }
         }
     }
 }

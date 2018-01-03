@@ -240,6 +240,20 @@ namespace Tsimbolos
             return resultado;
         }
 
+
+        public bool existeMetaSimbolo(MetaSimbolo mS)
+        {
+            MetaSimbolo mSBuscado = null;
+            bool resultado = false;
+
+            mSBuscado = this.metaSimbolos.FirstOrDefault(msAux => msAux.Simbolo == mS.Simbolo);
+            if (mSBuscado != null)
+                resultado = true;
+
+            return resultado;
+        }
+
+
         public bool compararAL(string argsplit)
         {
             bool bandera = false;

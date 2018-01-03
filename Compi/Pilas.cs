@@ -15,7 +15,7 @@ namespace Compi
         Stack<string> pIdents;
         Stack<NodoArblAS> pAA;
         Stack<string> operadores;
-        List<string> listaIDs;
+        Stack<string> pilaIDs;
 
 
         string tipo = "nodeclara";
@@ -23,13 +23,23 @@ namespace Compi
         //int operador;
         int numLinea = 1;
 
-        public List<string> ListaIds { get { return this.listaIDs; } set { this.listaIDs = value; } }
+        public Stack<string> ListaIds { get { return this.pilaIDs; } set { this.pilaIDs = value; } }
         public string TipoDato { get { return tipo; } set { tipo = value; } }
 
         public int Comparador { get { return comparador; } set { comparador = value; } }
         //public int Operador { get { return operador; } set { operador = value; } }
         public int NumeroLinea { get { return this.numLinea; } set { this.numLinea = value; } }
 
+        public void incrementeNoLinea()
+        {
+            this.numLinea++;
+        }
+
+
+        public void decrementeNoLinea()
+        {
+            this.numLinea--;
+        }
 
         private Pilas()
         {
@@ -37,7 +47,7 @@ namespace Compi
             pValores = new Stack<int>();
             pIdents = new Stack<string>();
             pAA = new Stack<NodoArblAS>();
-            listaIDs = new List<string>();
+            pilaIDs = new Stack<string>();
             operadores = new Stack<string>();
         }
 
@@ -61,7 +71,7 @@ namespace Compi
             this.pValores.Clear();
             this.pIdents.Clear();
             this.pAA.Clear();
-            this.listaIDs.Clear();
+            this.pilaIDs.Clear();
             this.operadores.Clear();
 
             this.tipo = "nodeclara";
@@ -107,27 +117,35 @@ namespace Compi
         #endregion
 
 
-        #region Operaciones para trabajar con la lista de Ids
-        public void addId(string id)
+        #region Operaciones para trabajar con la pila de Ids
+        public void pushId(string id)
         {
-            if (this.listaIDs == null)
-                this.listaIDs = new List<string>();
+            if (this.pilaIDs == null)
+                this.pilaIDs = new Stack<string>();
 
-            this.listaIDs.Add(id);
+            this.pilaIDs.Push(id);
+        }
+
+        public string popId()
+        {
+            if (pilaIDs.Count > 0)
+                return this.pilaIDs.Pop();
+
+            return string.Empty;
         }
 
         private void limpiaListaIds()
         {
-            if (this.listaIDs != null)
-                this.listaIDs.Clear();
+            if (this.pilaIDs != null)
+                this.pilaIDs.Clear();
             else
-                this.listaIDs = new List<string>();
+                this.pilaIDs = new Stack<string>();
         }
 
 
         public string getListaIdsLikeString()
         {
-            string theIds = string.Join(",", this.listaIDs);
+            string theIds = string.Join(",", this.pilaIDs);
             this.limpiaListaIds();
             return theIds;
         }

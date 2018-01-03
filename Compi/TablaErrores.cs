@@ -10,10 +10,14 @@ namespace ManejoDeErrores
         List<Error> listaErrores = null;
         static TablaErrores instanceTable = null;
 
-        public static TablaErrores InstanceTable { get {
+        public static TablaErrores InstanceTable
+        {
+            get
+            {
                 if (instanceTable == null)
                     instanceTable = new TablaErrores();
-                return instanceTable;}
+                return instanceTable;
+            }
         }
 
         private TablaErrores()
@@ -47,12 +51,15 @@ namespace ManejoDeErrores
         public string allErrors()
         {
             string res = "";
-            foreach(Error e in this.listaErrores)
+            foreach (Error e in this.listaErrores)
             {
                 res += e.Value;
             }
             return res;
         }
+
+
+        public List<Error> Errores { get { return this.listaErrores; } }
     }
 
     public class Error
@@ -63,28 +70,34 @@ namespace ManejoDeErrores
         public string descrip;
         public string sol_error;
 
-
-        public Error(int nl,string e, string se,string d)
+        /// <summary>
+        /// Crea un error con los datos enviados por parametro.
+        /// </summary>
+        /// <param name="numLinea">El número de línea en la que ocurrio el error</param>
+        /// <param name="strError">El texto del error</param>
+        /// <param name="solucionError">La solución para resolver el error</param>
+        /// <param name="descripcion">Una descripción más ampliada del error</param>
+        public Error(int numLinea, string strError, string solucionError, string descripcion)
         {
-            num_lineaE = nl;
-            error = e;
-            sol_error = se;
-            descrip = d;
-                
-        }
-
-        public Error( string e, string se, string d)
-        { 
-            error = e;
-            sol_error = se;
-            descrip = d;
+            num_lineaE = numLinea;
+            error = strError;
+            sol_error = solucionError;
+            descrip = descripcion;
 
         }
 
-        public Error ()
-	    {
-                
-    	}
+        public Error(string strError, string solucionError, string descripcion)
+        {
+            error = strError;
+            sol_error = solucionError;
+            descrip = descripcion;
+
+        }
+
+        public Error()
+        {
+
+        }
 
         public int NumerodeLinea
         {

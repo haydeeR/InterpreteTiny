@@ -41,6 +41,12 @@ namespace Compi
         }
 
 
+        public static void limpiaInstancia()
+        {
+            _instance = null;
+        }
+
+
         private void llenaLstTokensNGC()
         {
             this.tokensNoGeneranCuadruplos = new List<DslToken>();
@@ -84,13 +90,19 @@ namespace Compi
         /// <returns></returns>
         public List<Cuadruplo> recorreArbol(NodoArblAS raiz)
         {
-            cuadruplos = new List<Cuadruplo>();
+            if (cuadruplos == null)
+                cuadruplos = new List<Cuadruplo>();
+            else
+                cuadruplos.Clear();
 
-            if (raiz.getNodoIzquierdo() != null)
-                generaCuadruplo(raiz.getNodoIzquierdo());
+            if (raiz != null)
+            {
+                if (raiz.getNodoIzquierdo() != null)
+                    generaCuadruplo(raiz.getNodoIzquierdo());
 
-            if (raiz.getNodoDerecho() != null)
-                generaCuadruplo(raiz.getNodoDerecho());
+                if (raiz.getNodoDerecho() != null)
+                    generaCuadruplo(raiz.getNodoDerecho());
+            }
 
             return cuadruplos;
         }
@@ -228,7 +240,7 @@ namespace Compi
 
         private Cuadruplo esElMismoTokenDeRetorno(Cuadruplo inicioBloqueCodigo, Cuadruplo finBloqueCodigo)
         {
-            if (inicioBloqueCodigo != null &&
+            if (inicioBloqueCodigo != null && finBloqueCodigo != null &&
                 inicioBloqueCodigo.Operador.TokenType == TokenType.KeyWord &&
                 inicioBloqueCodigo.Operador.TokenType == finBloqueCodigo.Operador.TokenType &&
                 inicioBloqueCodigo.Operador.Value == finBloqueCodigo.Operador.Value &&
@@ -241,6 +253,7 @@ namespace Compi
                 if (inicioBloqueCodigo.resultado.Value == null || inicioBloqueCodigo.resultado.Value == string.Empty)
                 {
                     inicioBloqueCodigo.resultado.Value = finBloqueCodigo.Id.ToString();
+                    finBloqueCodigo.resultado.Value = inicioBloqueCodigo.Id.ToString();
                 }
 
             }

@@ -120,5 +120,23 @@ namespace Compi
 
             return resultado;
         }
+
+        public override string ToString()
+        {
+            string nodoIzq = string.Empty;
+            string nodoDer = string.Empty;
+            string nodoTokenValue = string.Empty;
+
+
+            if (this.nodoIzquierdo != null)
+                nodoIzq = this.nodoIzquierdo.ToString();
+
+            if (this.nodoDerecho != null)
+                nodoDer = this.nodoIzquierdo.ToString();
+
+            nodoTokenValue = this.token.Value;
+
+            return "nodo(\"" + nodoTokenValue + "\")";
+        }
     }
 }
