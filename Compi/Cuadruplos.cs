@@ -342,14 +342,29 @@ namespace Compi
         public void ejecuta(int keyExecute)
         {
             //Ejecucion completa
-            if (keyExecute == 0)
-                this.allExecute();
-
+            switch (keyExecute)
+            {
+                case 0:
+                    this.ejecutaTodo();
+                    break;
+                case 1:
+                    this.ejecutaCuadruplo();
+                    break;
+                case 2:
+                    this.ejecutaLinea();
+                    break;
+            }
         }
 
-        public void allExecute()
+        public void ejecutaCuadruplo() { }
+
+        public void ejecutaLinea() { }
+
+        public void ejecutaTodo()
         {
             TokenType op;
+            int value1 = 0;
+            int value2 = 0;
             foreach (Cuadruplo cuadruplo in this.cuadruplos)
             {
                 op = cuadruplo.Operador.TokenType;
@@ -359,18 +374,12 @@ namespace Compi
 
                         break;
                     case TokenType.OperadorAssign://5:
-                        MetaSimbolo simbolo = TablaSimbolos.TS.getMetaSimbolo(cuadruplo.Operando1.Value);
-                        if (cuadruplo.Operando2.TokenType == TokenType.Id)
-                        {
-
-                        } //Buscar en la lista de cuadruplos el id del temporal
-                        else if (cuadruplo.Operando2.TokenType == TokenType.Numero)
-                        {
-                            simbolo.Valor = cuadruplo.Operando2.Value;
-                        }
+                        value1 = this.getValueOfOperando(cuadruplo.Operando1);
+                        value2 = this.getValueOfOperando(cuadruplo.Operando2);
+                        
                         break;
                     case TokenType.OperadorComp://6
-                                                //Si el operando 1 
+                                                //Si el operando 1  
                                                 //Si es identificador buscar en la tabla de simbolos
                                                 //Si es numero comparar directo
                                                 //si es un simbolo temporal buscar en la lista de cuadruplos
@@ -387,5 +396,24 @@ namespace Compi
             }
         }
 
+        public int getValueOfOperando(DslToken operando)
+        {
+            int value = 0;
+           
+            MetaSimbolo simbolo = TablaSimbolos.TS.getMetaSimbolo(operando.Value);
+            if (operando.TokenType == TokenType.Id) //Token type del resultado
+            {
+                //Identificador temporal
+            } //Buscar en la lista de cuadruplos el id del temporal
+            else if (operando.TokenType == TokenType.Numero)
+            {
+                simbolo.Valor = operando.Value;
+            }
+            else if(operando.TokenType == TokenType.Identificadores)
+            {
+                //Identificador en la tabla de simbolos
+            }
+            return value;
+        }
     }
 }
