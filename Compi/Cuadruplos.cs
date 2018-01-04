@@ -347,77 +347,102 @@ namespace Compi
 
             return aux;
         }
-
-
-
-
+        
         private Cuadruplo generaCuadruploElse(NodoArblAS nodo, Cuadruplo cuadruploGeneroIzq, Cuadruplo cuadruploGeneroDer)
         {
-
-
             return null;
         }
-
-
-
-
+        
         /// <summary>
         /// Ejecuta los cuadruplos dependiendo el tipo de ejecución.
         /// </summary>
         /// <param name="keyExecute"></param>
-        public void ejecuta(int keyExecute)
+        public void ejecuta(int keyExecute, int siguiente = -1)
         {
-            //Ejecucion completa
-            if (keyExecute == 0)
+            if ( keyExecute == 0)
                 this.allExecute();
-
+            if (keyExecute == 1 && siguiente >= 0)
+                this.executeLine(siguiente);
+            if (keyExecute == 2 && siguiente >= 0)
+                this.executeCuadruplo(siguiente);
         }
 
-
-
+        public void executeCuadruplo(int cuadruploIndex)
+        {
+            if (cuadruploIndex < this.cuadruplos.Count)
+            {
+                Cuadruplo c = this.cuadruplos[cuadruploIndex];
+                this.ejecutaCuadruplo(c);
+            }
+        }
+        
+        public void executeLine(int lineNumber) {
+            List<Cuadruplo> listCuadruplo = this.cuadruplos.Where(x => x.Linea == lineNumber).ToList();
+            listCuadruplo.ForEach(x => this.ejecutaCuadruplo(x));
+        }
 
         public void allExecute()
         {
-            TokenType op;
             foreach (Cuadruplo cuadruplo in this.cuadruplos)
             {
-                op = cuadruplo.Operador.TokenType;
-                switch (op)
-                {
-                    case TokenType.KeyWord:
+                this.ejecutaCuadruplo(cuadruplo);
+            }
+        }
+        
+        private void ejecutaCuadruplo(Cuadruplo c)
+        {
+            switch (c.Operador.TokenType)
+            {
+                case TokenType.KeyWord:
+                    if (c.Operador.Value == "write")
+                    {
+                        //  string op1 = this.checaOperador(c.Op1);
+                        //  cons.Text += op1 + Environment.NewLine;// MessageBox.Show(op1);//
+                    }
+                    //Read
+                    //If
+                    break;
+                case TokenType.OperadorAssign://5:
+                    MetaSimbolo simbolo = TablaSimbolos.TS.getMetaSimbolo(c.Operando1.Value);
+                    if (c.Operando2.TokenType == TokenType.Id)
+                    {
 
-                        break;
-                    case TokenType.OperadorAssign://5:
-                        MetaSimbolo simbolo = TablaSimbolos.TS.getMetaSimbolo(cuadruplo.Operando1.Value);
-                        if (cuadruplo.Operando2.TokenType == TokenType.Id)
-                        {
-
-                        } //Buscar en la lista de cuadruplos el id del temporal
-                        else if (cuadruplo.Operando2.TokenType == TokenType.Numero)
-                        {
-                            simbolo.Valor = cuadruplo.Operando2.Value;
-                        }
-                        break;
-                    case TokenType.OperadorComp://6
-                                                //Si el operando 1 
-                                                //Si es identificador buscar en la tabla de simbolos
-                                                //Si es numero comparar directo
-                                                //si es un simbolo temporal buscar en la lista de cuadruplos
-                        break;
-                    case TokenType.OperadorSuma://7 
-                        break;
-                    case TokenType.OperadorMult://8:
-                        break;
-                    case TokenType.OperadorPote://9:
-                        break;
-                    case TokenType.FinInstruccion://14:
-                        break;
-                }
+                    } //Buscar en la lista de cuadruplos el id del temporal
+                    else if (c.Operando2.TokenType == TokenType.Numero)
+                    {
+                        simbolo.Valor = c.Operando2.Value;
+                    }
+                    break;
+                case TokenType.OperadorComp://6
+                                            //Si el operando 1 
+                                            //Si es identificador buscar en la tabla de simbolos
+                                            //Si es numero comparar directo
+                                            //si es un simbolo temporal buscar en la lista de cuadruplos
+                    break;
+                case TokenType.OperadorSuma://7 
+                    break;
+                case TokenType.OperadorMult://8:
+                    break;
+                case TokenType.OperadorPote://9:
+                    break;
+                case TokenType.FinInstruccion://14:
+                    break;
             }
         }
 
+        public string getOperando(DslToken operando)
+        {
+            string value = "";
+            if(operando != null)
+            {
+                //Temporal !! identificadores
+                if(operando.TokenType == TokenType.Id)
+                {
 
-
-
+                }
+                
+            }
+            return value;
+        }
     }
 }
