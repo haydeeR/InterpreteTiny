@@ -15,6 +15,7 @@ namespace Compi
         string cadenaEntrada;
         string acciones = string.Empty;
         string accionDespReduc = string.Empty;
+        string accionSemantica = string.Empty;
         string tipoAccion = string.Empty;
         string token = string.Empty;
 
@@ -23,6 +24,7 @@ namespace Compi
         public string Token { get { return this.token; } set { this.token = value; } }
 
         public string AccionDespOReduc { get { return this.accionDespReduc; } set { this.accionDespReduc = value; } }
+        public string AccionSemantica { get { return this.accionSemantica; } set { this.accionSemantica = value; } }
 
         public string Acciones
         {
@@ -33,7 +35,7 @@ namespace Compi
                 {
                     //if (desplazamientos.IndexOf(desp) < desplazamientos.Count - 1)
                     //{
-                        this.acciones += (desp.Token + desp.EstadoActual.ToString());
+                    this.acciones += (desp.Token + desp.EstadoActual.ToString());
                     //}
                 });
                 return this.acciones;

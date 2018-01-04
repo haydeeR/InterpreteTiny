@@ -58,23 +58,24 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 93F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 92F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1008, 729);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // txtOutputTinyProgram
             // 
+            this.txtOutputTinyProgram.AcceptsTab = true;
             this.txtOutputTinyProgram.BackColor = System.Drawing.Color.Black;
             this.txtOutputTinyProgram.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtOutputTinyProgram.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOutputTinyProgram.ForeColor = System.Drawing.Color.Lime;
-            this.txtOutputTinyProgram.Location = new System.Drawing.Point(3, 54);
+            this.txtOutputTinyProgram.Location = new System.Drawing.Point(3, 61);
             this.txtOutputTinyProgram.Multiline = true;
             this.txtOutputTinyProgram.Name = "txtOutputTinyProgram";
             this.txtOutputTinyProgram.ReadOnly = true;
             this.txtOutputTinyProgram.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtOutputTinyProgram.Size = new System.Drawing.Size(1002, 672);
+            this.txtOutputTinyProgram.Size = new System.Drawing.Size(1002, 665);
             this.txtOutputTinyProgram.TabIndex = 1;
             // 
             // tableLayoutPanel2
@@ -93,7 +94,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1002, 45);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1002, 52);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // tableLayoutPanel3
@@ -108,7 +109,7 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(194, 39);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(194, 46);
             this.tableLayoutPanel3.TabIndex = 2;
             // 
             // label1
@@ -118,7 +119,7 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 39);
+            this.label1.Size = new System.Drawing.Size(91, 46);
             this.label1.TabIndex = 0;
             this.label1.Text = "# Línea:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -131,7 +132,7 @@
             this.txtNumLinea.Multiline = true;
             this.txtNumLinea.Name = "txtNumLinea";
             this.txtNumLinea.ReadOnly = true;
-            this.txtNumLinea.Size = new System.Drawing.Size(91, 33);
+            this.txtNumLinea.Size = new System.Drawing.Size(91, 40);
             this.txtNumLinea.TabIndex = 1;
             this.txtNumLinea.Text = "123456";
             this.txtNumLinea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -148,7 +149,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(194, 39);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(194, 46);
             this.tableLayoutPanel4.TabIndex = 3;
             // 
             // txtNumCuadruplo
@@ -159,7 +160,7 @@
             this.txtNumCuadruplo.Multiline = true;
             this.txtNumCuadruplo.Name = "txtNumCuadruplo";
             this.txtNumCuadruplo.ReadOnly = true;
-            this.txtNumCuadruplo.Size = new System.Drawing.Size(43, 33);
+            this.txtNumCuadruplo.Size = new System.Drawing.Size(43, 40);
             this.txtNumCuadruplo.TabIndex = 2;
             this.txtNumCuadruplo.Text = "1234";
             this.txtNumCuadruplo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -171,7 +172,7 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(139, 39);
+            this.label2.Size = new System.Drawing.Size(139, 46);
             this.label2.TabIndex = 1;
             this.label2.Text = "# Cuadruplo:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -179,11 +180,12 @@
             // btnEjecutaSiguiente
             // 
             this.btnEjecutaSiguiente.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnEjecutaSiguiente.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnEjecutaSiguiente.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnEjecutaSiguiente.Image = ((System.Drawing.Image)(resources.GetObject("btnEjecutaSiguiente.Image")));
             this.btnEjecutaSiguiente.Location = new System.Drawing.Point(403, 3);
             this.btnEjecutaSiguiente.Name = "btnEjecutaSiguiente";
-            this.btnEjecutaSiguiente.Size = new System.Drawing.Size(194, 39);
+            this.btnEjecutaSiguiente.Size = new System.Drawing.Size(194, 46);
             this.btnEjecutaSiguiente.TabIndex = 4;
             this.btnEjecutaSiguiente.Text = "Ejecuta Siguiente";
             this.btnEjecutaSiguiente.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
@@ -201,7 +203,7 @@
             this.txtLineaEjecucion.Name = "txtLineaEjecucion";
             this.txtLineaEjecucion.ReadOnly = true;
             this.txtLineaEjecucion.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.txtLineaEjecucion.Size = new System.Drawing.Size(396, 39);
+            this.txtLineaEjecucion.Size = new System.Drawing.Size(396, 46);
             this.txtLineaEjecucion.TabIndex = 7;
             this.txtLineaEjecucion.Text = "Linea Ejecución";
             // 
@@ -217,6 +219,7 @@
             this.ClientSize = new System.Drawing.Size(1008, 729);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(1024, 768);
             this.MinimumSize = new System.Drawing.Size(1024, 768);
             this.Name = "TerminalWinForm";

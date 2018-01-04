@@ -470,6 +470,8 @@ namespace Compi
             c.resultado.Value = cadToWrite;
         }
 
+
+
         private void executeWrite(Cuadruplo c)
         {
             string cadToWrite = string.Empty;
@@ -497,12 +499,12 @@ namespace Compi
                 if (c.Operando1 != null)
                 {
                     this.setValueOperando(c.Operando1, readValue.ToString());
-                    this.terminal.print("read: " + c.Operando1.Value + "\r\nvalue: " + readValue.ToString());
+                    this.terminal.print("read: " + c.Operando1.Value + "\tvalue: " + readValue.ToString());
                 }
                 else if (c.Operando2 != null)
                 {
                     this.setValueOperando(c.Operando2, readValue.ToString());
-                    this.terminal.print("read: " + c.Operando2.Value + "\r\nvalue: " + readValue.ToString());
+                    this.terminal.print("read: " + c.Operando2.Value + "\tvalue: " + readValue.ToString());
                 }
             }
         }

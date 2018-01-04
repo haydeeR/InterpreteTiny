@@ -140,6 +140,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="ReadDatoDlg.resx">
       <DependentUpon>ReadDatoDlg.cs</DependentUpon>
@@ -171,6 +172,16 @@
     <Content Include="Gramatica\Tiny_Final.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\play_next_button.png" />
+    <None Include="Resources\right_arrow.png" />
+    <None Include="Resources\save-file-option.png" />
+    <None Include="Resources\save.png" />
+    <None Include="Resources\open-folder-outline.png" />
+    <None Include="Resources\nut-icon.png" />
+    <None Include="Resources\icon.png" />
+    <None Include="Resources\fast-forward-arrows.png" />
+    <None Include="Resources\binoculars.png" />
+    <None Include="Resources\Image1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -34,8 +34,8 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnOk = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
             this.numValue = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -106,6 +106,15 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(403, 102);
             this.tableLayoutPanel3.TabIndex = 6;
             // 
+            // numValue
+            // 
+            this.numValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numValue.Location = new System.Drawing.Point(3, 54);
+            this.numValue.Name = "numValue";
+            this.numValue.Size = new System.Drawing.Size(397, 20);
+            this.numValue.TabIndex = 5;
+            this.numValue.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -117,15 +126,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Ingrese un valor:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // numValue
-            // 
-            this.numValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.numValue.Location = new System.Drawing.Point(3, 54);
-            this.numValue.Name = "numValue";
-            this.numValue.Size = new System.Drawing.Size(397, 20);
-            this.numValue.TabIndex = 5;
-            this.numValue.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // ReadDatoDlg
             // 

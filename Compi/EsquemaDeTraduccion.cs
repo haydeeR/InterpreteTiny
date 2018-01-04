@@ -197,87 +197,87 @@ namespace Compi
                 case 23://otro->:
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@":");
-                    valueToReturn = "otro" + "@" + "pushPS(\":\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\":\")";
                     break;
                 case 24://otro->;
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@";");
-                    valueToReturn = "otro" + "@" + "pushPS(\";\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\";\")";
                     break;
                 case 25://otro->,
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@",");
-                    valueToReturn = "otro" + "@" + "pushPS(\",\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\",\")";
                     break;
                 case 26://otro->.
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@".");
-                    valueToReturn = "otro" + "@" + "pushPS(\".\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\".\")";
                     break;
                 case 27://otro->[
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@"[");
-                    valueToReturn = "otro" + "@" + "pushPS(\"[\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\"[\")";
                     break;
                 case 28://otro->]
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@"]");
-                    valueToReturn = "otro" + "@" + "pushPS(\"]\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\"]\")";
                     break;
                 case 29://otro->*
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@"*");
-                    valueToReturn = "otro" + "@" + "pushPS(\"*\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\"*\")";
                     break;
                 case 30://otro->+
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@"+");
-                    valueToReturn = "otro" + "@" + "pushPS(\"+\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\"+\")";
                     break;
                 case 31://otro->¿
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@"¿");
-                    valueToReturn = "otro" + "@" + "pushPS(\"¿\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\"¿\")";
                     break;
                 case 32://otro->?
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@"?");
-                    valueToReturn = "otro" + "@" + "pushPS(\"?\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\"?\")";
                     break;
                 case 33://otro->¡
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@"¡");
-                    valueToReturn = "otro" + "@" + "pushPS(\"¡\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\"¡\")";
                     break;
                 case 34://otro->!
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@"!");
-                    valueToReturn = "otro" + "@" + "pushPS(\"!\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\"!\")";
                     break;
                 case 35://otro->#
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@"#");
-                    valueToReturn = "otro" + "@" + "pushPS(\"#\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\"#\")";
                     break;
                 case 36://otro->%
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@"%");
-                    valueToReturn = "otro" + "@" + "pushPS(\"%\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\"%\")";
                     break;
                 case 37://otro->&
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@"&");
-                    valueToReturn = "otro" + "@" + "pushPS(\"&\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\"&\")";
                     break;
                 case 38://otro->/
                     numTokenReducir = 1;
                     Pilas.Stacks.pushPI(@"/");
-                    valueToReturn = "otro" + "@" + "pushPS(\"/\")";
+                    valueToReturn = "otro" + "@" + "pushPI(\"/\")";
                     break;
                 case 39://otro->\e
                     numTokenReducir = 2;
                     Pilas.Stacks.pushPS(Pilas.Stacks.popAllPI() + " ");
-                    valueToReturn = "otro" + "@" + "pushPS(\" \")";
+                    valueToReturn = "otro" + "@" + "pushPI(\" \")";
                     break;
                 case 40://sent-declara->Var{<Tipo><identificadores>}
                     Pilas.Stacks.TipoDato = "nodeclara";

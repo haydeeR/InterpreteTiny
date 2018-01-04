@@ -123,13 +123,17 @@ namespace Compi
                 {
                     string generador = this.g.getProducciones()[indRed];
 
-                    if (valReduccionB != string.Empty)
-                        cadStrDesReduc += ("    " + generador + " | Acción Semántica: " + valReduccionB);
-                    else
-                        cadStrDesReduc += ("    " + generador);
+                    //else
+                    //{
+                    //    cadStrDesReduc += ("    " + generador);
+                    //}
 
                     accion.agregaDespReducido(ultimoDespEliminado, edoLR1Aux, valReduccionA);
                     accion.AccionDespOReduc = cadStrDesReduc;
+                    if (valReduccionB != string.Empty)
+                    {
+                        accion.AccionSemantica = valReduccionB;
+                    }
                 }
                 else
                 {

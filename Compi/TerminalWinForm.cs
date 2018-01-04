@@ -41,13 +41,16 @@ namespace Compi
             {
                 case 0:
                     this.btnEjecutaSiguiente.Text = "Ejecuta Programa";
+                    this.btnEjecutaSiguiente.Image = Properties.Resources.right_arrow;
                     //this.btnEjecutaSiguiente.Enabled = false;
                     break;
                 case 1:
                     this.btnEjecutaSiguiente.Text = "Ejecuta Sig. Línea";
+                    this.btnEjecutaSiguiente.Image = Properties.Resources.play_next_button;
                     break;
                 case 2:
                     this.btnEjecutaSiguiente.Text = "Ejecuta Sig. Cuádruplo";
+                    this.btnEjecutaSiguiente.Image = Properties.Resources.play_next_button;
                     break;
             }
         }

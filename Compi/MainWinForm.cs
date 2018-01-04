@@ -696,6 +696,7 @@ namespace Compi
             this.dataGridViewTablaAcciones.Columns[0].DataPropertyName = "Acciones";
             this.dataGridViewTablaAcciones.Columns[1].DataPropertyName = "CadenaEntrada";
             this.dataGridViewTablaAcciones.Columns[2].DataPropertyName = "AccionDespOReduc";
+            this.dataGridViewTablaAcciones.Columns[3].DataPropertyName = "AccionSemantica";
         }
 
         private void muestraErrores()
@@ -813,6 +814,8 @@ namespace Compi
                 MessageBox.Show("Antes de solicitar el conjunto primero debe crear o abrir una gramatica");
         }
 
+
+
         private void generaConjuntosPrimeroYSiguiente()
         {
             List<string> conjuntoPrimero;
@@ -826,84 +829,12 @@ namespace Compi
 
 
 
-        //private List<NodoArblAS> arboles = new List<NodoArblAS>();
-        //private NodoArblAS raiz;
-
-        //private void creaArbol()
-        //{
-        //    arboles = new List<NodoArblAS>();
-
-        //    NodoArblAS label_002 = new NodoArblAS(new DslToken(TokenType.KeyWord, ":="));
-        //    NodoArblAS id_001 = new NodoArblAS(new DslToken(TokenType.Id, "_Id001"));
-        //    NodoArblAS opMult_001 = new NodoArblAS(new DslToken(TokenType.OperadorMult, "*"));
-        //    NodoArblAS opMult_001_iz = new NodoArblAS(new DslToken(TokenType.Numero, "3"));
-        //    NodoArblAS opMult_001_der = new NodoArblAS(new DslToken(TokenType.Numero, "4"));
-        //    opMult_001.setNodoIzquierdo(opMult_001_iz);
-        //    opMult_001.setNodoDerecho(opMult_001_der);
-        //    label_002.setNodoIzquierdo(id_001);
-        //    label_002.setNodoDerecho(opMult_001);
-
-        //    NodoArblAS label_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, ":="));
-        //    NodoArblAS id_002 = new NodoArblAS(new DslToken(TokenType.Id, "_Id001"));
-        //    NodoArblAS opMult_002 = new NodoArblAS(new DslToken(TokenType.OperadorMult, "*"));
-        //    NodoArblAS opMult_002_iz = new NodoArblAS(new DslToken(TokenType.Numero, "6"));
-        //    NodoArblAS opMult_002_der = new NodoArblAS(new DslToken(TokenType.Numero, "8"));
-        //    opMult_002.setNodoIzquierdo(opMult_002_iz);
-        //    opMult_002.setNodoDerecho(opMult_002_der);
-        //    label_001.setNodoIzquierdo(id_002);
-        //    label_001.setNodoDerecho(opMult_002);
-
-        //    NodoArblAS else_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "else"));
-        //    else_001.setNodoIzquierdo(label_001);
-        //    else_001.setNodoDerecho(label_002);
-
-        //    NodoArblAS exp_001 = new NodoArblAS(new DslToken(TokenType.OperadorComp, "<"));
-        //    NodoArblAS operandoComp_001_der = new NodoArblAS(new DslToken(TokenType.Numero, "10"));
-        //    NodoArblAS exp_002 = new NodoArblAS(new DslToken(TokenType.OperadorSuma, "+"));
-        //    NodoArblAS id_003 = new NodoArblAS(new DslToken(TokenType.Id, "_Id003"));
-        //    NodoArblAS opSum_001 = new NodoArblAS(new DslToken(TokenType.OperadorMult, "+"));
-        //    NodoArblAS opSum_001_iz = new NodoArblAS(new DslToken(TokenType.Numero, "6"));
-        //    NodoArblAS opSum_001_der = new NodoArblAS(new DslToken(TokenType.Numero, "8"));
-        //    opSum_001.setNodoIzquierdo(opSum_001_iz);
-        //    opSum_001.setNodoDerecho(opSum_001_der);
-        //    exp_002.setNodoIzquierdo(id_003);
-        //    exp_002.setNodoDerecho(opSum_001);
-        //    exp_001.setNodoDerecho(operandoComp_001_der);
-        //    exp_001.setNodoIzquierdo(exp_002);
-
-        //    NodoArblAS if_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "if"));
-        //    if_001.setNodoIzquierdo(exp_001);
-        //    if_001.setNodoDerecho(else_001);
-
-
-        //    NodoArblAS id_004 = new NodoArblAS(new DslToken(TokenType.Id, "_Id004"));
-        //    NodoArblAS write_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
-        //    write_001.setNodoIzquierdo(id_004);
-
-        //    NodoArblAS id_005 = new NodoArblAS(new DslToken(TokenType.Id, "_Id004"));
-        //    NodoArblAS read_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, "read"));
-        //    read_001.setNodoIzquierdo(id_005);
-
-        //    NodoArblAS num_001 = new NodoArblAS(new DslToken(TokenType.Numero, "7"));
-        //    NodoArblAS num_002 = new NodoArblAS(new DslToken(TokenType.Numero, "2"));
-        //    NodoArblAS opSum_002 = new NodoArblAS(new DslToken(TokenType.OperadorSuma, "+"));
-        //    opSum_002.setNodoIzquierdo(num_002);
-        //    opSum_002.setNodoDerecho(num_001);
-        //    NodoArblAS id_006 = new NodoArblAS(new DslToken(TokenType.Id, "_Id006"));
-        //    NodoArblAS assign_001 = new NodoArblAS(new DslToken(TokenType.KeyWord, ":="));
-        //    assign_001.setNodoIzquierdo(id_006);
-        //    assign_001.setNodoDerecho(opSum_002);
-
-        //    arboles.Add(assign_001);
-        //    arboles.Add(read_001);
-        //    arboles.Add(write_001);
-        //    arboles.Add(if_001);
-        //}
-
         private void editorGramatica_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.formini.Close();
         }
+
+
 
         private void MainWinForm_Load(object sender, EventArgs e)
         {
