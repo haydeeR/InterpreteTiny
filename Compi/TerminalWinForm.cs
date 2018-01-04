@@ -25,7 +25,7 @@ namespace Compi
             this.typeExecution = tipoEjecucion;
             InitializeComponent();
             this.limpiaControles();
-            this.toolTipPrompt.SetToolTip(this.txtOutputTinyProgram, "#");
+            this.toolTipPrompt.SetToolTip(this.txtOutputTinyProgram, "$");
         }
 
 

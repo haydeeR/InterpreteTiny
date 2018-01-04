@@ -401,7 +401,7 @@ namespace Compi
                     }
                     if (c.Operador.Value == "read")
                     {
-                        // this.executeRead(c);
+                        this.executeRead(c);
                     }
                     if (c.Operador.Value == "if")
                     {
@@ -430,6 +430,13 @@ namespace Compi
                 case TokenType.FinInstruccion://14:
                     break;
             }
+        }
+
+        private void executeRead(Cuadruplo c)
+        {
+            //throw new NotImplementedException();
+            ReadDatoDlg readDlg = new ReadDatoDlg();
+            readDlg.ShowDialog();
         }
 
         public void executeOperadorAssign(Cuadruplo c)
@@ -507,7 +514,7 @@ namespace Compi
                 {
                     value = operando.Value;
                 }
-                
+
             }
 
             return value;
@@ -515,12 +522,12 @@ namespace Compi
 
         public void setValueOperando(DslToken operando, string value)
         {
-            if(operando.TokenType == TokenType.IdTemporal)
+            if (operando.TokenType == TokenType.IdTemporal)
             {
                 Resultado rAux = this.dameResultado(value);
                 rAux.Value = value;
             }
-            if(operando.TokenType == TokenType.Id)
+            if (operando.TokenType == TokenType.Id)
             {
                 MetaSimbolo simbolo = TablaSimbolos.TS.getMetaSimbolo(operando.Value);
                 simbolo.valor = value;

@@ -141,6 +141,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ReadDatoDlg.resx">
+      <DependentUpon>ReadDatoDlg.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TerminalWinForm.resx">
       <DependentUpon>TerminalWinForm.cs</DependentUpon>
     </EmbeddedResource>
