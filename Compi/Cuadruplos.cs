@@ -32,12 +32,14 @@ namespace Compi
         private List<DslToken> tokensNoGeneranCuadruplos;
         public List<Cuadruplo> LstCuadruplos { get { return this.cuadruplos; } }
         private Stack<Cuadruplo> bloquesCuadruplos;
+        private Stack<Cuadruplo> bloquesIf;
 
 
         private Cuadruplos()
         {
             this.cuadruplos = new List<Cuadruplo>();
             this.bloquesCuadruplos = new Stack<Cuadruplo>();
+            this.bloquesIf = new Stack<Cuadruplo>();
             this.llenaLstTokensNGC();
         }
 
@@ -163,7 +165,7 @@ namespace Compi
                 cuadruploGeneroIzq = generaCuadruplo(nodoIzquierdo);
                 if (tokenNodo.TokenType == TokenType.KeyWord && tokenNodo.Value == "else")
                 {
-                    inicioBloqueCodigo = new Cuadruplo(operador: tokenNodo, numLinea: nodo.Linea);
+                    inicioBloqueCodigo = new Cuadruplo(operador: tokenNodo.Clone(), numLinea: nodo.Linea);
                     cuadruplos.Add(inicioBloqueCodigo);
                     bloquesCuadruplos.Push(inicioBloqueCodigo);
                 }
@@ -374,7 +376,10 @@ namespace Compi
         public void ejecuta(int keyExecute, int siguiente = -1)
         {
             if (keyExecute == 0)
+            {
                 this.allExecute();
+                this.terminal.print("Terminó la ejecución del programa... \r\n \r\n");
+            }
             if (keyExecute == 1 && siguiente >= 0)
                 this.executeLine(siguiente);
             if (keyExecute == 2 && siguiente >= 0)
@@ -400,13 +405,14 @@ namespace Compi
             listCuadruplo.ForEach(x => this.ejecutaCuadruplo(x));
         }
 
-
+        int nextIndCuadruplo = 0;
 
         public void allExecute()
         {
-            foreach (Cuadruplo cuadruplo in this.cuadruplos)
+
+            for (this.nextIndCuadruplo = 0; this.nextIndCuadruplo < this.cuadruplos.Count; this.nextIndCuadruplo++)
             {
-                this.ejecutaCuadruplo(cuadruplo);
+                this.ejecutaCuadruplo(this.cuadruplos[this.nextIndCuadruplo]);
             }
         }
 
@@ -427,7 +433,16 @@ namespace Compi
                     }
                     if (c.Operador.Value == "if")
                     {
-                        // this.executeIf(c);
+                        this.executeIf(c);
+                    }
+                    if (c.Operador.Value == "else")
+                    {
+                        this.executeElse(c);
+                    }
+                    if (c.Operador.Value == "end-if")
+                    {
+                        if (this.bloquesIf.Count > 0)
+                            this.bloquesIf.Pop();
                     }
                     if (c.Operador.Value == "repeat-until")
                     {
@@ -456,6 +471,57 @@ namespace Compi
                     break;
             }
             this.terminal.refreshTablaSimbolos();
+        }
+
+        private void executeElse(Cuadruplo c)
+        {
+            int indAux = -1;
+
+            if (this.bloquesIf.Count > 0)
+                this.bloquesIf.Pop();
+
+            if (c.resultado.Value != null && c.resultado.Value != string.Empty)
+            {
+                indAux = this.cuadruplos.IndexOf(this.dameCuadruploPorId(c.resultado.Value));
+                this.nextIndCuadruplo = indAux >= 0 ? indAux : this.nextIndCuadruplo;
+            }
+        }
+
+        private void executeIf(Cuadruplo c)
+        {
+            this.bloquesIf.Push(c);
+            Cuadruplo resValidacionIf = validaCondicionIf(c);
+
+            if (resValidacionIf != null && resValidacionIf.Operador.TokenType == TokenType.OperadorComp)
+            {
+                if (resValidacionIf.resultado.Value == "True")
+                {
+                    this.nextIndCuadruplo = this.cuadruplos.IndexOf(resValidacionIf);
+                }
+                else
+                {
+                    this.nextIndCuadruplo = this.cuadruplos.IndexOf(dameCuadruploPorId(c.resultado.Value));
+                }
+            }
+        }
+
+        private Cuadruplo validaCondicionIf(Cuadruplo c)
+        {
+            Cuadruplo cuadAux = null;
+            int indInicial = -1;
+
+            indInicial = this.cuadruplos.IndexOf(c) + 1;
+            if (indInicial >= 0 && indInicial < this.cuadruplos.Count)
+            {
+                do
+                {
+                    cuadAux = this.cuadruplos[indInicial];
+                    this.ejecutaCuadruplo(cuadAux);
+                    indInicial++;
+                } while (cuadAux.Operador.TokenType != TokenType.OperadorComp && indInicial < this.cuadruplos.Count);
+            }
+
+            return cuadAux;
         }
 
         private void executeSeparadorComa(Cuadruplo c)

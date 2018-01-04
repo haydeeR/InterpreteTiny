@@ -59,6 +59,7 @@ namespace Compi
         {
             Cuadruplos.Instance.Terminal = this;
             Cuadruplos.Instance.ejecuta(this.typeExecution);
+            
         }
 
 

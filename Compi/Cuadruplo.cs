@@ -23,7 +23,7 @@ namespace Compi
             this.id = Guid.NewGuid();
             this.operando1 = op1;
             this.operando2 = op2;
-            this.operador = operador;
+            this.operador = operador.Clone();
             this._resultado = new Resultado(this.id.ToString(), new DslToken(TokenType.IdTemporal, this.id.ToString()));
             this.linea = numLinea >= 0 ? numLinea : -1;
         }
