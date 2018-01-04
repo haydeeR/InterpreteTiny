@@ -412,23 +412,63 @@ namespace Compi
                     }
                     break;
                 case TokenType.OperadorAssign://5:
-                    this.executeOperadorAssign();
+                    this.executeOperadorAssign(c);
                     break;
                 case TokenType.OperadorComp:
-                    this.executeOperadorComp();
+                    this.executeOperadorComp(c);
                     break;
                 case TokenType.OperadorSuma://7 
-                    this.executeOperadorSuma();
+                    this.executeOperadorSuma(c);
                     break;
                 case TokenType.OperadorMult://8:
-                    this.executeOperadorMult();
+                    this.executeOperadorMult(c);
                     break;
                 case TokenType.OperadorPote://9:
-                    this.executeOperadorMult();
+                    this.executeOperadorPote(c);
                     break;
                 case TokenType.FinInstruccion://14:
                     break;
             }
+        }
+
+        public void executeOperadorAssign(Cuadruplo c)
+        {
+            string op1 = "", op2 = "";
+            op2 = this.getOperando(c.Operando2);
+            c.Operando2.Value = op2;
+            c.resultado.Value = op2;
+        }
+
+        public void executeOperadorComp(Cuadruplo c)
+        {
+            string op1 = "", op2 = "";
+            op1 = this.getOperando(c.Operando1);
+            op2 = this.getOperando(c.Operando2);
+            c.resultado.Value = (int.Parse(op1) > int.Parse(op2)) ? "True" : "False";
+        }
+
+        public void executeOperadorSuma(Cuadruplo c)
+        {
+            string op1 = "", op2 = "";
+            op1 = this.getOperando(c.Operando1);
+            op2 = this.getOperando(c.Operando2);
+            c.resultado.Value = (int.Parse(op1) + int.Parse(op2)).ToString();
+        }
+
+        public void executeOperadorMult(Cuadruplo c)
+        {
+            string op1 = "", op2 = "";
+            op1 = this.getOperando(c.Operando1);
+            op2 = this.getOperando(c.Operando2);
+            c.resultado.Value = (int.Parse(op1) * int.Parse(op2)).ToString();
+        }
+
+        public void executeOperadorPote(Cuadruplo c)
+        {
+            string op1 = "", op2 = "";
+            op1 = this.getOperando(c.Operando1);
+            op2 = this.getOperando(c.Operando2);
+            c.resultado.Value = (Math.Pow(int.Parse(op1),int.Parse(op2))).ToString();
         }
 
         public string getOperando(DslToken operando)
