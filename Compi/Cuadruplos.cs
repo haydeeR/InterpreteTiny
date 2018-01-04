@@ -512,5 +512,19 @@ namespace Compi
 
             return value;
         }
+
+        public void setValueOperando(DslToken operando, string value)
+        {
+            if(operando.TokenType == TokenType.IdTemporal)
+            {
+                Resultado rAux = this.dameResultado(value);
+                rAux.Value = value;
+            }
+            if(operando.TokenType == TokenType.Id)
+            {
+                MetaSimbolo simbolo = TablaSimbolos.TS.getMetaSimbolo(operando.Value);
+                simbolo.valor = value;
+            }
+        }
     }
 }
