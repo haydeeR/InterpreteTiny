@@ -32,8 +32,8 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnOk = new System.Windows.Forms.Button();
             this.numValue = new System.Windows.Forms.NumericUpDown();
+            this.btnOk = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numValue)).BeginInit();
@@ -76,6 +76,15 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(409, 216);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
+            // numValue
+            // 
+            this.numValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numValue.Location = new System.Drawing.Point(3, 3);
+            this.numValue.Name = "numValue";
+            this.numValue.Size = new System.Drawing.Size(403, 20);
+            this.numValue.TabIndex = 4;
+            this.numValue.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // btnOk
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
@@ -87,15 +96,6 @@
             this.btnOk.Text = "Continuar";
             this.btnOk.UseVisualStyleBackColor = true;
             // 
-            // numValue
-            // 
-            this.numValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.numValue.Location = new System.Drawing.Point(3, 3);
-            this.numValue.Name = "numValue";
-            this.numValue.Size = new System.Drawing.Size(403, 20);
-            this.numValue.TabIndex = 4;
-            this.numValue.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // ReadDatoDlg
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -105,7 +105,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MinimumSize = new System.Drawing.Size(300, 100);
             this.Name = "ReadDatoDlg";
-            this.Opacity = 0.65D;
+            this.Opacity = 0.95D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ReadDatoDlg";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
