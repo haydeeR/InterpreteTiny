@@ -503,10 +503,11 @@ namespace Compi
                     value = rAux.Value;
                 }
 
-                if (operando.TokenType == TokenType.Cadena)
+                if (operando.TokenType == TokenType.Cadena || operando.TokenType == TokenType.Numero)
                 {
                     value = operando.Value;
                 }
+                
             }
 
             return value;
