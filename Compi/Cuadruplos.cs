@@ -455,6 +455,7 @@ namespace Compi
                 case TokenType.FinInstruccion://14:
                     break;
             }
+            this.terminal.refreshTablaSimbolos();
         }
 
         private void executeSeparadorComa(Cuadruplo c)

@@ -915,5 +915,11 @@ namespace Compi
                 vAA.actualizaArbol();
             }
         }
+
+
+        public void RefreshTablaSimbolos()
+        {
+            this.dataGridViewTablaSimbolos.Refresh();
+        }
     }
 }

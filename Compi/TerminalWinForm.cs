@@ -67,9 +67,18 @@ namespace Compi
             this.txtOutputTinyProgram.Text += ("\r\n" + stringToWrite.Replace("\"", ""));
         }
 
+
+
         private void TerminalWinForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             (this.Owner as MainWinForm).setValueEnableExecuteButton(true);
+        }
+
+
+
+        public void refreshTablaSimbolos()
+        {
+            (this.Owner as MainWinForm).RefreshTablaSimbolos();
         }
     }
 }
