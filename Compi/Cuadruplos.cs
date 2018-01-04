@@ -396,35 +396,35 @@ namespace Compi
                 case TokenType.KeyWord:
                     if (c.Operador.Value == "write")
                     {
-                        this.executeWrite(c);
+                        // this.executeWrite(c);
                     }
                     if (c.Operador.Value == "read")
                     {
-                        this.executeRead(c);
+                        // this.executeRead(c);
                     }
                     if (c.Operador.Value == "if")
                     {
-                        this.executeIf(c);
+                        // this.executeIf(c);
                     }
                     if (c.Operador.Value == "repeat-until")
                     {
-                        this.executeRepeatUntil(c);
+                       // this.executeRepeatUntil(c);
                     }
                     break;
                 case TokenType.OperadorAssign://5:
-                    this.executeO peradorAssign();
+                    this.executeOperadorAssign();
                     break;
-                case TokenType.OperadorComp://6
-                                            //Si el operando 1 
-                                            //Si es identificador buscar en la tabla de simbolos
-                                            //Si es numero comparar directo
-                                            //si es un simbolo temporal buscar en la lista de cuadruplos
+                case TokenType.OperadorComp:
+                    this.executeOperadorComp();
                     break;
                 case TokenType.OperadorSuma://7 
+                    this.executeOperadorSuma();
                     break;
                 case TokenType.OperadorMult://8:
+                    this.executeOperadorMult();
                     break;
                 case TokenType.OperadorPote://9:
+                    this.executeOperadorMult();
                     break;
                 case TokenType.FinInstruccion://14:
                     break;
