@@ -180,7 +180,7 @@ namespace Compi
                 case 20://cadena-><otro><cadena>
                     string cad20a = Pilas.Stacks.popPS();
                     string cad20b = Pilas.Stacks.popPS();
-                    Pilas.Stacks.pushPS((cad20b + cad20a));
+                    Pilas.Stacks.pushPS((cad20a + cad20b));
                     numTokenReducir = 2;
                     valueToReturn = "cadena" + "@" + "cad1=popPS(); cad2=popPS(); cad=concat(cad2, cad1); pushPS(cad);";
                     break;
@@ -293,7 +293,7 @@ namespace Compi
                     {
                         if (TablaSimbolos.TS.existeSimbolo(id41a))
                         {
-                            NodoArblAS nodo41b = new NodoArblAS(new DslToken(TokenType.SeparadorComa, id41a));
+                            NodoArblAS nodo41b = new NodoArblAS(new DslToken(TokenType.Id, id41a));
                             NodoArblAS nodo41c = new NodoArblAS(new DslToken(TokenType.SeparadorComa, ","));
                             nodo41c.setNodo(nodo41a);
                             nodo41c.setNodo(nodo41b);

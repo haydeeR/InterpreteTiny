@@ -961,9 +961,15 @@ namespace Compi
 
             if (selectedIndex >= 0)
             {
+                this.setValueEnableExecuteButton(false);
                 TerminalWinForm terminal = new TerminalWinForm(selectedIndex);
                 terminal.Show(this);
             }
+        }
+
+        public void setValueEnableExecuteButton(bool value)
+        {
+            this.btnEjecutar.Enabled = value;
         }
 
         private void btnVerArbolAbstracto_Click(object sender, EventArgs e)

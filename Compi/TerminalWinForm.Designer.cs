@@ -130,6 +130,7 @@
             this.txtNumLinea.Location = new System.Drawing.Point(100, 3);
             this.txtNumLinea.Multiline = true;
             this.txtNumLinea.Name = "txtNumLinea";
+            this.txtNumLinea.ReadOnly = true;
             this.txtNumLinea.Size = new System.Drawing.Size(91, 33);
             this.txtNumLinea.TabIndex = 1;
             this.txtNumLinea.Text = "123456";
@@ -157,6 +158,7 @@
             this.txtNumCuadruplo.Location = new System.Drawing.Point(148, 3);
             this.txtNumCuadruplo.Multiline = true;
             this.txtNumCuadruplo.Name = "txtNumCuadruplo";
+            this.txtNumCuadruplo.ReadOnly = true;
             this.txtNumCuadruplo.Size = new System.Drawing.Size(43, 33);
             this.txtNumCuadruplo.TabIndex = 2;
             this.txtNumCuadruplo.Text = "1234";
@@ -220,6 +222,7 @@
             this.Name = "TerminalWinForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tiny Terminal";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TerminalWinForm_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);

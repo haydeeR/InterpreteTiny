@@ -12,9 +12,18 @@ namespace Compi
 {
     public partial class ReadDatoDlg : Form
     {
+        public int ReadValue
+        {
+            get
+            {
+                return int.Parse(this.numValue.Value.ToString());
+            }
+        }
+
         public ReadDatoDlg()
         {
             InitializeComponent();
         }
+
     }
 }

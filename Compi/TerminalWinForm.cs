@@ -54,7 +54,19 @@ namespace Compi
 
         private void btnEjecutaSiguiente_Click(object sender, EventArgs e)
         {
+            Cuadruplos.Instance.Terminal = this;
             Cuadruplos.Instance.ejecuta(this.typeExecution);
+        }
+
+
+        public void print(string stringToWrite)
+        {
+            this.txtOutputTinyProgram.Text += ("\r\n" + stringToWrite.Replace("\"", ""));
+        }
+
+        private void TerminalWinForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            (this.Owner as MainWinForm).setValueEnableExecuteButton(true);
         }
     }
 }
