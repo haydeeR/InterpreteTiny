@@ -347,19 +347,19 @@ namespace Compi
 
             return aux;
         }
-        
+
         private Cuadruplo generaCuadruploElse(NodoArblAS nodo, Cuadruplo cuadruploGeneroIzq, Cuadruplo cuadruploGeneroDer)
         {
             return null;
         }
-        
+
         /// <summary>
         /// Ejecuta los cuadruplos dependiendo el tipo de ejecución.
         /// </summary>
         /// <param name="keyExecute"></param>
         public void ejecuta(int keyExecute, int siguiente = -1)
         {
-            if ( keyExecute == 0)
+            if (keyExecute == 0)
                 this.allExecute();
             if (keyExecute == 1 && siguiente >= 0)
                 this.executeLine(siguiente);
@@ -375,8 +375,9 @@ namespace Compi
                 this.ejecutaCuadruplo(c);
             }
         }
-        
-        public void executeLine(int lineNumber) {
+
+        public void executeLine(int lineNumber)
+        {
             List<Cuadruplo> listCuadruplo = this.cuadruplos.Where(x => x.Linea == lineNumber).ToList();
             listCuadruplo.ForEach(x => this.ejecutaCuadruplo(x));
         }
@@ -388,7 +389,7 @@ namespace Compi
                 this.ejecutaCuadruplo(cuadruplo);
             }
         }
-        
+
         private void ejecutaCuadruplo(Cuadruplo c)
         {
             switch (c.Operador.TokenType)
@@ -408,7 +409,7 @@ namespace Compi
                     }
                     if (c.Operador.Value == "repeat-until")
                     {
-                       // this.executeRepeatUntil(c);
+                        // this.executeRepeatUntil(c);
                     }
                     break;
                 case TokenType.OperadorAssign://5:
@@ -435,7 +436,7 @@ namespace Compi
         {
             string op1 = "", op2 = "";
             op2 = this.getOperando(c.Operando2);
-            c.Operando2.Value = op2;
+            c.Operando1.Value = op2;
             c.resultado.Value = op2;
         }
 
@@ -444,7 +445,12 @@ namespace Compi
             string op1 = "", op2 = "";
             op1 = this.getOperando(c.Operando1);
             op2 = this.getOperando(c.Operando2);
-            c.resultado.Value = (int.Parse(op1) > int.Parse(op2)) ? "True" : "False";
+            if (c.Operador.Value == ">")
+                c.resultado.Value = (int.Parse(op1) > int.Parse(op2)) ? "True" : "False";
+            if (c.Operador.Value == "<")
+                c.resultado.Value = (int.Parse(op1) < int.Parse(op2)) ? "True" : "False";
+            if (c.Operador.Value == "==")
+                c.resultado.Value = (int.Parse(op1) == int.Parse(op2)) ? "True" : "False";
         }
 
         public void executeOperadorSuma(Cuadruplo c)
@@ -452,7 +458,10 @@ namespace Compi
             string op1 = "", op2 = "";
             op1 = this.getOperando(c.Operando1);
             op2 = this.getOperando(c.Operando2);
-            c.resultado.Value = (int.Parse(op1) + int.Parse(op2)).ToString();
+            if (c.Operador.Value == "+")
+                c.resultado.Value = (int.Parse(op1) + int.Parse(op2)).ToString();
+            else
+                c.resultado.Value = (int.Parse(op1) - int.Parse(op2)).ToString();
         }
 
         public void executeOperadorMult(Cuadruplo c)
@@ -460,7 +469,10 @@ namespace Compi
             string op1 = "", op2 = "";
             op1 = this.getOperando(c.Operando1);
             op2 = this.getOperando(c.Operando2);
-            c.resultado.Value = (int.Parse(op1) * int.Parse(op2)).ToString();
+            if (c.Operador.Value == "*")
+                c.resultado.Value = (int.Parse(op1) * int.Parse(op2)).ToString();
+            else
+                c.resultado.Value = (int.Parse(op1) / int.Parse(op2)).ToString();
         }
 
         public void executeOperadorPote(Cuadruplo c)
@@ -468,27 +480,36 @@ namespace Compi
             string op1 = "", op2 = "";
             op1 = this.getOperando(c.Operando1);
             op2 = this.getOperando(c.Operando2);
-            c.resultado.Value = (Math.Pow(int.Parse(op1),int.Parse(op2))).ToString();
+            c.resultado.Value = (Math.Pow(int.Parse(op1), int.Parse(op2))).ToString();
         }
 
         public string getOperando(DslToken operando)
         {
             string value = "";
-            if(operando != null)
+            if (operando != null)
             {
                 //Temporal !! identificadores
                 //Pendiente si el operando es un temporal
-                if(operando.TokenType == TokenType.Id)
+                if (operando.TokenType == TokenType.Id)
                 {
                     value = operando.Value;
                     MetaSimbolo simbolo = TablaSimbolos.TS.getMetaSimbolo(value);
                     value = simbolo.Valor;
                 }
-                if(operando.TokenType == TokenType.Cadena)
+
+                if (operando.TokenType == TokenType.IdTemporal)
+                {
+                    value = operando.Value;
+                    Resultado rAux = this.dameResultado(value);
+                    value = rAux.Value;
+                }
+
+                if (operando.TokenType == TokenType.Cadena)
                 {
                     value = operando.Value;
                 }
             }
+
             return value;
         }
     }

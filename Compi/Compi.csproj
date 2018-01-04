@@ -96,6 +96,12 @@
     <Compile Include="MetaSimbolo.cs" />
     <Compile Include="TablaErrores.cs" />
     <Compile Include="TE.cs" />
+    <Compile Include="TerminalWinForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TerminalWinForm.Designer.cs">
+      <DependentUpon>TerminalWinForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="TokenColumn.cs" />
     <Compile Include="TokenDefinition.cs" />
     <Compile Include="TablaSimbolos.cs" />
@@ -129,6 +135,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TerminalWinForm.resx">
+      <DependentUpon>TerminalWinForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VisorArbolAbstracto.resx">
       <DependentUpon>VisorArbolAbstracto.cs</DependentUpon>
     </EmbeddedResource>
