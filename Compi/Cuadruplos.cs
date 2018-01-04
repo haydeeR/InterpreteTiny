@@ -33,6 +33,7 @@ namespace Compi
         public List<Cuadruplo> LstCuadruplos { get { return this.cuadruplos; } }
         private Stack<Cuadruplo> bloquesCuadruplos;
         private Stack<Cuadruplo> bloquesIf;
+        private Stack<Cuadruplo> bloquesRepeat;
 
 
         private Cuadruplos()
@@ -40,6 +41,7 @@ namespace Compi
             this.cuadruplos = new List<Cuadruplo>();
             this.bloquesCuadruplos = new Stack<Cuadruplo>();
             this.bloquesIf = new Stack<Cuadruplo>();
+            this.bloquesRepeat = new Stack<Cuadruplo>();
             this.llenaLstTokensNGC();
         }
 
@@ -378,7 +380,7 @@ namespace Compi
             if (keyExecute == 0)
             {
                 this.allExecute();
-                this.terminal.print("Terminó la ejecución del programa... \r\n \r\n");
+                this.terminal.print("Terminó la ejecución del programa... \r\n \r\n \r\n \r\n");
             }
             if (keyExecute == 1 && siguiente >= 0)
                 this.executeLine(siguiente);
@@ -427,26 +429,30 @@ namespace Compi
                     {
                         this.executeWrite(c);
                     }
-                    if (c.Operador.Value == "read")
+                    else if (c.Operador.Value == "read")
                     {
                         this.executeRead(c);
                     }
-                    if (c.Operador.Value == "if")
+                    else if (c.Operador.Value == "if")
                     {
                         this.executeIf(c);
                     }
-                    if (c.Operador.Value == "else")
+                    else if (c.Operador.Value == "else")
                     {
                         this.executeElse(c);
                     }
-                    if (c.Operador.Value == "end-if")
+                    else if (c.Operador.Value == "end-if")
                     {
                         if (this.bloquesIf.Count > 0)
                             this.bloquesIf.Pop();
                     }
-                    if (c.Operador.Value == "repeat-until")
+                    else if (c.Operador.Value == "repeat-until")
                     {
-                        // this.executeRepeatUntil(c);
+                        this.executeRepeatUntil(c);
+                    }
+                    else if (c.Operador.Value == "end-repeat-until")
+                    {
+                        this.executeEndRepeatUntil(c);
                     }
                     break;
                 case TokenType.SeparadorComa:
@@ -471,6 +477,30 @@ namespace Compi
                     break;
             }
             this.terminal.refreshTablaSimbolos();
+        }
+
+        private void executeEndRepeatUntil(Cuadruplo c)
+        {
+            Cuadruplo cuadruploComp = null;
+            int indC = this.cuadruplos.IndexOf(c);
+
+            if (indC - 1 >= 0 && indC < this.cuadruplos.Count)
+            {
+                cuadruploComp = this.cuadruplos[indC - 1];
+                if (cuadruploComp.resultado.Value == "True" && this.bloquesRepeat.Count > 0)
+                {
+                    this.nextIndCuadruplo = this.cuadruplos.IndexOf(bloquesRepeat.Peek());
+                }
+                else if (cuadruploComp.resultado.Value == "False" && this.bloquesRepeat.Count > 0)
+                {
+                    this.bloquesRepeat.Pop();
+                }
+            }
+        }
+
+        private void executeRepeatUntil(Cuadruplo c)
+        {
+            this.bloquesRepeat.Push(c);
         }
 
         private void executeElse(Cuadruplo c)
