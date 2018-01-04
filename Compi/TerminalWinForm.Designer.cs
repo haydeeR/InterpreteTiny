@@ -40,8 +40,8 @@
             this.txtNumCuadruplo = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnEjecutaSiguiente = new System.Windows.Forms.Button();
-            this.toolTipPrompt = new System.Windows.Forms.ToolTip(this.components);
             this.txtLineaEjecucion = new System.Windows.Forms.TextBox();
+            this.toolTipPrompt = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -188,11 +188,6 @@
             this.btnEjecutaSiguiente.UseVisualStyleBackColor = false;
             this.btnEjecutaSiguiente.Click += new System.EventHandler(this.btnEjecutaSiguiente_Click);
             // 
-            // toolTipPrompt
-            // 
-            this.toolTipPrompt.BackColor = System.Drawing.Color.Black;
-            this.toolTipPrompt.ForeColor = System.Drawing.Color.Lime;
-            // 
             // txtLineaEjecucion
             // 
             this.txtLineaEjecucion.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -208,6 +203,11 @@
             this.txtLineaEjecucion.TabIndex = 7;
             this.txtLineaEjecucion.Text = "Linea Ejecución";
             // 
+            // toolTipPrompt
+            // 
+            this.toolTipPrompt.BackColor = System.Drawing.Color.Black;
+            this.toolTipPrompt.ForeColor = System.Drawing.Color.Lime;
+            // 
             // TerminalWinForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -215,9 +215,12 @@
             this.ClientSize = new System.Drawing.Size(1008, 729);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(1024, 768);
             this.MinimumSize = new System.Drawing.Size(1024, 768);
             this.Name = "TerminalWinForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Tiny Terminal";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);

@@ -90,6 +90,12 @@
     <Compile Include="Produccion.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadDatoDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReadDatoDlg.Designer.cs">
+      <DependentUpon>ReadDatoDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="SentenceDefinition.cs" />
     <Compile Include="TablaDeAcciones.cs" />
     <Compile Include="TablaDesplazamientos.cs" />
