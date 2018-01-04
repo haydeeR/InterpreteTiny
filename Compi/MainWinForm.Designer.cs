@@ -583,8 +583,8 @@
             this.comBoxTipoEjecucion.FormattingEnabled = true;
             this.comBoxTipoEjecucion.Items.AddRange(new object[] {
             "EJECUTAR TODO",
-            "EJECUTAR POR CUADRUPLO",
-            "EJECUTAR POR LÍNEA"});
+            "EJECUTAR POR LÍNEA",
+            "EJECUTAR POR CUADRUPLO"});
             this.comBoxTipoEjecucion.Location = new System.Drawing.Point(3, 3);
             this.comBoxTipoEjecucion.Name = "comBoxTipoEjecucion";
             this.comBoxTipoEjecucion.Size = new System.Drawing.Size(326, 21);

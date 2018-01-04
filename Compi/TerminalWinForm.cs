@@ -12,9 +12,49 @@ namespace Compi
 {
     public partial class TerminalWinForm : Form
     {
+        int typeExecution;
+
         public TerminalWinForm()
         {
             InitializeComponent();
+        }
+
+
+        public TerminalWinForm(int tipoEjecucion)
+        {
+            this.typeExecution = tipoEjecucion;
+            InitializeComponent();
+            this.limpiaControles();
+            this.toolTipPrompt.SetToolTip(this.txtOutputTinyProgram, "#");
+        }
+
+
+        public void limpiaControles()
+        {
+            this.txtLineaEjecucion.Text = string.Empty;
+            this.txtOutputTinyProgram.Text = string.Empty;
+
+            this.txtNumLinea.Text = "0";
+            this.txtNumCuadruplo.Text = "0";
+
+            switch (this.typeExecution)
+            {
+                case 0:
+                    this.btnEjecutaSiguiente.Text = "Ejecuta Programa";
+                    //this.btnEjecutaSiguiente.Enabled = false;
+                    break;
+                case 1:
+                    this.btnEjecutaSiguiente.Text = "Ejecuta Sig. Línea";
+                    break;
+                case 2:
+                    this.btnEjecutaSiguiente.Text = "Ejecuta Sig. Cuádruplo";
+                    break;
+            }
+        }
+
+        private void btnEjecutaSiguiente_Click(object sender, EventArgs e)
+        {
+            Cuadruplos.Instance.ejecuta(this.typeExecution);
         }
     }
 }

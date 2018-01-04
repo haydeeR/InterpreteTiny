@@ -958,7 +958,12 @@ namespace Compi
         {
             int selectedIndex = comBoxTipoEjecucion.SelectedIndex;
             Object selectedItem = comBoxTipoEjecucion.SelectedItem;
-            Cuadruplos.Instance.ejecuta(selectedIndex);
+
+            if (selectedIndex >= 0)
+            {
+                TerminalWinForm terminal = new TerminalWinForm(selectedIndex);
+                terminal.Show(this);
+            }
         }
 
         private void btnVerArbolAbstracto_Click(object sender, EventArgs e)
