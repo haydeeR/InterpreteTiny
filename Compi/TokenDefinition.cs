@@ -168,5 +168,6 @@ namespace Compi
         FinInstruccion,//14
         SeparadorComa,//15
         Identificadores,//16
+        IdTemporal,//17
     }
 }

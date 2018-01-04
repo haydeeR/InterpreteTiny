@@ -326,7 +326,7 @@ namespace Compi
         {
             Cuadruplo aux = null;
 
-            aux = new Cuadruplo(new Resultado("GoTo", new DslToken(TokenType.Id)), operador: nodo.getToken(),
+            aux = new Cuadruplo(new Resultado("GoTo", new DslToken(TokenType.IdTemporal)), operador: nodo.getToken(),
                                             op1: cuadruploGeneroIzq.resultado.tokenType, op2: (new DslToken(TokenType.Numero, "1")), numLinea: nodo.Linea);
             // Se le asigna el id del cuadruplo a su correspondiente DslToken
             aux.resultado.tokenType.Value = aux.Id.ToString();

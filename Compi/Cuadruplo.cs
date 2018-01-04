@@ -24,7 +24,7 @@ namespace Compi
             this.operando1 = op1;
             this.operando2 = op2;
             this.operador = operador;
-            this._resultado = new Resultado(this.id.ToString(), new DslToken(TokenType.Id, this.id.ToString()));
+            this._resultado = new Resultado(this.id.ToString(), new DslToken(TokenType.IdTemporal, this.id.ToString()));
             this.linea = numLinea >= 0 ? numLinea : -1;
         }
 
