@@ -396,22 +396,23 @@ namespace Compi
                 case TokenType.KeyWord:
                     if (c.Operador.Value == "write")
                     {
-                        //  string op1 = this.checaOperador(c.Op1);
-                        //  cons.Text += op1 + Environment.NewLine;// MessageBox.Show(op1);//
+                        this.executeWrite(c);
                     }
-                    //Read
-                    //If
+                    if (c.Operador.Value == "read")
+                    {
+                        this.executeRead(c);
+                    }
+                    if (c.Operador.Value == "if")
+                    {
+                        this.executeIf(c);
+                    }
+                    if (c.Operador.Value == "repeat-until")
+                    {
+                        this.executeRepeatUntil(c);
+                    }
                     break;
                 case TokenType.OperadorAssign://5:
-                    MetaSimbolo simbolo = TablaSimbolos.TS.getMetaSimbolo(c.Operando1.Value);
-                    if (c.Operando2.TokenType == TokenType.Id)
-                    {
-
-                    } //Buscar en la lista de cuadruplos el id del temporal
-                    else if (c.Operando2.TokenType == TokenType.Numero)
-                    {
-                        simbolo.Valor = c.Operando2.Value;
-                    }
+                    this.executeO peradorAssign();
                     break;
                 case TokenType.OperadorComp://6
                                             //Si el operando 1 
@@ -436,11 +437,17 @@ namespace Compi
             if(operando != null)
             {
                 //Temporal !! identificadores
+                //Pendiente si el operando es un temporal
                 if(operando.TokenType == TokenType.Id)
                 {
-
+                    value = operando.Value;
+                    MetaSimbolo simbolo = TablaSimbolos.TS.getMetaSimbolo(value);
+                    value = simbolo.Valor;
                 }
-                
+                if(operando.TokenType == TokenType.Cadena)
+                {
+                    value = operando.Value;
+                }
             }
             return value;
         }
