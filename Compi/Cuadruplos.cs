@@ -434,10 +434,9 @@ namespace Compi
 
         public void executeOperadorAssign(Cuadruplo c)
         {
-            string op1 = "", op2 = "";
+            string op2 = "";
             op2 = this.getOperando(c.Operando2);
-            c.Operando1.Value = op2;
-            c.resultado.Value = op2;
+            this.setValueOperando(c.Operando1, op2);
         }
 
         public void executeOperadorComp(Cuadruplo c)
@@ -511,6 +510,20 @@ namespace Compi
             }
 
             return value;
+        }
+
+        public void setValueOperando(DslToken operando, string value)
+        {
+            if(operando.TokenType == TokenType.IdTemporal)
+            {
+                Resultado rAux = this.dameResultado(value);
+                rAux.Value = value;
+            }
+            if(operando.TokenType == TokenType.Id)
+            {
+                MetaSimbolo simbolo = TablaSimbolos.TS.getMetaSimbolo(operando.Value);
+                simbolo.valor = value;
+            }
         }
     }
 }
