@@ -110,6 +110,11 @@
             // 
             this.numValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.numValue.Location = new System.Drawing.Point(3, 54);
+            this.numValue.Maximum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            0});
             this.numValue.Name = "numValue";
             this.numValue.Size = new System.Drawing.Size(397, 20);
             this.numValue.TabIndex = 5;

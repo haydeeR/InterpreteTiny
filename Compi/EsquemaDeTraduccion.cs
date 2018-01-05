@@ -137,10 +137,11 @@ namespace Compi
                     break;
                 case 16://print->"<cadena>",<identificadores>
                     string cad16a = Pilas.Stacks.popAllPS();
-                    string cad16b = "\"" + cad16a + "\"";
+                    string cad16b = Pilas.Stacks.popAllPI();
+                    string cad16c = "\"" + cad16b + cad16a + "\"";
 
                     NodoArblAS nodo16a = new NodoArblAS(new DslToken(TokenType.KeyWord, "write"));
-                    NodoArblAS nodo16b = new NodoArblAS(new DslToken(TokenType.Cadena, cad16b));
+                    NodoArblAS nodo16b = new NodoArblAS(new DslToken(TokenType.Cadena, cad16c));
                     NodoArblAS nodo16c = Pilas.Stacks.popPAA();
 
                     nodo16a.setNodo(nodo16b);
@@ -178,7 +179,7 @@ namespace Compi
                     valueToReturn = "cadena" + "@" + "cad1=popPI(); cad2=popPS(); cad=concat(cad1, cad2); pushPS(cad);";
                     break;
                 case 20://cadena-><otro><cadena>
-                    string cad20a = Pilas.Stacks.popPS();
+                    string cad20a = Pilas.Stacks.popPI();
                     string cad20b = Pilas.Stacks.popPS();
                     Pilas.Stacks.pushPS((cad20a + cad20b));
                     numTokenReducir = 2;
@@ -276,7 +277,8 @@ namespace Compi
                     break;
                 case 39://otro->\e
                     numTokenReducir = 2;
-                    Pilas.Stacks.pushPS(Pilas.Stacks.popAllPI() + " ");
+                    Pilas.Stacks.pushPI(@" ");
+                    //Pilas.Stacks.pushPS(Pilas.Stacks.popAllPI() + " ");
                     valueToReturn = "otro" + "@" + "pushPI(\" \")";
                     break;
                 case 40://sent-declara->Var{<Tipo><identificadores>}

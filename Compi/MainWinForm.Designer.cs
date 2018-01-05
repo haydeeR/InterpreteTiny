@@ -66,6 +66,10 @@
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridViewTablaAcciones = new System.Windows.Forms.DataGridView();
+            this.colPila = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCadena = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAccion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColAccionSemantica = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtCtrlPrograma = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
@@ -97,10 +101,6 @@
             this.colSimbolo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colValor = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label3 = new System.Windows.Forms.Label();
-            this.colPila = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCadena = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAccion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColAccionSemantica = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip1.SuspendLayout();
             this.mainTabControlContent.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -491,6 +491,39 @@
             this.dataGridViewTablaAcciones.Size = new System.Drawing.Size(909, 313);
             this.dataGridViewTablaAcciones.TabIndex = 16;
             // 
+            // colPila
+            // 
+            this.colPila.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colPila.HeaderText = "PILA";
+            this.colPila.MinimumWidth = 100;
+            this.colPila.Name = "colPila";
+            this.colPila.ReadOnly = true;
+            this.colPila.ToolTipText = "Pila de desplazamientos y/o reducciones.";
+            // 
+            // colCadena
+            // 
+            this.colCadena.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colCadena.HeaderText = "CADENA";
+            this.colCadena.MinimumWidth = 100;
+            this.colCadena.Name = "colCadena";
+            this.colCadena.ReadOnly = true;
+            this.colCadena.ToolTipText = "Cadena de entrada.";
+            // 
+            // colAccion
+            // 
+            this.colAccion.HeaderText = "ACCION";
+            this.colAccion.MinimumWidth = 100;
+            this.colAccion.Name = "colAccion";
+            this.colAccion.ReadOnly = true;
+            this.colAccion.ToolTipText = "Desplazamiento o Reducción que se aplicará.";
+            // 
+            // ColAccionSemantica
+            // 
+            this.ColAccionSemantica.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColAccionSemantica.HeaderText = "ACCIÓN SEMÁNTICA";
+            this.ColAccionSemantica.Name = "ColAccionSemantica";
+            this.ColAccionSemantica.ReadOnly = true;
+            // 
             // txtCtrlPrograma
             // 
             this.txtCtrlPrograma.AcceptsReturn = true;
@@ -500,6 +533,7 @@
             this.txtCtrlPrograma.Location = new System.Drawing.Point(3, 3);
             this.txtCtrlPrograma.Multiline = true;
             this.txtCtrlPrograma.Name = "txtCtrlPrograma";
+            this.txtCtrlPrograma.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtCtrlPrograma.Size = new System.Drawing.Size(415, 338);
             this.txtCtrlPrograma.TabIndex = 3;
             // 
@@ -904,39 +938,6 @@
             this.label3.TabIndex = 16;
             this.label3.Text = "Tabla de Símbolos";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // colPila
-            // 
-            this.colPila.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colPila.HeaderText = "PILA";
-            this.colPila.MinimumWidth = 100;
-            this.colPila.Name = "colPila";
-            this.colPila.ReadOnly = true;
-            this.colPila.ToolTipText = "Pila de desplazamientos y/o reducciones.";
-            // 
-            // colCadena
-            // 
-            this.colCadena.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colCadena.HeaderText = "CADENA";
-            this.colCadena.MinimumWidth = 100;
-            this.colCadena.Name = "colCadena";
-            this.colCadena.ReadOnly = true;
-            this.colCadena.ToolTipText = "Cadena de entrada.";
-            // 
-            // colAccion
-            // 
-            this.colAccion.HeaderText = "ACCION";
-            this.colAccion.MinimumWidth = 100;
-            this.colAccion.Name = "colAccion";
-            this.colAccion.ReadOnly = true;
-            this.colAccion.ToolTipText = "Desplazamiento o Reducción que se aplicará.";
-            // 
-            // ColAccionSemantica
-            // 
-            this.ColAccionSemantica.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColAccionSemantica.HeaderText = "ACCIÓN SEMÁNTICA";
-            this.ColAccionSemantica.Name = "ColAccionSemantica";
-            this.ColAccionSemantica.ReadOnly = true;
             // 
             // MainWinForm
             // 

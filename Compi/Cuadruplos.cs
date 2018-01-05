@@ -487,11 +487,19 @@ namespace Compi
             if (indC - 1 >= 0 && indC < this.cuadruplos.Count)
             {
                 cuadruploComp = this.cuadruplos[indC - 1];
-                if (cuadruploComp.resultado.Value == "True" && this.bloquesRepeat.Count > 0)
+                if (cuadruploComp.Operador.TokenType == TokenType.OperadorComp &&
+                    cuadruploComp.resultado != null &&
+                    cuadruploComp.resultado.Value != null &&
+                    cuadruploComp.resultado.Value == "True" &&
+                    this.bloquesRepeat.Count > 0)
                 {
                     this.nextIndCuadruplo = this.cuadruplos.IndexOf(bloquesRepeat.Peek());
                 }
-                else if (cuadruploComp.resultado.Value == "False" && this.bloquesRepeat.Count > 0)
+                else if (cuadruploComp.Operador.TokenType == TokenType.OperadorComp &&
+                    cuadruploComp.resultado != null &&
+                    cuadruploComp.resultado.Value != null &&
+                    cuadruploComp.resultado.Value == "False" &&
+                    this.bloquesRepeat.Count > 0)
                 {
                     this.bloquesRepeat.Pop();
                 }
