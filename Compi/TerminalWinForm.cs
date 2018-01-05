@@ -59,13 +59,14 @@ namespace Compi
         {
             Cuadruplos.Instance.Terminal = this;
             Cuadruplos.Instance.ejecuta(this.typeExecution);
-            
+
         }
 
 
         public void print(string stringToWrite)
         {
             this.txtOutputTinyProgram.Text += ("\r\n" + stringToWrite.Replace("\"", ""));
+            this.txtOutputTinyProgram.Refresh();
         }
 
 
