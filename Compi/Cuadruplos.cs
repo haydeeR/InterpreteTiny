@@ -14,6 +14,13 @@ namespace Compi
     {
         private static Cuadruplos _instance;
         private TerminalWinForm terminal;
+        int nextIndCuadruplo = 0;
+        int nextLine = 1;
+
+
+        public int NextCuadruplo { get { return (this.nextIndCuadruplo + 1); } }
+        public int NextLine { get { return (this.nextLine + 1); } }
+
 
         public static Cuadruplos Instance
         {
@@ -42,7 +49,18 @@ namespace Compi
             this.bloquesCuadruplos = new Stack<Cuadruplo>();
             this.bloquesIf = new Stack<Cuadruplo>();
             this.bloquesRepeat = new Stack<Cuadruplo>();
+            nextIndCuadruplo = 0;
+            nextLine = 0;
             this.llenaLstTokensNGC();
+        }
+
+
+        public void limpiaVariablesDeEjecucion()
+        {
+            this.bloquesIf = new Stack<Cuadruplo>();
+            this.bloquesRepeat = new Stack<Cuadruplo>();
+            nextIndCuadruplo = 0;
+            nextLine = 0;
         }
 
 
@@ -382,32 +400,44 @@ namespace Compi
                 this.allExecute();
                 this.terminal.print("Terminó la ejecución del programa... \r\n \r\n \r\n \r\n");
             }
-            if (keyExecute == 1 && siguiente >= 0)
-                this.executeLine(siguiente);
-            if (keyExecute == 2 && siguiente >= 0)
-                this.executeCuadruplo(siguiente);
-        }
-
-
-
-        public void executeCuadruplo(int cuadruploIndex)
-        {
-            if (cuadruploIndex < this.cuadruplos.Count)
+            if (keyExecute == 1)
             {
-                Cuadruplo c = this.cuadruplos[cuadruploIndex];
-                this.ejecutaCuadruplo(c);
+                this.executeLine();
+            }
+            if (keyExecute == 2)
+            {
+                this.executeCuadruplo();
             }
         }
 
 
 
-        public void executeLine(int lineNumber)
+        public void executeCuadruplo()
         {
-            List<Cuadruplo> listCuadruplo = this.cuadruplos.Where(x => x.Linea == lineNumber).ToList();
-            listCuadruplo.ForEach(x => this.ejecutaCuadruplo(x));
+            if (this.nextIndCuadruplo < this.cuadruplos.Count)
+            {
+                Cuadruplo c = this.cuadruplos[this.nextIndCuadruplo];
+                this.ejecutaCuadruplo(c);
+                this.nextIndCuadruplo++;
+            }
+            else
+            {
+                this.terminal.print("Terminó la ejecución del programa... \r\n \r\n \r\n \r\n");
+            }
         }
 
-        int nextIndCuadruplo = 0;
+
+
+        public void executeLine()
+        {
+            List<Cuadruplo> listCuadruplo = this.cuadruplos.Where(x => x.Linea == this.nextLine).ToList();
+            listCuadruplo.ForEach(x => this.ejecutaCuadruplo(x));
+            this.nextLine++;
+            //this.nextLine = (this.nextIndCuadruplo + 1 < this.cuadruplos.Count) ? this.cuadruplos[this.nextIndCuadruplo + 1].Linea : this.cuadruplos.Count;
+            //this.nextIndCuadruplo++;
+        }
+
+
 
         public void allExecute()
         {
@@ -494,6 +524,7 @@ namespace Compi
                     this.bloquesRepeat.Count > 0)
                 {
                     this.nextIndCuadruplo = this.cuadruplos.IndexOf(bloquesRepeat.Peek());
+                    this.nextLine = this.cuadruplos[this.nextIndCuadruplo + 1].Linea;
                 }
                 else if (cuadruploComp.Operador.TokenType == TokenType.OperadorComp &&
                     cuadruploComp.resultado != null &&
@@ -522,6 +553,7 @@ namespace Compi
             {
                 indAux = this.cuadruplos.IndexOf(this.dameCuadruploPorId(c.resultado.Value));
                 this.nextIndCuadruplo = indAux >= 0 ? indAux : this.nextIndCuadruplo;
+                this.nextLine = this.cuadruplos[indAux + 1].Linea;
             }
         }
 
@@ -535,10 +567,12 @@ namespace Compi
                 if (resValidacionIf.resultado.Value == "True")
                 {
                     this.nextIndCuadruplo = this.cuadruplos.IndexOf(resValidacionIf);
+                    this.nextLine = this.cuadruplos[this.nextIndCuadruplo + 1].Linea;
                 }
                 else
                 {
                     this.nextIndCuadruplo = this.cuadruplos.IndexOf(dameCuadruploPorId(c.resultado.Value));
+                    this.nextLine = this.cuadruplos[this.nextIndCuadruplo + 1].Linea;
                 }
             }
         }

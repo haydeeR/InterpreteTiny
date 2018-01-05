@@ -37,6 +37,9 @@ namespace Compi
             this.txtNumLinea.Text = "0";
             this.txtNumCuadruplo.Text = "0";
 
+            this.txtNumLinea.Text = Cuadruplos.Instance.NextLine.ToString();
+            this.txtNumCuadruplo.Text = Cuadruplos.Instance.NextCuadruplo.ToString();
+
             switch (this.typeExecution)
             {
                 case 0:
@@ -58,8 +61,25 @@ namespace Compi
         private void btnEjecutaSiguiente_Click(object sender, EventArgs e)
         {
             Cuadruplos.Instance.Terminal = this;
-            Cuadruplos.Instance.ejecuta(this.typeExecution);
 
+            if (this.typeExecution > 0)
+            {
+                switch (this.typeExecution)
+                {
+                    case 0:
+                        Cuadruplos.Instance.ejecuta(this.typeExecution);
+                        break;
+                    case 1:
+                        Cuadruplos.Instance.ejecuta(this.typeExecution);
+                        this.txtNumLinea.Text = Cuadruplos.Instance.NextLine.ToString();
+                        break;
+                    case 2:
+                        this.selectCuadruplo();
+                        Cuadruplos.Instance.ejecuta(this.typeExecution);
+                        this.txtNumCuadruplo.Text = Cuadruplos.Instance.NextCuadruplo.ToString();
+                        break;
+                }
+            }
         }
 
 
@@ -80,7 +100,15 @@ namespace Compi
 
         public void refreshTablaSimbolos()
         {
-            (this.Owner as MainWinForm).RefreshTablaSimbolos();
+            if (this.Owner is MainWinForm)
+                (this.Owner as MainWinForm).RefreshTablas();
+        }
+
+
+        public void selectCuadruplo()
+        {
+            if (this.Owner is MainWinForm)
+                (this.Owner as MainWinForm).setSelectedRowDGVCuadruplos(Cuadruplos.Instance.NextCuadruplo - 1);
         }
     }
 }

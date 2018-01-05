@@ -732,6 +732,7 @@ namespace Compi
             this.dataGridViewCuadruplos.Columns[1].DataPropertyName = "strOperando2";
             this.dataGridViewCuadruplos.Columns[2].DataPropertyName = "strOperador";
             this.dataGridViewCuadruplos.Columns[3].DataPropertyName = "strTempVar";
+            this.dataGridViewCuadruplos.Columns[4].DataPropertyName = "valueResult";
         }
 
 
@@ -917,9 +918,16 @@ namespace Compi
         }
 
 
-        public void RefreshTablaSimbolos()
+        public void RefreshTablas()
         {
             this.dataGridViewTablaSimbolos.Refresh();
+            this.dataGridViewCuadruplos.Refresh();
+        }
+
+        public void setSelectedRowDGVCuadruplos(int row)
+        {
+            if (row < this.dataGridViewCuadruplos.Rows.Count)
+                this.dataGridViewCuadruplos.Rows[row].Selected = true;
         }
     }
 }
