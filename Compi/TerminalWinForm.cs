@@ -62,7 +62,7 @@ namespace Compi
         {
             Cuadruplos.Instance.Terminal = this;
 
-            if (this.typeExecution > 0)
+            if (this.typeExecution >= 0)
             {
                 switch (this.typeExecution)
                 {
