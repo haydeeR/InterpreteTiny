@@ -520,7 +520,7 @@ namespace Compi
                 if (cuadruploComp.Operador.TokenType == TokenType.OperadorComp &&
                     cuadruploComp.resultado != null &&
                     cuadruploComp.resultado.Value != null &&
-                    cuadruploComp.resultado.Value == "True" &&
+                    cuadruploComp.resultado.Value == "False" &&
                     this.bloquesRepeat.Count > 0)
                 {
                     this.nextIndCuadruplo = this.cuadruplos.IndexOf(bloquesRepeat.Peek());
@@ -529,7 +529,7 @@ namespace Compi
                 else if (cuadruploComp.Operador.TokenType == TokenType.OperadorComp &&
                     cuadruploComp.resultado != null &&
                     cuadruploComp.resultado.Value != null &&
-                    cuadruploComp.resultado.Value == "False" &&
+                    cuadruploComp.resultado.Value == "True" &&
                     this.bloquesRepeat.Count > 0)
                 {
                     this.bloquesRepeat.Pop();
