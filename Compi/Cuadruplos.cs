@@ -18,8 +18,8 @@ namespace Compi
         int nextLine = 1;
 
 
-        public int NextCuadruplo { get { return (this.nextIndCuadruplo + 1); } }
-        public int NextLine { get { return (this.nextLine + 1); } }
+        public int NextCuadruplo { get { return this.nextIndCuadruplo; } }
+        public int NextLine { get { return this.nextLine; } }
 
 
         public static Cuadruplos Instance
@@ -270,6 +270,7 @@ namespace Compi
                 {
                     Cuadruplo auxElse = this.bloquesCuadruplos.Pop();
                     inicioBloqueCodigo.resultado.Value = auxElse.Id.ToString();
+
                 }
             }
         }
@@ -291,6 +292,7 @@ namespace Compi
                 {
                     inicioBloqueCodigo.resultado.Value = finBloqueCodigo.Id.ToString();
                     finBloqueCodigo.resultado.Value = inicioBloqueCodigo.Id.ToString();
+                    finBloqueCodigo.Linea = this.cuadruplos.Last().Linea + 1;
                 }
 
             }
@@ -359,9 +361,11 @@ namespace Compi
         private Cuadruplo generaCuadruploIf(NodoArblAS nodo, Cuadruplo cuadruploGeneroIzq, Cuadruplo cuadruploGeneroDer)
         {
             Cuadruplo aux = null;
+            int numLinea = this.cuadruplos.Last().Linea + 1;
+
 
             aux = new Cuadruplo(new Resultado("GoTo", new DslToken(TokenType.IdTemporal)), operador: nodo.getToken(),
-                                            op1: cuadruploGeneroIzq.resultado.tokenType, op2: (new DslToken(TokenType.Numero, "1")), numLinea: nodo.Linea);
+                                            op1: cuadruploGeneroIzq.resultado.tokenType, op2: (new DslToken(TokenType.Numero, "1")), numLinea: numLinea);
             // Se le asigna el id del cuadruplo a su correspondiente DslToken
             aux.resultado.tokenType.Value = aux.Id.ToString();
             // Se le asigna el id del cruaduplo que continuará si
@@ -430,11 +434,12 @@ namespace Compi
 
         public void executeLine()
         {
+            bool lineaModificada = false;
+
             List<Cuadruplo> listCuadruplo = this.cuadruplos.Where(x => x.Linea == this.nextLine).ToList();
-            listCuadruplo.ForEach(x => this.ejecutaCuadruplo(x));
-            this.nextLine++;
-            //this.nextLine = (this.nextIndCuadruplo + 1 < this.cuadruplos.Count) ? this.cuadruplos[this.nextIndCuadruplo + 1].Linea : this.cuadruplos.Count;
-            //this.nextIndCuadruplo++;
+            listCuadruplo.ForEach(x => { if (this.nextLine == x.Linea) { this.ejecutaCuadruplo(x); } else { lineaModificada = true; } });
+            if (!lineaModificada)
+                this.nextLine++;
         }
 
 
@@ -540,6 +545,7 @@ namespace Compi
         private void executeRepeatUntil(Cuadruplo c)
         {
             this.bloquesRepeat.Push(c);
+            //this.nextLine = this.
         }
 
         private void executeElse(Cuadruplo c)

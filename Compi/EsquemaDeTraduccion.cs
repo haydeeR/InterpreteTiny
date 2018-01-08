@@ -56,6 +56,7 @@ namespace Compi
                     NodoArblAS nodoExp10a = Pilas.Stacks.popPAA();
 
                     NodoArblAS nodoIf10a = new NodoArblAS(new DslToken(TokenType.KeyWord, "if"));
+                    nodoIf10a.Linea = getNumLine(nodoExp10a);
                     nodoIf10a.setNodo(nodoExp10a);
                     nodoIf10a.setNodo(nodoSent10a);
                     Pilas.Stacks.pushPAA(nodoIf10a);
@@ -68,13 +69,14 @@ namespace Compi
                     NodoArblAS nodoSentV11a = Pilas.Stacks.popPAA();
                     NodoArblAS nodoExpV11a = Pilas.Stacks.popPAA();
 
-
-
                     NodoArblAS nodoElse11a = new NodoArblAS(new DslToken(TokenType.KeyWord, "else"));
+                    nodoElse11a.Linea = getNumLine(nodoSentIF11a);
+                    //nodoElse11a.Linea = nodoSentV11a.Linea;
                     nodoElse11a.setNodo(nodoSentV11a);
                     nodoElse11a.setNodo(nodoSentIF11a);
 
                     NodoArblAS nodoIf11a = new NodoArblAS(new DslToken(TokenType.KeyWord, "if"));
+                    nodoIf11a.Linea = getNumLine(nodoExpV11a);
                     nodoIf11a.setNodo(nodoExpV11a);
                     nodoIf11a.setNodo(nodoElse11a);
 
@@ -87,6 +89,7 @@ namespace Compi
                     NodoArblAS nodoSent12b = Pilas.Stacks.popPAA();
                     NodoArblAS nodosentRep12c = new NodoArblAS(new DslToken(TokenType.KeyWord, "repeat-until"));
 
+                    nodosentRep12c.Linea = getNumLine(nodoSent12b);
                     nodosentRep12c.setNodo(nodoSent12b);
                     nodosentRep12c.setNodo(nodoExp12a);
 
@@ -882,6 +885,20 @@ namespace Compi
             }
 
             return valueToReturn;
+        }
+
+
+
+        private static int getNumLine(NodoArblAS nodo)
+        {
+            int numLinea;
+
+            if (nodo.getToken().TokenType == TokenType.FinInstruccion && nodo.getNodoIzquierdo() != null)
+                numLinea = nodo.getNodoIzquierdo().Linea;
+            else
+                numLinea = nodo.Linea;
+
+            return numLinea;
         }
 
     }

@@ -102,6 +102,7 @@
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColValorTemporal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColNumLineaHL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip1.SuspendLayout();
             this.mainTabControlContent.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -687,7 +688,8 @@
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3,
             this.dataGridViewTextBoxColumn4,
-            this.ColValorTemporal});
+            this.ColValorTemporal,
+            this.ColNumLineaHL});
             this.dataGridViewCuadruplos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewCuadruplos.Location = new System.Drawing.Point(3, 31);
             this.dataGridViewCuadruplos.MultiSelect = false;
@@ -950,6 +952,15 @@
             this.ColValorTemporal.ReadOnly = true;
             this.ColValorTemporal.Width = 75;
             // 
+            // ColNumLineaHL
+            // 
+            this.ColNumLineaHL.HeaderText = "# LÍNEA";
+            this.ColNumLineaHL.MinimumWidth = 75;
+            this.ColNumLineaHL.Name = "ColNumLineaHL";
+            this.ColNumLineaHL.ReadOnly = true;
+            this.ColNumLineaHL.ToolTipText = "NÚMERO DE LÍNEA DE ALTO NIVEL";
+            this.ColNumLineaHL.Width = 75;
+            // 
             // MainWinForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1071,5 +1082,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColValorTemporal;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColNumLineaHL;
     }
 }

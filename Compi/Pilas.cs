@@ -18,6 +18,9 @@ namespace Compi
         Stack<string> pilaIDs;
 
 
+        Stack<int> bloqueIFCode;
+        Stack<int> bloqueRepeatCode;
+
         string tipo = "nodeclara";
         int comparador;
         //int operador;
@@ -49,6 +52,9 @@ namespace Compi
             pAA = new Stack<NodoArblAS>();
             pilaIDs = new Stack<string>();
             operadores = new Stack<string>();
+
+            bloqueIFCode = new Stack<int>();
+            bloqueRepeatCode = new Stack<int>();
         }
 
 
@@ -74,11 +80,78 @@ namespace Compi
             this.pilaIDs.Clear();
             this.operadores.Clear();
 
+            this.bloqueIFCode.Clear();
+            this.bloqueRepeatCode.Clear();
+
             this.tipo = "nodeclara";
             this.comparador = 0;
             //this.operador = 0;
             this.numLinea = 1;
         }
+
+
+        #region Operaciones para trabajar con la pila de Bloque de Codigo If
+        public void pushIC(int numLinea)
+        {
+            this.bloqueIFCode.Push(numLinea);
+        }
+
+
+
+        public int peekIC()
+        {
+            int numLinea = -1;
+
+            if (this.bloqueIFCode.Count > 0)
+                numLinea = this.bloqueIFCode.Peek();
+
+            return numLinea;
+        }
+
+
+
+        public int popIC()
+        {
+            int numLinea = -1;
+
+            if (this.bloqueIFCode.Count > 0)
+                numLinea = this.bloqueIFCode.Pop();
+
+            return numLinea;
+        }
+        #endregion
+
+
+        #region Operaciones para trabajar con la pila de Bloque de Codigo Repeat
+        public void pushRUC(int numLinea)
+        {
+            this.bloqueRepeatCode.Push(numLinea);
+        }
+
+
+
+        public int peekRUC()
+        {
+            int numLinea = -1;
+
+            if (this.bloqueRepeatCode.Count > 0)
+                numLinea = this.bloqueRepeatCode.Peek();
+
+            return numLinea;
+        }
+
+
+
+        public int popRUC()
+        {
+            int numLinea = -1;
+
+            if (this.bloqueRepeatCode.Count > 0)
+                numLinea = this.bloqueRepeatCode.Pop();
+
+            return numLinea;
+        }
+        #endregion
 
 
         #region Operaciones para trabajar con la lista de Ids

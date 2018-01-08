@@ -725,14 +725,18 @@ namespace Compi
         private void muestraCuadruplos()
         {
             this.dataGridViewCuadruplos.AutoGenerateColumns = false;
+            /*
             this.dataGridViewCuadruplos.DataSource =
                 (Cuadruplos.Instance.LstCuadruplos.Where(cua => cua.Operador.Value.Contains("end-") == false).ToList());
+            */
+            this.dataGridViewCuadruplos.DataSource = Cuadruplos.Instance.LstCuadruplos;
             //this.dataGridViewCuadruplos.DataSource = Cuadruplos.Instance.LstCuadruplos;
             this.dataGridViewCuadruplos.Columns[0].DataPropertyName = "strOperando1";
             this.dataGridViewCuadruplos.Columns[1].DataPropertyName = "strOperando2";
             this.dataGridViewCuadruplos.Columns[2].DataPropertyName = "strOperador";
             this.dataGridViewCuadruplos.Columns[3].DataPropertyName = "strTempVar";
             this.dataGridViewCuadruplos.Columns[4].DataPropertyName = "valueResult";
+            this.dataGridViewCuadruplos.Columns[5].DataPropertyName = "Linea";
         }
 
 
